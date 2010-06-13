@@ -7,6 +7,7 @@ module Rubino
       @config = opts
       @last = nil
       @server = Server.new(opts['server'], opts['port'])
+      @connected = false
     end
 
     def handle_command
@@ -73,19 +74,26 @@ module Rubino
       action @last.recip, *args
     end
 
+    def join(*args)
+      send :join, args.join(',')
+      @config['channels'] << args
+    end
+
+    def part(*args)
+      send :part, args[0], args[1..-1].join(' ')
+      @config['channels'].delete(args[0])
+    end
+
+    def quit(*args)
+      send :quit, args.join(' ')
+      @connected = false
+    end
+
     alias :msg :privmsg
     alias :tell :privmsg
     alias :do :action
     alias :act :action
     alias :react :reaction
-
-    def join(*args)
-      send :join, args.join(',')
-    end
-
-    def quit(*args)
-      send :quit, args.join(' ')
-    end
 
     def shutdown(*args)
       if args.length > 0
@@ -98,6 +106,7 @@ module Rubino
 
     def connect
       @connection = Connection.new(@server)
+      @connected = true
       raw "USER #{@nick} * * :Rubino IRC bot", "NICK #{@nick}"
     end
 
@@ -122,10 +131,20 @@ module Rubino
     end
 
     def run
-      until @connection.eof
-        line = @connection.readline
-        parse line
+      i = 1
+      while @connected
+        loop do
+          connect if @connection.eof?
+          until @connection.eof?
+            i = 1
+            line = @connection.readline
+            parse line
+          end
+          sleep i*5
+          i += 1
+        end
       end
+      @connection.close
     end
 
   end # class Bot
