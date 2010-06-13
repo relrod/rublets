@@ -1,21 +1,21 @@
 defaults:
-	nicks:         # Default list of nicknames to try in order
-		- "rubino"
-		- "[rubino]"
-		- "rubino_"
-		- "_rubino"
+  nicks:
+    - "rubino"
+    - "[rubino]"
+    - "rubino_"
+    - "_rubino"
 connections:
-	freenode:
-		server: irc.freenode.net/6667
-		channels:
-			- "#botters"
-	ninthbit:
-		server: irc.ninthbit.net/6667
-		channels:
-			- "#bots"
-			- "#programming"
-	sinsira:
-		server: irc.sinsira.net/6667
-		channels:
-			- "#general"
-			- "#programming"
+  freenode:
+    server: irc.freenode.net/6667
+    channels:
+      - "#botters"
+  ninthbit:
+    server: irc.ninthbit.net/6667
+    channels:
+      - "#bots"
+      - "#programming"
+  sinsira:
+    server: irc.sinsira.net/6667
+    channels:
+      - "#general"
+      - "#programming"
