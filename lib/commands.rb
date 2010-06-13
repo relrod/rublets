@@ -1,33 +1,16 @@
 module Rubino
   class Commands
-    def a(message, *rest)
-      char = 'b'
-      char = rest[-1][-1,1].succ if rest.size > 0
-      (char..'z').to_a.join(' ')
+    attr_accessor :message
+    def method_missing(name, *args)
+      [name, *args]
     end
 
-    def do_you_live?(message, *rest)
-      [:noprefix, "No, I died."]
-    end
-
-    def ping(message, *rest)
-      [:noprefix, "pong"]
-    end
-
-    def hello(message, *rest)
-      "hello"
-    end
-
-    def reverse(message, *rest)
-      [:noprefix, rest.join(' ').reverse]
-    end
-
-    def reverse_words(message, *rest)
-      [:noprefix, rest.reverse]
-    end
-
-    def commands(message, *rest)
+    def commands(*args)
       self.class.instance_methods(false).map{|x| x.to_s.gsub('_', ' ') }.join(', ')
+    end
+
+    def about(*args)
+      "Information about the rubino IRC bot is at http://duckinator.net/rubino"
     end
   end
 end

@@ -24,8 +24,7 @@ module Rubino
       end
 
       on :privmsg do
-        response = command
-        reply response unless response.nil?
+        handle_command
       end
 
       on :ping do

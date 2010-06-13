@@ -40,5 +40,9 @@ module Rubino
         @text = $2
       end
     end
+
+    def inspect
+      @full || generate
+    end
   end
 end

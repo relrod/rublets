@@ -1,0 +1,20 @@
+custom/handlers.rb and custom/commands.rb are reloaded on each message if the files exist.
+
+Example commands.rb:
+
+    class Rubino::Commands
+      def ping(*args)
+        [:noprefix, "pong"]
+      end
+    end
+
+
+Example handlers.rb:
+
+    class Rubino::Handlers
+      on :notice do
+        handle_command # NOTICEs are now treated identically to PRIVMSGs
+      end
+    end
+
+More information available at http://duckinator.net/rubino

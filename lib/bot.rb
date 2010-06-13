@@ -9,8 +9,7 @@ module Rubino
       @server = Server.new(opts['server'], opts['port'])
     end
 
-    def command
-      load File.join(File.dirname(__FILE__), 'commands.rb')
+    def handle_command
       @commands ||= Commands.new
       words = @last.words
 
@@ -25,13 +24,18 @@ module Rubino
 
       if @commands.respond_to?(command)
         rest = words[(i+1)..-1]
-        response = @commands.instance_eval { __send__(command, @last, *rest) }
-        if response.is_a?(Array) && response[0] == :noprefix
-          response[1..-1]
+        @commands.message = @last
+        response = @commands.__send__(command, *rest)
+        if response.is_a?(Array) 
+          if response[0] == :noprefix
+              reply response[1..-1]
+          else
+              __send__(response[0], *response[1..-1])
+          end
         else
-          "#{@last.sender.nick}: #{response}"
-        end
-      end
+          reply "#{@last.sender.nick}: #{response}"
+        end # if response.is_a?(Array)
+      end   # if @commands.respond_to?(command)
     end
 
     def raw(*args)
@@ -54,20 +58,26 @@ module Rubino
     end
 
     def ctcp(recip, type, *args)
-      privmsg recip, "\001#{type.to_s.upcase}", *args, "\001"
+      privmsg recip, "\001#{type.to_s.upcase} #{args.join(' ')}\001"
     end
 
     def action(recip, *args)
-      ctcp :action, *args
+      ctcp recip, :action, *args
     end
 
     def reply(*args)
       privmsg @last.recip, *args
     end
 
-    def react(*args)
+    def reaction(*args)
       action @last.recip, *args
     end
+
+    alias :msg :privmsg
+    alias :tell :privmsg
+    alias :do :action
+    alias :act :action
+    alias :react :reaction
 
     def join(*args)
       send :join, args.join(',')
@@ -92,6 +102,10 @@ module Rubino
     end
 
     def handle(message)
+      %w{commands handlers}.each do |x|
+        filename = File.join(File.dirname(__FILE__), '..', 'custom', "#{x}.rb")
+        load filename if File.exist?(filename)
+      end
       @handler ||= Handlers.new(self, @config)
       @handler.handle(message)
     end
