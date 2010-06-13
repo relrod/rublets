@@ -1,13 +1,12 @@
-%w{commands handlers server user message connection}.each { |x| load File.join(File.dirname(__FILE__), "#{x}.rb") }
+%w{commands handlers server user message connection manager}.each { |x| load File.join(File.dirname(__FILE__), "#{x}.rb") }
 
 module Rubino
   class Bot
     def initialize(opts)
-      opts[:nick] ||= 'rubino'
-      @nick = opts[:nick]
+      @nick = opts['nicks'][0]
       @config = opts
       @last = nil
-      @server = Server.new(opts[:server], opts[:port])
+      @server = Server.new(opts['server'], opts['port'])
     end
 
     def command
@@ -74,9 +73,22 @@ module Rubino
       send :join, args.join(',')
     end
 
+    def quit(*args)
+      send :quit, args.join(' ')
+    end
+
+    def shutdown(*args)
+      if args.length > 0
+        quit(*args)
+      else
+        quit "I have been slain!"
+      end
+      @connection.close
+    end
+
     def connect
       @connection = Connection.new(@server)
-      raw "USER #{@config[:nick]} * * :Rubino IRC bot", "NICK #{@config[:nick]}"
+      raw "USER #{@nick} * * :Rubino IRC bot", "NICK #{@nick}"
     end
 
     def handle(message)

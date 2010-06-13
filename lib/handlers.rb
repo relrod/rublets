@@ -20,15 +20,16 @@ module Rubino
 
     def set_defaults
       on '001' do
-        join(@config[:channels])
+        join(@config['channels'])
       end
 
       on :privmsg do
-        reply command
+        response = command
+        reply response unless response.nil?
       end
 
       on :ping do
-        send "PONG", @last.text
+        raw @last.full.gsub('PING ','PONG ')
       end
     end
   end # class Handlers
