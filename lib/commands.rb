@@ -13,5 +13,9 @@ module Rubino
     def about(*args)
       "Information about the rubino IRC bot is at http://duckinator.net/rubino"
     end
+
+    def source(*args)
+      "I'm written in ruby by duckinator. You can find my source at http://github.com/RockerMONO/rubino"
+    end
   end
 end
