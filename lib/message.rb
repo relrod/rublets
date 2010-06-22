@@ -39,6 +39,7 @@ module Rubino
         @type = $1
         @text = $2
       end
+      @text.chomp! unless @text.nil?
     end
 
     def inspect

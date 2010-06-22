@@ -120,6 +120,7 @@ module Rubino
     end
 
     def parse(line)
+      %w{commands handlers}.each { |x| load File.join(File.dirname(__FILE__), "..", "custom", "#{x}.rb") }
       message = Message.new(line)
       @last = message
       if message.sender.nil?

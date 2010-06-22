@@ -12,8 +12,10 @@ Example commands.rb:
 Example handlers.rb:
 
     class Rubino::Handlers
-      on :notice do
-        handle_command # NOTICEs are now treated identically to PRIVMSGs
+      def set_custom
+        on :invite do
+          join @last.text
+        end
       end
     end
 
