@@ -31,7 +31,7 @@ module Rubino
         @type = $4
         @recip = $5
         @text = $6
-      elsif line =~ /^:(\S+) (\S+) (\S+) :(.+)$/
+      elsif line =~ /^:(\S+) (\S+) (\S+) :?(.+)$/
         @type = $2
         @recip = $3
         @text = $4

@@ -35,6 +35,14 @@ module Rubino
       on :ping do
         raw @last.full.gsub('PING ','PONG ')
       end
+
+      on '433' do
+        if @config['nicks'].size >= @nick_number
+          @nick_number += 1
+          puts "NOTICE: Changing nick from #{@nick} to #{@config['nicks'][@nick_number]}"
+          nick @config['nicks'][@nick_number]
+        end
+      end
     end
 
     def set_custom

@@ -3,7 +3,8 @@
 module Rubino
   class Bot
     def initialize(opts)
-      @nick = opts['nicks'][0]
+      @nick_number = 0
+      @nick = opts['nicks'][@nick_number]
       @config = opts
       @last = nil
       @server = Server.new(opts['server'], opts['port'])
@@ -87,6 +88,11 @@ module Rubino
     def quit(*args)
       send :quit, args.join(' ')
       @connected = false
+    end
+
+    def nick(nickname)
+      send :nick, nickname
+      @nick = nickname
     end
 
     alias :msg :privmsg
