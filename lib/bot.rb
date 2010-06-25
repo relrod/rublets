@@ -14,7 +14,7 @@ module Rubino
       @commands ||= Commands.new
       words = @last.words
 
-      return unless words[0] =~ /^#{@nick}.$/
+      return unless words[0] =~ /^#{@nick}.?$/
 
       i = words.length-1
       command = words[1..i].join('_').downcase
