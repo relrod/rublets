@@ -1,14 +1,16 @@
 defaults:
   nicks:
-    - "rubino"
-    - "[rubino]"
-    - "rubino_"
-    - "_rubino"
+    - "rubino123"
+    - "[rubino123]"
+    - "rubino123_"
+    - "_rubino123"
 connections:
   freenode:
     server: irc.freenode.net/6667
     channels:
       - "#botters"
+    password: waffles
+
   ninthbit:
     server: irc.ninthbit.net/6667
     channels:
