@@ -113,6 +113,8 @@ module Rubino
     def connect
       @connection = Connection.new(@server)
       @connected = true
+      @nick_number = 0
+      @nick = @config['nicks'][@nick_number]
       raw "USER #{@nick} * * :Rubino IRC bot", "NICK #{@nick}"
     end
 
