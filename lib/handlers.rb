@@ -23,6 +23,9 @@ module Rubino
     def set_defaults
       on '001' do
         join(@config['channels'])
+        if @config.include?('password')
+          privmsg :NickServ, "identify #{@config['password']}"
+        end
       end
 
       on :privmsg do
