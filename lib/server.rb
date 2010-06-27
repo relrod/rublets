@@ -1,8 +1,8 @@
 module Rubino
   class Server
-    attr_reader :server, :port
+    attr_reader :server, :port, :ssl
     def initialize(server, port=nil)
-      @server, @port = parse_server(server, port)
+      @server, @port, @ssl = parse_server(server, port)
     end
 
     def to_a
