@@ -39,7 +39,20 @@ module Rubino
         @type = $1
         @text = $2
       end
-      @text.chomp! unless @text.nil?
+      if !@text.nil?
+        p @text
+        # non_printable contains all non-printable characters
+        non_printable = ["\x00", *"\x02".."\x1F", "\x7F", "\r", "\n"]
+        non_printable.map do |c|
+          @text.delete!(c) # Delete all instances of c in @text
+        end
+        p @text
+        if @type == "PRIVMSG" && @text[0] == "\x01" && @text[-1] == "\x01"
+          words = @text[1..-2].split(' ') 
+          @type = words[0]
+          @text = words[1..-1].join(' ')
+        end
+      end
     end
 
     def inspect
