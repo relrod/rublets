@@ -56,9 +56,6 @@ module Rubino
         end
         @text.delete!("\x01")
       end
-      if @recip == @irc.nick && !@sender.nil?
-        @recip = @sender.nick
-      end
     end
 
     def inspect
