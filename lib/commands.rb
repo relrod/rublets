@@ -5,7 +5,6 @@ module Rubino
       @irc = irc
       @config = config
       @commands = Hash.new(0)
-      @ctcps = Hash.new(0)
       set_defaults
       set_custom
       handle(@irc.last)
