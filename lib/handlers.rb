@@ -41,7 +41,7 @@ module Rubino
       end
 
       on :privmsg do
-        Commands.new(self, @config)
+        Commands.new(@config)
       end
 
       on :ping do

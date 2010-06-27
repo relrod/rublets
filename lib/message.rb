@@ -1,8 +1,7 @@
 module Rubino
   class Message
     attr_accessor :full, :sender, :type, :recip, :text, :ctcp_type
-    def initialize(irc, var)
-      @irc = irc
+    def initialize(var)
       if var.is_a?(Hash)
         var.each do |key, value|
           instance_variable_set("@" + key, value)
