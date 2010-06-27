@@ -2,7 +2,7 @@ module Rubino
   class Server
     attr_reader :server, :port, :ssl
     def initialize(server, port=nil)
-      @server, @port, @ssl = parse_server(server, port)
+      @server, @port, @ssl = parse(server, port)
     end
 
     def to_a
@@ -13,7 +13,7 @@ module Rubino
       "#{@server}:#{@port}"
     end
 
-    def parse_server(server, port=nil)
+    def parse(server, port=nil)
       ssl = false
       if server.is_a?(Array)
         if server.length != 2
