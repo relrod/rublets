@@ -1,7 +1,8 @@
 module Rubino
   class Message
-    attr_accessor :full, :sender, :type, :recip, :text
-    def initialize(var)
+    attr_accessor :full, :sender, :type, :recip, :text, :ctcp_type
+    def initialize(irc, var)
+      @irc = irc
       if var.is_a?(Hash)
         var.each do |key, value|
           instance_variable_set("@" + key, value)
@@ -21,7 +22,7 @@ module Rubino
 
     def parse(line)
       @full = line
-      @type, @recip, @text, @sender = nil
+      @type, @recip, @text, @sender, @ctcp_type = nil
       if line =~ /^:(.+)!(.+)@(\S+) (\S+) (\S+) :(.+)$/
         @sender = User.new(
                     :nick => $1,
@@ -40,18 +41,23 @@ module Rubino
         @text = $2
       end
       if !@text.nil?
-        p @text
+        @text.gsub!(/\x03\d\d/, '')
         # non_printable contains all non-printable characters
-        non_printable = ["\x00", *"\x02".."\x1F", "\x7F", "\r", "\n"]
+        non_printable = ["\x00", *"\x02".."\x1F", "\x7F"]
         non_printable.map do |c|
           @text.delete!(c) # Delete all instances of c in @text
         end
-        p @text
+
         if @type == "PRIVMSG" && @text[0] == "\x01" && @text[-1] == "\x01"
           words = @text[1..-2].split(' ') 
-          @type = words[0]
+          @type = "CTCP"
+          @ctcp_type = words[0]
           @text = words[1..-1].join(' ')
         end
+        @text.delete!("\x01")
+      end
+      if @recip == @irc.nick && !@sender.nil?
+        @recip = @sender.nick
       end
     end
 

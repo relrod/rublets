@@ -2,6 +2,7 @@
 
 module Rubino
   class Bot
+    attr_accessor :nick, :last
     def initialize(opts)
       @nick_number = 0
       @nick = opts['nicks'][@nick_number]
@@ -63,8 +64,8 @@ module Rubino
       privmsg recip, "\001#{type.to_s.upcase} #{args.join(' ')}\001"
     end
 
-    def rectcp(type, *args)
-      ctcp @last.recip, type, *args
+    def ctcp_reply(type, *args)
+      notice @last.recip, "\001#{type.to_s.upcase} #{args.join(' ')}\001"
     end
 
     def action(recip, *args)
@@ -94,7 +95,7 @@ module Rubino
       @connected = false
     end
 
-    def nick(nickname)
+    def nick=(nickname)
       send :nick, nickname
       @nick = nickname
     end
@@ -133,7 +134,7 @@ module Rubino
 
     def parse(line)
       %w{commands handlers}.each { |x| load File.join(File.dirname(__FILE__), "..", "custom", "#{x}.rb") }
-      message = Message.new(line)
+      message = Message.new(self, line)
       @last = message
       if message.sender.nil?
         puts line
