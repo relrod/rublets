@@ -27,7 +27,6 @@ module Rubino
         elsif server.include?(':') # We got server_name:port
           server, port = server.split(':')
         else
-          server = server
           port ||= 6667
         end
       end
