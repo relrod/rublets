@@ -122,11 +122,6 @@ module Rubino
         message.recip = message.sender.nick
       end
       @last = message
-      if message.sender.nil?
-        puts line
-      else
-        puts "[#{message.recip}/#{message.type}] <#{message.sender.nick}> #{message.text}"
-      end
       handle(message)
     end
 

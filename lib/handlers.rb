@@ -13,14 +13,16 @@ module Rubino
 
     def handle(message)
       set_custom
+      block = @handlers["UNKNOWN"]
       if !message.type.nil?
         if message.type == "CTCP" && @ctcps.include?(message.ctcp_type.upcase)
           block = @ctcps[message.ctcp_type.upcase]
-          @irc.instance_eval &block
         elsif @handlers.include?(message.type.upcase)
           block = @handlers[message.type.upcase]
-          @irc.instance_eval &block
         end
+      end
+      if block.is_a?(Proc)
+        @irc.instance_eval &block
       end
     end
 
@@ -54,6 +56,10 @@ module Rubino
           puts "NOTICE: Changing nick from #{@nick} to #{@config['nicks'][@nick_number]}"
           nick= @config['nicks'][@nick_number]
         end
+      end
+
+      on :unknown do
+        puts last
       end
 
       on_ctcp :ping do
