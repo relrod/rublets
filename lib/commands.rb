@@ -1,13 +1,21 @@
 module Rubino
   class Commands
     attr_accessor :message
-    def initialize(irc, config)
+    def initialize(irc=nil, config=nil)
       @irc = irc
       @config = config
       @commands = Hash.new(0)
       set_defaults
       set_custom
-      handle(@irc.last)
+      handle(@irc.last) if @irc
+    end
+
+    def inspect
+      @commands.inspect
+    end
+
+    def names
+      @commands.map {|k,v| k.downcase.gsub('_', ' ') }
     end
 
     def handle(message)
@@ -35,12 +43,7 @@ module Rubino
 
     def set_defaults
       command :commands do
-        self.class.instance_methods(false).map do |x|
-          # We don't want to mention the .message and .message= methods
-          if x.to_s.gsub('=','') != 'message'
-            x.to_s.gsub('_', ' ')
-          end
-        end.delete_if(&:nil?).join(', ')
+        reply_highlight Commands.new.names.join(', ')
       end
     
       command :about do
