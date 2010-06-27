@@ -11,8 +11,8 @@ module Rubino
       end
     end
 
-    def generate
-      "#{@sender.nick}!#{@sender.user}@#{@sender.host} #{type.upcase} :#{text}"
+    def to_s
+      @full || "#{@sender.nick}!#{@sender.user}@#{@sender.host} #{type.upcase} :#{text}"
     end
 
     def words
@@ -58,7 +58,7 @@ module Rubino
     end
 
     def inspect
-      @full || generate
+      to_s
     end
   end
 end
