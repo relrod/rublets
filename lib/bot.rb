@@ -63,6 +63,10 @@ module Rubino
       privmsg recip, "\001#{type.to_s.upcase} #{args.join(' ')}\001"
     end
 
+    def rectcp(type, *args)
+      ctcp @last.recip, type, *args
+    end
+
     def action(recip, *args)
       ctcp recip, :action, *args
     end
