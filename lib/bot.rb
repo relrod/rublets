@@ -117,7 +117,7 @@ module Rubino
 
     def parse(line)
       %w{commands handlers}.each { |x| load File.join(File.dirname(__FILE__), "..", "custom", "#{x}.rb") }
-      message = Message.new(self, line)
+      message = Message.new(line)
       if message.recip == @nick && !message.sender.nil?
         message.recip = message.sender.nick
       end
