@@ -7,11 +7,12 @@ module Rubino
       @commands = Hash.new(0)
       set_defaults
       set_custom
+      p @irc
       handle(@irc.last) if @irc
     end
 
     def inspect
-      @commands.inspect
+      "{" + names.join("=>..., ") + "}"
     end
 
     def names

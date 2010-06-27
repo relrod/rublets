@@ -11,6 +11,18 @@ module Rubino
       set_custom
     end
 
+    def inspect
+      "#<Rubino::Handlers handlers={'" + handler_names.join("'=>..., '") + "'=>...}, ctcps={'" + ctcp_names.join("'=>..., '") + "'=>...}>"
+    end
+
+    def handler_names
+      @handlers.map {|k,v| k.downcase.gsub('_', ' ') }
+    end
+
+    def ctcp_names
+      @ctcps.map {|k,v| k.downcase.gsub('_', ' ') }
+    end
+
     def handle(message)
       set_custom
       block = @handlers["UNKNOWN"]

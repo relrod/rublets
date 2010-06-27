@@ -12,6 +12,21 @@ module Rubino
       @connected = false
     end
 
+    def inspect
+      parts = {
+       'nick'       => @nick,
+       'connection' => @connection,
+       'channels'   => @config['channels'].join(','),
+       'last'       => @last.to_s,
+       'handler'    => @handler
+      }
+      inspected = []
+      parts.map do |k,v|
+        inspected << "#{k}=#{v.inspect}"
+      end
+      "#<Rubino::Bot #{inspected.join(', ')}>"
+    end
+
     def args
       @args
     end
@@ -64,8 +79,19 @@ module Rubino
     end
 
     def join(*args)
-      send :join, args.join(',')
-      @config['channels'] << args
+      args.each do |c|
+        current = c
+        if current.is_a?(Array)
+          current.each do |chan|
+            join chan
+          end
+        elsif current.is_a?(String)
+          send :join, c
+          @config['channels'] << c
+        end
+      end
+      #@config['channels'] << args
+      @config['channels'].uniq!
     end
 
     def part(*args)

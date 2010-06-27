@@ -12,7 +12,17 @@ module Rubino
     end
 
     def to_s
-      @full || "#{@sender.nick}!#{@sender.user}@#{@sender.host} #{type.upcase} :#{text}"
+      if @sender
+        if @recip
+          "#{@sender.nick}!#{@sender.user}@#{@sender.host} #{@type.upcase} #{@recip} :#{@text}"
+        else
+          "#{@sender.nick}!#{@sender.user}@#{@sender.host} #{@type.upcase} :#{@text}"
+        end
+      elsif @type
+        "#{@type.upcase} :#{@text}"
+      else
+        @full
+      end
     end
 
     def words
@@ -20,7 +30,7 @@ module Rubino
     end
 
     def parse(line)
-      @full = line
+      @full = line.chomp
       @type, @recip, @text, @sender, @ctcp_type = nil
       if line =~ /^:(.+)!(.+)@(\S+) (\S+) (\S+) :(.+)$/
         @sender = User.new(
