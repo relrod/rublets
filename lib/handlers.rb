@@ -1,3 +1,5 @@
+require File.join(File.dirname(__FILE__), 'commands.rb')
+
 module Rubino
   class Handlers
     def initialize(irc, config)
@@ -39,11 +41,11 @@ module Rubino
       end
 
       on :privmsg do
-        handle_command
+        Commands.new(self, @config)
       end
 
       on :ping do
-        raw @last.full.gsub('PING ','PONG ')
+        raw last.full.gsub('PING ','PONG ')
       end
 
       on '433' do
@@ -55,7 +57,7 @@ module Rubino
       end
 
       on_ctcp :ping do
-        ctcp_reply :ping, @last.text
+        ctcp_reply :ping, last.text
       end
 
     end

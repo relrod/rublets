@@ -3,8 +3,10 @@ custom/handlers.rb and custom/commands.rb are reloaded on each message if the fi
 Example commands.rb:
 
     class Rubino::Commands
-      def ping(*args)
-        [:noprefix, "pong"]
+      def set_custom
+        command :ping do
+          reply "pong"
+        end
       end
     end
 
@@ -14,7 +16,7 @@ Example handlers.rb:
     class Rubino::Handlers
       def set_custom
         on :invite do
-          join @last.text
+          join last.text
         end
       end
     end

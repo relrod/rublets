@@ -2,43 +2,22 @@
 
 module Rubino
   class Bot
-    attr_accessor :nick, :last
+    attr_accessor :nick, :last, :args
     def initialize(opts)
       @nick_number = 0
       @nick = opts['nicks'][@nick_number]
       @config = opts
-      @last = nil
+      @last, @args = nil
       @server = Server.new(opts['server'], opts['port'])
       @connected = false
     end
 
-    def handle_command
-      @commands ||= Commands.new
-      words = @last.words
+    def args
+      @args
+    end
 
-      return unless words[0] =~ /^#{@nick}.?$/
-
-      i = words.length-1
-      command = words[1..i].join('_').downcase
-      until @commands.respond_to?(command) || i < 1
-        i -= 1
-        command = words[1..i].join('_').downcase
-      end
-
-      if @commands.respond_to?(command)
-        rest = words[(i+1)..-1]
-        @commands.message = @last
-        response = @commands.__send__(command, *rest)
-        if response.is_a?(Array) 
-          if response[0] == :noprefix
-              reply response[1..-1]
-          else
-              __send__(response[0], *response[1..-1])
-          end
-        else
-          reply "#{@last.sender.nick}: #{response}"
-        end # if response.is_a?(Array)
-      end   # if @commands.respond_to?(command)
+    def last
+      @last
     end
 
     def raw(*args)
@@ -74,6 +53,10 @@ module Rubino
 
     def reply(*args)
       privmsg @last.recip, *args
+    end
+
+    def reply_highlight(*args)
+      reply "#{@last.sender.nick}:", *args
     end
 
     def reaction(*args)
