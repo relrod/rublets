@@ -5,8 +5,12 @@ module Rubino
       @server, @port = parse_server(server, port)
     end
 
-    def inspect
+    def to_a
       [@server, @port]
+    end
+
+    def inspect
+      "#{@server}:#{@port}"
     end
 
     def parse_server(server, port=nil)
