@@ -25,16 +25,21 @@ module Rubino
 
     def handle(message)
       set_custom
-      block = @handlers["UNKNOWN"]
       if !message.type.nil?
         if message.type == "CTCP" && @ctcps.include?(message.ctcp_type.upcase)
-          block = @ctcps[message.ctcp_type.upcase]
-        elsif @handlers.include?(message.type.upcase)
-          block = @handlers[message.type.upcase]
+          puts "[#{last.recip}] #{last.sender.nick}: CTCP #{last.ctcp_type} #{last.text}"
+          ctcp_block = @ctcps[message.ctcp_type.upcase]
         end
-      end
-      if block.is_a?(Proc)
-        @irc.instance_eval &block
+
+        if @handlers.include?(message.type.upcase)
+          block = @handlers[message.type.upcase]
+        else
+          block = @handlers["UNKNOWN"]
+        end
+
+        # Run applicable blocks
+        @irc.instance_eval &block if block.is_a?(Proc)
+        @irc.instance_eval &ctcp_block if ctcp_block.is_a?(Proc)
       end
     end
 
@@ -55,7 +60,8 @@ module Rubino
       end
 
       on :privmsg do
-        Commands.new(@config)
+        puts "[#{last.recip}] <#{last.sender.nick}> #{last.text}"
+        Commands.new(self, @config)
       end
 
       on :ping do
@@ -78,10 +84,18 @@ module Rubino
         ctcp_reply :ping, last.text
       end
 
-    end
+      on_ctcp :action do
+        puts "[#{last.recip}] * #{last.sender.nick} #{last.text}"
+        case last.text
+          when /^kills #{@nick}(\s+)?$/
+            react "explodes violently"
+          when /^stares oddly at #{@nick}$/
+            react "snarls"
+        end
+      end # on_ctcp :action
+    end   # set_defaults
 
     def set_custom
-      # Custom handlers here
     end
   end # class Handlers
 end   # module Rubino
