@@ -38,8 +38,23 @@ module Rubino
         end
 
         # Run applicable blocks
-        @irc.instance_eval &block if block.is_a?(Proc)
-        @irc.instance_eval &ctcp_block if ctcp_block.is_a?(Proc)
+        begin
+          @irc.instance_eval &block if block.is_a?(Proc)
+        rescue => e
+          puts "----------------------------------------------------"
+          puts "Error running handler for \"#{message.type.upcase}\", details below:"
+          puts e
+          puts "----------------------------------------------------"
+        end
+
+        begin
+          @irc.instance_eval &ctcp_block if ctcp_block.is_a?(Proc)
+        rescue => e
+          puts "----------------------------------------------------"
+          puts "Error running CTCP handler for \"#{message.type.upcase}\", details below:"
+          puts e
+          puts "----------------------------------------------------"
+        end
       end
     end
 

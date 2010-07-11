@@ -33,7 +33,15 @@ module Rubino
       if @commands.include?(command)
         @irc.args = words[(i+1)..-1]
         block = @commands[command]
-        @irc.instance_eval &block
+        begin
+          @irc.instance_eval &block
+        rescue => e
+          puts "----------------------------------------------------"
+          puts "Error running command \"#{command}\", details below:"
+          puts e
+          puts "----------------------------------------------------"
+          @irc.reply_highlight "Error running command \"#{command}\"."
+        end
       end   # if @commands.respond_to?(command)
     end
 

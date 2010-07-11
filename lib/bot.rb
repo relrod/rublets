@@ -138,16 +138,15 @@ module Rubino
     end
 
     def handle(message)
-      %w{commands handlers}.each do |x|
-        filename = File.join(File.dirname(__FILE__), '..', 'custom', "#{x}.rb")
-        load filename if File.exist?(filename)
-      end
       @handler ||= Handlers.new(self, @config)
       @handler.handle(message)
     end
 
     def parse(line)
-      %w{commands handlers}.each { |x| load File.join(File.dirname(__FILE__), "..", "custom", "#{x}.rb") }
+      %w{commands handlers}.each do |x|
+        filename = File.join(File.dirname(__FILE__), "..", "custom", "#{x}.rb")
+        load filename if File.exist?(filename)
+      end
       message = Message.new(line)
       if message.recip == @nick && !message.sender.nil?
         message.recip = message.sender.nick
