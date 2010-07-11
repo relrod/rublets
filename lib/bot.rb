@@ -1,5 +1,8 @@
 %w{commands handlers server user message connection manager}.each { |x| load File.join(File.dirname(__FILE__), "#{x}.rb") }
 
+trap("INT") { $interrupted = true }
+
+
 # This is from http://github.com/raggi/ir/blob/master/lib/ir.rb -- idk where to toss it, so I tossed it here
 def valid?(str)
   catch(:ok) { eval("BEGIN{throw:ok,true}; _ = #{str}") }
@@ -50,11 +53,18 @@ module Rubino
     end
 
     def send(*args)
-      message = Message.new(
+      if args[0].to_s.downcase == 'quit'
+        message = Message.new(
+                  :type  => args[0],
+                  :text  => args[1..-1].join(' ')
+                 )
+      else
+        message = Message.new(
                   :type  => args[0],
                   :recip => args[1],
                   :text  => args[2..-1].join(' ')
                  )
+      end
       raw message
     end
 
@@ -128,12 +138,19 @@ module Rubino
     alias :react :reaction
 
     def shutdown(*args)
+      puts "Shutting down bot..."
       if args.length > 0
-        quit(*args)
+        quit *args
       else
-        quit "I have been slain!"
+        message = "I have been slain!"
+        if $interrupted
+          message += " (Ctrl-C at terminal)"
+        end
+        quit message
       end
       @connection.close
+      @connected = false
+      puts "Bot has#{" not" unless @connection.closed?} successfully shut down."
     end
 
     def connect
@@ -177,6 +194,16 @@ module Rubino
 
     def run
       i = 1
+      Thread.new do
+        loop do
+          if $interrupted
+            shutdown
+            puts "Exiting..."
+            exit!
+          end
+          sleep 5
+        end
+      end
       while @connected
         loop do
           connect if @connection.eof?
