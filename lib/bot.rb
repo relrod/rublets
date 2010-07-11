@@ -1,5 +1,12 @@
 %w{commands handlers server user message connection manager}.each { |x| load File.join(File.dirname(__FILE__), "#{x}.rb") }
 
+# This is from http://github.com/raggi/ir/blob/master/lib/ir.rb -- idk where to toss it, so I tossed it here
+def valid?(str)
+  catch(:ok) { eval("BEGIN{throw:ok,true}; _ = #{str}") }
+rescue SyntaxError
+  false
+end
+
 module Rubino
   class Bot
     attr_accessor :nick, :last, :args
@@ -145,7 +152,22 @@ module Rubino
     def parse(line)
       %w{commands handlers}.each do |x|
         filename = File.join(File.dirname(__FILE__), "..", "custom", "#{x}.rb")
-        load filename if File.exist?(filename)
+        begin
+          if File.exist?(filename)
+            raise ::SyntaxError, "syntax error, invalid code in #{filename}" unless valid?(open(filename).read)
+            load filename
+          end
+        rescue Exception, SyntaxError => e
+          puts "----------------------------------------------------"
+          puts "Invalid code in #{filename}, details below:"
+          p e
+          p e.methods
+          puts "#{e.class}: #{e.message}"
+          e.backtrace.each do |line|
+            puts line
+          end
+          puts "----------------------------------------------------"
+        end
       end
       message = Message.new(line)
       if message.recip == @nick && !message.sender.nil?
