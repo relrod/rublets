@@ -160,8 +160,6 @@ module Rubino
         rescue Exception, SyntaxError => e
           puts "----------------------------------------------------"
           puts "Invalid code in #{filename}, details below:"
-          p e
-          p e.methods
           puts "#{e.class}: #{e.message}"
           e.backtrace.each do |line|
             puts line
