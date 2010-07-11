@@ -37,7 +37,7 @@ module Rubino
 
     def raw(*args)
       args.each do |message|
-        puts ">> #{line}\r\n"
+        puts ">> #{message}\r\n"
         @connection.send(message)
       end
     end
