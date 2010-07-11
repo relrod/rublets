@@ -27,7 +27,7 @@ module Rubino
       set_custom
       if !message.type.nil?
         if message.type == "CTCP" && @ctcps.include?(message.ctcp_type.upcase)
-          puts "[#{last.recip}] #{last.sender.nick}: CTCP #{last.ctcp_type} #{last.text}"
+          puts "[#{message.recip}] #{message.sender.nick}: CTCP #{message.ctcp_type} #{message.text}"
           ctcp_block = @ctcps[message.ctcp_type.upcase]
         end
 
