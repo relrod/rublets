@@ -19,10 +19,18 @@ module Rubino
           "#{@sender.nick}!#{@sender.user}@#{@sender.host} #{@type.upcase} :#{@text}"
         end
       elsif @type
-        "#{@type.upcase} :#{@text}"
+        if @recip
+          "#{@type.upcase} #{@recip} :#{text}"
+        else
+          "#{@type.upcase} :#{@text}"
+        end
       else
         @full
       end
+    end
+
+    def print
+      puts to_s
     end
 
     def words

@@ -36,14 +36,19 @@ module Rubino
     end
 
     def raw(*args)
-      args.each do |line|
+      args.each do |message|
         puts ">> #{line}\r\n"
-        @connection.puts line
+        @connection.send(message)
       end
     end
 
     def send(*args)
-      raw "#{args[0].upcase} #{args[1]} :#{args[2..-1].join(' ')}"
+      message = Message.new(
+                  :type  => args[0],
+                  :recip => args[1],
+                  :text  => args[2..-1].join(' ')
+                 )
+      raw message
     end
 
     def privmsg(recip, *args)

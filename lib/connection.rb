@@ -7,6 +7,10 @@ module Rubino
       super(*server)
     end
 
+    def send(item)
+      self.puts item.to_s
+    end
+
     def inspect
       "#<Rubino::Connection #{@server.inspect}>"
     end
