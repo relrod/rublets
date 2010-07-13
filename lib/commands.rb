@@ -21,7 +21,7 @@ module Rubino
     def handle(message)
       words = message.words
 
-      return unless words[0] =~ /^#{@irc.nick}.?$/
+      return unless words[0] =~ /^#{@irc.self.nick}.?$/
 
       i = words.length-1
       command = words[1..i].join('_').upcase

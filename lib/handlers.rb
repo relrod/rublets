@@ -86,7 +86,7 @@ module Rubino
       on '433' do
         if @config['nicks'].size >= @nick_number
           @nick_number += 1
-          puts "NOTICE: Changing nick from #{@nick} to #{@config['nicks'][@nick_number]}"
+          puts "NOTICE: Changing nick from #{@self.nick} to #{@config['nicks'][@nick_number]}"
           nick= @config['nicks'][@nick_number]
         end
       end
@@ -102,9 +102,9 @@ module Rubino
       on_ctcp :action do
         puts "[#{last.recip}] * #{last.sender.nick} #{last.text}"
         case last.text
-          when /^kills #{@nick}(\s+)?$/
+          when /^kills #{@self.nick}(\s+)?$/
             react "explodes violently"
-          when /^stares oddly at #{@nick}$/
+          when /^stares oddly at #{@self.nick}$/
             react "snarls"
         end
       end # on_ctcp :action

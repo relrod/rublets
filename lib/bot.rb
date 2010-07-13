@@ -12,10 +12,14 @@ end
 
 module Rubino
   class Bot
-    attr_accessor :nick, :last, :args
+    attr_accessor :self, :last, :args
     def initialize(opts)
       @nick_number = 0
-      @nick = opts['nicks'][@nick_number]
+      @self = User.new(
+                       nick: opts['nicks'][@nick_number],
+                       user: '',
+                       host: ''
+                      )
       @config = opts
       @last, @args = nil
       @server = Server.new(opts['server'], opts['port'])
@@ -24,7 +28,7 @@ module Rubino
 
     def inspect
       parts = {
-       'nick'       => @nick,
+       'nick'       => @self.nick,
        'connection' => @connection,
        'channels'   => @config['channels'].join(','),
        'last'       => @last.to_s,
@@ -47,7 +51,7 @@ module Rubino
 
     def raw(*args)
       args.each do |message|
-        puts ">> #{message}\r\n"
+        puts ">> #{message}"
         @connection.send(message)
       end
     end
@@ -128,7 +132,7 @@ module Rubino
 
     def nick=(nickname)
       send :nick, nickname
-      @nick = nickname
+      @self.nick = nickname
     end
 
     alias :msg :privmsg
@@ -157,8 +161,8 @@ module Rubino
       @connection = Connection.new(@server)
       @connected = true
       @nick_number = 0
-      @nick = @config['nicks'][@nick_number]
-      raw "USER #{@nick} * * :Rubino IRC bot", "NICK #{@nick}"
+      @self.nick = @config['nicks'][@nick_number]
+      raw "USER #{@self.nick} * * :Rubino IRC bot", "NICK #{@self.nick}"
     end
 
     def handle(message)
@@ -185,7 +189,7 @@ module Rubino
         end
       end
       message = Message.new(line)
-      if message.recip == @nick && !message.sender.nil?
+      if message.recip == @self.nick && !message.sender.nil?
         message.recip = message.sender.nick
       end
       @last = message
