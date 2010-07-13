@@ -15,12 +15,24 @@ module Rubino
       end
     end
 
-    def inspect
+    def data
       {
         :nick => @nick,
         :user => @user,
         :host => @host
       }
+    end
+
+    def to_a
+      [@nick, @user, @host]
+    end
+
+    def to_s
+      "#{@nick}!#{@user}@#{@host}"
+    end
+
+    def inspect
+      to_s
     end
   end # class User
 end   # module Rubino

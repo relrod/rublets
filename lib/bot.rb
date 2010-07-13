@@ -166,7 +166,7 @@ module Rubino
     end
 
     def handle(message)
-      @handler ||= Handlers.new(self, @config)
+      @handler = Handlers.new(self, @config)
       @handler.handle(message)
     end
 
