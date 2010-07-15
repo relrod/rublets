@@ -4,7 +4,7 @@ module Rubino
     def initialize(var)
       if var.is_a?(Hash)
         var.each do |key, value|
-          instance_variable_set("@" + key, value)
+          instance_variable_set("@" + key.to_s, value)
         end
       elsif var.is_a?(String)
         parse(var)
