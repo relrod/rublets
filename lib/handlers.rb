@@ -2,6 +2,7 @@ load File.join(File.dirname(__FILE__), 'commands.rb')
 
 module Rubino
   class Handlers
+    attr_reader :handlers
     def initialize(irc, config)
       @irc = irc
       @config = config
