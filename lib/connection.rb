@@ -8,7 +8,11 @@ module Rubino
     end
 
     def send(item)
-      self.puts item.to_s
+      str = item.to_s
+      if str.length > 406
+        str = str[0..400] + " (...)"
+      end
+      self.puts str
     end
 
     def inspect
