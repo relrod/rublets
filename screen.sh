@@ -8,4 +8,4 @@ if [ "$CONF" == "" ]; then
   CONF="$DIR/config.yaml"
 fi
 
-screen -dmS rubino ./rubino.rb $CONF
+screen -dmS rubino $DIR/rubino.rb $CONF
