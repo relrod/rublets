@@ -64,27 +64,27 @@ module Rubino
         reply "I'm written in ruby by duckinator. You can find my source at http://github.com/RockerMONO/rubino"
       end
 
-    command :eval do
-      # Ruby safe eval! WOOHOO!
-      sender = last.sender.nick
-      recip = last.recip
-      chroot = File.join(File.dirname(__FILE__), "..", "tmp")
-      filename = File.join(chroot, "#{sender}-#{Time.now}.rb".gsub(' ', '_'))
+      command :eval do
+        # Ruby safe eval! WOOHOO!
+        sender = last.sender.nick
+        recip = last.recip
+        chroot = File.join(File.dirname(__FILE__), "..", "tmp")
+        filename = File.join(chroot, "#{sender}-#{Time.now}.rb".gsub(' ', '_'))
 
-      Thread.new(sender, recip, chroot, filename) do |sender, recip, chroot, filename|
-        first, second, code = last.text.split(' ', 3)
-        result = SafeEval.new(chroot).run(code, filename)
-        result = "(No output)" if result.empty?
+        Thread.new(sender, recip, chroot, filename) do |sender, recip, chroot, filename|
+          first, second, code = last.text.split(' ', 3)
+          result = SafeEval.new(chroot).run(code, filename)
+          result = "(No output)" if result.empty?
 
-        lines = result.split("\n")
+          lines = result.split("\n")
 
-        limit = 2
+          limit = 2
 
-        lines[0...limit].each do |line|
-          privmsg recip, "#{sender}: #{line}"
+          lines[0...limit].each do |line|
+            privmsg recip, "#{sender}: #{line}"
+          end
         end
       end
-    end
     end # set_defaults
 
     def set_custom
