@@ -211,10 +211,9 @@ module Rubino
       while @connected
         loop do
           connect if @connection.eof?
-          until @connection.eof?
+          while line = @connection.gets
             i = 1
-            line = @connection.readline
-            parse line
+            parse line.chomp
           end
           sleep i*5
           i += 1
