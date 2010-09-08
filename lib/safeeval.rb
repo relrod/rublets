@@ -1,10 +1,10 @@
 require 'stringio'
 
-$time_limit = 5 # Time limit for execution
-
 class SafeEval
   attr_reader :error
-  def initialize(chroot=nil)
+  def initialize(chroot=nil, timelimit=5, memlimit=10)
+     @timelimit = timelimit
+     @memlimit = memlimit
     unless chroot.nil?
       Dir.mkdir(chroot) if !File.directory?(chroot)
       @chroot = chroot
@@ -12,19 +12,18 @@ class SafeEval
   end
 
   def out_to_string(stdout=StringIO.new)
-    old_stdout = $stdout.to_i
     begin
-      $stdout = stdout
+      $stdout = $stderr = stdout
       yield
     ensure
-      $stdout = IO.new(old_stdout)
+      $stdout = STDOUT
+      $stderr = STDERR
     end
     stdout.string
   end
 
   def eval(cmd)
     output = nil
-    error = nil
     result = nil
     command = <<-EOF
       $SAFE=3
@@ -34,19 +33,21 @@ class SafeEval
     begin
       result = ::Kernel.eval(command, TOPLEVEL_BINDING)
     rescue Exception, SecurityError => e
-      @error = e
+      error = e
     end
 
     if !error.to_s.empty?
-      @error
+      error
     elsif !output.to_s.empty?
-      output
+      puts output
     else
-      result
+      puts result
     end
   end
 
-  def run(code, filename)
+  def run(code, filename, timelimit=nil, memlimit=nil)
+    @timelimit = timelimit unless timelimit.nil?
+    @memlimit = memlimit unless memlimit.nil?
     save_file(code, filename)
     run_file(filename)
   end
@@ -60,24 +61,15 @@ class SafeEval
         random = rand
         output = `sudo ruby #{filename.inspect} #{random}`
       end
-    rescue Exception => e
+    rescue => e
       error = e
-    ensure
-      $stdout = STDOUT
     end
 
-    1.upto($time_limit+1).each do |i|
-      id = nil
-      id_parts = `ps aux | grep -v grep | grep -i ruby | grep -i nobody | grep -i "#{random}"`.split(' ')
-      id = id_parts[1].to_i unless id_parts.include?("<defunct>")
-
-      if thread.alive? && i > $time_limit && id != 0
-        puts id
-        `sudo kill -9 #{id}`
-        thread.kill
-        error = "Execution took longer than #{$time_limit} seconds, exiting."
+    1.upto(@timelimit+1).each do |i|
+      if thread.alive? && i >= @timelimit
+        error = "Execution took longer than #{@timelimit} seconds, exiting."
         break
-      elsif i > $time_limit || !thread.alive?
+      elsif i > @timelimit || !thread.alive?
         break
       end
       sleep 1
@@ -85,7 +77,7 @@ class SafeEval
 
     if !error.nil?
       error
-    elsif !output.inspect.empty? && (!output.inspect == '""' && !thread.value.inspect.empty?)
+    elsif !output.inspect.empty? && (output.inspect != '""' && !thread.value.inspect.empty?)
       output
     else
       thread.value
@@ -111,6 +103,12 @@ nobody_gid = Etc.getgrnam('nobody').gid
 Dir.chroot(#{@chroot.inspect})
 Dir.chdir("/")
 
+# RAM limit
+Process.setrlimit(Process::RLIMIT_AS, #{@memlimit}*1024*1024)
+
+# CPU time limit
+Process.setrlimit(Process::RLIMIT_CPU, #{@timelimit})
+
 Process.initgroups('nobody', nobody_gid)
 Process::GID.change_privilege(nobody_gid)
 Process::UID.change_privilege(nobody_uid)
@@ -133,8 +131,6 @@ begin
   end
 rescue Exception => e
   error = e
-ensure
-  $stdout = STDOUT
 end
 
 error ||= seval.error
