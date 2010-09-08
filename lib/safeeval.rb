@@ -33,11 +33,11 @@ class SafeEval
     begin
       result = ::Kernel.eval(command, TOPLEVEL_BINDING)
     rescue Exception, SecurityError => e
-      error = e
+      @error = e
     end
 
-    if !error.to_s.empty?
-      error
+    if !@error.to_s.empty?
+      @error
     elsif !output.to_s.empty?
       puts output
     else
@@ -71,15 +71,12 @@ class SafeEval
       id = id_parts[1].to_i unless id_parts.include?("<defunct>")
 
       if thread.alive? && i > @timelimit && id != 0
-        puts id
-        `sudo kill -9 #{id}`
-        thread.kill
-        error = "Execution took longer than #{@timelimit} seconds, exiting."
+        `sudo kill -XCPU #{id}`
+      elsif !thread.alive?
         break
-      elsif i > @timelimit || !thread.alive?
-        break
+      else
+        sleep 1
       end
-      sleep 1
     end
 
     if !error.nil?
@@ -104,6 +101,11 @@ class SafeEval
 require 'stringio'
 require 'etc'
 require #{__FILE__.inspect}
+
+trap("XCPU") do
+  puts "Execution took longer than #{@timelimit} seconds, exiting."
+  exit
+end
 
 nobody_uid = Etc.getpwnam('nobody').uid
 nobody_gid = Etc.getgrnam('nobody').gid
