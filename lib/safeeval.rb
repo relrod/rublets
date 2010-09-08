@@ -66,7 +66,14 @@ class SafeEval
     end
 
     1.upto(@timelimit+1).each do |i|
-      if thread.alive? && i >= @timelimit
+      id = nil
+      id_parts = `ps aux | grep -v grep | grep -i ruby | grep -i nobody | grep -i "#{random}"`.split(' ')
+      id = id_parts[1].to_i unless id_parts.include?("<defunct>")
+
+      if thread.alive? && i > @timelimit && id != 0
+        puts id
+        `sudo kill -9 #{id}`
+        thread.kill
         error = "Execution took longer than #{@timelimit} seconds, exiting."
         break
       elsif i > @timelimit || !thread.alive?
@@ -107,7 +114,7 @@ Dir.chdir("/")
 Process.setrlimit(Process::RLIMIT_AS, #{@memlimit}*1024*1024)
 
 # CPU time limit
-Process.setrlimit(Process::RLIMIT_CPU, #{@timelimit})
+Process.setrlimit(Process::RLIMIT_CPU, #{@timelimit+1})
 
 Process.initgroups('nobody', nobody_gid)
 Process::GID.change_privilege(nobody_gid)
