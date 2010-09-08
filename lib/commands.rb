@@ -66,13 +66,12 @@ module Rubino
 
       command :eval do
         # Ruby safe eval! WOOHOO!
-        sender = last.sender.nick
-        recip = last.recip
-        chroot = File.join(File.dirname(__FILE__), "..", "tmp")
-        filename = File.join(chroot, "#{sender}-#{Time.now}.rb".gsub(' ', '_'))
+        Thread.new do
+          _last = last.clone
+          chroot = File.join(File.dirname(__FILE__), "..", "tmp")
+          filename = File.join(chroot, "#{_last.sender.nick}-#{Time.now}-#{rand(1000)}.rb".gsub(' ', '_'))
 
-        Thread.new(sender, recip, chroot, filename) do |sender, recip, chroot, filename|
-          first, second, code = last.text.split(' ', 3)
+          first, second, code = _last.text.split(' ', 3)
           result = SafeEval.new(chroot).run(code, filename)
           result = "(No output)" if result.empty?
 
@@ -81,7 +80,7 @@ module Rubino
           limit = 2
 
           lines[0...limit].each do |line|
-            privmsg recip, "#{sender}: #{line}"
+            privmsg _last.recip, "#{_last.sender.nick}: #{line}"
           end
         end
       end
