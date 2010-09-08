@@ -42,7 +42,7 @@ module Rubino
           puts "Error running command \"#{command}\", details below:"
           puts e
           puts "----------------------------------------------------"
-          @irc.reply_highlight "Error running command \"#{command}\"."
+          @irc.reply_highlight "Error running command \"#{command.downcase}\"."
         end
       end   # if @commands.respond_to?(command)
     end
