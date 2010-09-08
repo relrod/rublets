@@ -32,7 +32,7 @@ class SafeEval
 
     begin
       result = ::Kernel.eval(command, TOPLEVEL_BINDING)
-    rescue Exception, SecurityError => e
+    rescue Exception => e
       @error = e
     end
 
@@ -61,7 +61,7 @@ class SafeEval
         random = rand
         output = `sudo ruby #{filename.inspect} #{random}`
       end
-    rescue => e
+    rescue Exception => e
       error = e
     end
 
