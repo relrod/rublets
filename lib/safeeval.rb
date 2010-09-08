@@ -39,9 +39,9 @@ class SafeEval
     if !@error.to_s.empty?
       @error
     elsif !output.to_s.empty?
-      puts output
+      output
     else
-      puts result
+      result
     end
   end
 
