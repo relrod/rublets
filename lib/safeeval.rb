@@ -70,9 +70,10 @@ class SafeEval
       id_parts = `ps aux | grep -v grep | grep -i ruby | grep -i nobody | grep -i "#{random}"`.split(' ')
       id = id_parts[1].to_i unless id_parts.include?("<defunct>")
 
-      if thread.alive? && i > @timelimit && id != 0
+      if thread.alive? && i >= @timelimit && id != 0
         `sudo kill -XCPU #{id}`
-      elsif !thread.alive?
+        break
+      elsif i > @timelimit && !thread.alive?
         break
       else
         sleep 1
