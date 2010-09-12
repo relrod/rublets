@@ -60,7 +60,7 @@ module Rubino
       if !@text.nil?
         @text.gsub!(/\x03\d\d/, '')
         # non_printable contains all non-printable characters
-        non_printable = ["\x00", *"\x02".."\x1F", "\x7F"]
+        non_printable = ["\x00", "\x7F", *"\x02".."\x1F"]
         non_printable.map do |c|
           @text.delete!(c) # Delete all instances of c in @text
         end
