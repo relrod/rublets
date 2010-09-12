@@ -1,4 +1,7 @@
 require 'stringio'
+require 'rbconfig'
+
+$EXECUTABLE = File.join(RbConfig::CONFIG['bindir'], RbConfig::CONFIG['ruby_install_name'])
 
 class SafeEval
   attr_reader :error
@@ -59,7 +62,7 @@ class SafeEval
     begin
       thread = Thread.new do
         random = rand
-        output = `sudo ruby #{filename.inspect} #{random}`
+        output = `sudo #{$EXECUTABLE} #{filename.inspect} #{random}`
       end
     rescue Exception => e
       error = e
@@ -67,7 +70,7 @@ class SafeEval
 
     1.upto(@timelimit+1).each do |i|
       id = nil
-      id_parts = `ps aux | grep -v grep | grep -i ruby | grep -i nobody | grep -i "#{random}"`.split(' ')
+      id_parts = `ps aux | grep -v grep | grep -i #{$EXECUTABLE} | grep -i nobody | grep -i "#{random}"`.split(' ')
       id = id_parts[1].to_i unless id_parts.include?("<defunct>")
 
       if thread.alive? && i >= @timelimit && id != 0
