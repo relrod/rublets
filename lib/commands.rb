@@ -1,4 +1,4 @@
-load File.join(File.dirname(__FILE__), 'safeeval.rb')
+load File.join(File.dirname(__FILE__), '..', 'safeeval', 'safeeval.rb')
 
 module Rubino
   class Commands
