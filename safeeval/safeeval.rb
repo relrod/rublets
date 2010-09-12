@@ -29,7 +29,8 @@ class SafeEval
     output = nil
     result = nil
     command = <<-EOF
-      $SAFE=3
+      $SAFE = 3
+      BEGIN { $SAFE=3 }
       #{cmd}
     EOF
 
