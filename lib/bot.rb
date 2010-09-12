@@ -8,9 +8,9 @@ module Rubino
     def initialize(opts)
       @nick_number = 0
       @self = User.new(
-                       nick: opts['nicks'][@nick_number],
-                       user: '',
-                       host: ''
+                       :nick => opts['nicks'][@nick_number],
+                       :user => '',
+                       :host => ''
                       )
       @config = opts
       @last, @args = nil
