@@ -89,7 +89,7 @@ module Rubino
       on :privmsg do
         puts "[#{last.recip}] <#{last.sender.nick}> #{last.text}"
         if last.text.split(' ')[0] == ">>"
-          @last.text = "rubino: eval #{last.text[3..-1]}"
+          @last.text = "#{@self.nick}: eval #{last.text[3..-1]}"
         end
         Commands.new(self, @config)
       end
