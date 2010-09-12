@@ -105,7 +105,7 @@ require #{__FILE__.inspect}
 
 trap("XCPU") do
   puts "Execution took longer than #{@timelimit} seconds, exiting."
-  exit
+  exit!
 end
 
 nobody_uid = Etc.getpwnam('nobody').uid
