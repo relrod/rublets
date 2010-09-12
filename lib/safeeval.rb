@@ -76,7 +76,7 @@ class SafeEval
       if thread.alive? && i >= @timelimit && id != 0
         `sudo kill -XCPU #{id}`
         break
-      elsif i > @timelimit && !thread.alive?
+      elsif i > @timelimit || !thread.alive?
         break
       else
         sleep 1
