@@ -102,16 +102,15 @@ class SafeEval
   def generate_script(code)
       tmp = open(File.join(File.dirname(__FILE__), 'template.rb')).read
       keywords = {
-                   :time      => Time.now,
+                   :time      => Time.now.to_s,
                    :file      => __FILE__.inspect,
-                   :timelimit => @timelimit,
-                   :memlimit  => @memlimit,
+                   :timelimit => @timelimit.to_s,
+                   :memlimit  => @memlimit.to_s,
                    :chroot    => @chroot.inspect,
                    :code      => code.inspect
                  }
       keywords.map do |k, v|
-        k = "%#{k.to_s}%"
-        tmp = tmp.gsub(k, v.to_s)
+        tmp.gsub!("%#{k.to_s}%", v)
       end
       tmp
   end
