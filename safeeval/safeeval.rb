@@ -107,7 +107,7 @@ class SafeEval
                    :timelimit => @timelimit.to_s,
                    :memlimit  => @memlimit.to_s,
                    :chroot    => @chroot.inspect,
-                   :code      => code.inspect
+                   :code      => code.inspect[1..-2].inspect # Until we find a nicer fix
                  }
       keywords.map do |k, v|
         tmp.gsub!("%#{k.to_s}%", v)
