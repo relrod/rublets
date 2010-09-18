@@ -15,14 +15,12 @@ class SafeEval
   end
 
   def out_to_string(stdout=StringIO.new)
-    begin
-      $stdout = $stderr = stdout
-      yield
-    ensure
-      $stdout = STDOUT
-      $stderr = STDERR
-    end
+    $stdout = $stderr = stdout
+    yield
     stdout.string
+  ensure
+    $stdout = STDOUT
+    $stderr = STDERR
   end
 
   def eval(cmd)
@@ -161,7 +159,6 @@ rescue => e
   puts "\#{e.class}: \#{e.message}"
 end
       EOF
-p tmp
       tmp
   end
 end
