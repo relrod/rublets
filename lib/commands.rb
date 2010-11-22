@@ -1,4 +1,6 @@
 load File.join(File.dirname(__FILE__), '..', 'safeeval', 'safeeval.rb')
+load File.join(File.dirname(__FILE__), '..', 'gist.rb')
+
 
 module Rubino
   class Commands
@@ -42,7 +44,7 @@ module Rubino
           puts "Error running command \"#{command}\", details below:"
           puts e
           puts "----------------------------------------------------"
-          @irc.reply_highlight "Error running command \"#{command.downcase}\"."
+          @irc.reply_highlight "Error running command \"#{command.downcase}\": http://gist.github.com/#{gist('error' => e.to_s)[0]['repo']}"
         end
       end   # if @commands.respond_to?(command)
     end
