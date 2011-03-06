@@ -67,7 +67,7 @@ module Rubino
           @text.delete!(c) # Delete all instances of c in @text
         end
 
-        if @type == "PRIVMSG" && @text[0] == "\x01" && @text[-1] == "\x01"
+        if @type == "PRIVMSG" && @text[0] == "\x01" && @text[-1] == "\x01" && @text != "\x01"
           words = @text[1..-2].split(' ') 
           @type = "CTCP"
           @ctcp_type = words[0]
