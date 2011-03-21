@@ -61,7 +61,9 @@ class SafeEval
     begin
       thread = Thread.new do
         random = rand
-        output = `sudo #{$EXECUTABLE} #{filename.inspect} #{random}`
+        output = out_to_string do
+          puts `sudo #{$EXECUTABLE} #{filename.inspect} #{random}`
+        end
       end
     rescue Exception => e
       error = e
