@@ -14,6 +14,18 @@ module Rubino
       @last, @args = nil
       @server = Server.new(opts['server'], opts['port'])
       @connected = false
+      @reconnect = false
+      Thread.new do
+        loop do
+          if @reconnect == true
+            @reconnect = false
+            @connection.close
+          end
+          @reconnect = true
+          privmsg @self.nick, "Connection check" if @connected
+          sleep 120 # Wait 2 minutes
+        end
+      end
     end
 
     def inspect
@@ -192,6 +204,7 @@ module Rubino
           while line = @connection.gets
             i = 1
             parse line.chomp
+            @reconnect = false
           end
           sleep i*5
           i += 1
