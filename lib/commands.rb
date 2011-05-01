@@ -31,7 +31,7 @@ module Rubino
     def handle(message)
       words = message.words
 
-      return unless words[0] =~ /^#{@irc.self.nick}.?$/ || words.length < 2
+      return if words[0] !~ /^#{@irc.self.nick}.?$/ || words.length < 2
 
 =begin
       # Removed for efficiency purposes. This is rather nasty.
