@@ -42,7 +42,8 @@ module Rubino
     def parse(line)
       @full = line.chomp
       @type, @recip, @text, @sender, @ctcp_type = nil
-      if line =~ /^:(.+)!(.+)@(\S+) (\S+) (\S+) :(.+)$/
+
+      if line =~ /^:(.+?)!(.+?)@(\S+) (\S+) (\S+) :(.+)$/
         @sender = User.new(
                     :nick => $1,
                     :user => $2,
@@ -51,14 +52,15 @@ module Rubino
         @type = $4
         @recip = $5
         @text = $6
-      elsif line =~ /^:(\S+) (\S+) (\S+) :?(.+)$/
+      elsif line =~ /^:(\S+) (\S+) (\S+) :?(.*)$/
         @type = $2
         @recip = $3
         @text = $4
-      elsif line =~ /^(\S+) :(.+)$/
+      elsif line =~ /^(\S+) :(.*)$/
         @type = $1
         @text = $2
       end
+
       if !@text.nil?
         @text.gsub!(/\x03\d\d/, '')
         # non_printable contains all non-printable characters
