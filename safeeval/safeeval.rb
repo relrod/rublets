@@ -60,36 +60,25 @@ class SafeEval
 
     begin
       thread = Thread.new do
-        random = rand
-        output = out_to_string do
-          puts `sudo #{$EXECUTABLE} #{filename.inspect} #{random}`
-        end
+         sleep @timelimit
+         id = 0
+         id_parts = `ps aux | grep -v grep | grep -i #{$EXECUTABLE} | grep -i nobody | grep -i "#{random}"`.split(' ')
+         id = id_parts[1].to_i unless id_parts.include?("<defunct>")
+         `sudo kill -XCPU #{id}` unless id == 0
+      end
+
+      random = rand
+      output = out_to_string do
+        puts `sudo #{$EXECUTABLE} #{filename.inspect} #{random}`
       end
     rescue Exception => e
       error = e
     end
 
-    1.upto(@timelimit+1).each do |i|
-      id = nil
-      id_parts = `ps aux | grep -v grep | grep -i #{$EXECUTABLE} | grep -i nobody | grep -i "#{random}"`.split(' ')
-      id = id_parts[1].to_i unless id_parts.include?("<defunct>")
-
-      if thread.alive? && i >= @timelimit && id != 0
-        `sudo kill -XCPU #{id}`
-        break
-      elsif i > @timelimit || !thread.alive?
-        break
-      else
-        sleep 1
-      end
-    end
-
     if !error.nil?
       error
-    elsif !output.inspect.empty? && (output.inspect != '""' && !thread.value.inspect.empty?)
+    elsif !output.inspect.empty?
       output
-    else
-      thread.value
     end
   end
 
