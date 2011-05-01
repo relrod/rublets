@@ -1,7 +1,5 @@
 %w{commands handlers server user message connection manager}.each { |x| load File.join(File.dirname(__FILE__), "#{x}.rb") }
 
-trap("INT") { $interrupted = true }
-
 module Rubino
   class Bot
     attr_accessor :self, :last, :args
@@ -188,16 +186,6 @@ module Rubino
 
     def run
       i = 1
-      Thread.new do
-        loop do
-          if $interrupted
-            shutdown
-            puts "Exiting..."
-            exit!
-          end
-          sleep 5
-        end
-      end
       while @connected
         loop do
           connect if @connection.eof?
