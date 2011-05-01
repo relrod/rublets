@@ -26,7 +26,7 @@ module Rubino
 
     def handle(message)
       if !message.type.nil?
-        if message.type == "CTCP" && @ctcps.include?(message.ctcp_type)
+        if message.type == 'CTCP' && @ctcps.include?(message.ctcp_type)
           puts "[#{message.recip}] #{message.sender.nick}: CTCP #{message.ctcp_type} #{message.text}"
           ctcp_blocks = @ctcps[message.ctcp_type]
         end
@@ -34,7 +34,7 @@ module Rubino
         if @handlers.include?(message.type)
           blocks = @handlers[message.type]
         else
-          blocks = @handlers["UNKNOWN"]
+          blocks = @handlers['UNKNOWN']
         end
 
         # Run applicable blocks
@@ -45,10 +45,10 @@ module Rubino
             end
           end
         rescue => e
-          puts "----------------------------------------------------"
+          puts '----------------------------------------------------'
           puts "Error running handler for \"#{message.type}\", details below:"
           puts e
-          puts "----------------------------------------------------"
+          puts '----------------------------------------------------'
         end
 
         begin
@@ -58,10 +58,10 @@ module Rubino
             end
           end
         rescue => e
-          puts "----------------------------------------------------"
+          puts '----------------------------------------------------'
           puts "Error running CTCP handler for \"#{message.type}\", details below:"
           puts e
-          puts "----------------------------------------------------"
+          puts '----------------------------------------------------'
         end
       end
     end
@@ -90,7 +90,7 @@ module Rubino
 
       on :privmsg do
         puts "[#{last.recip}] <#{last.sender.nick}> #{last.text}"
-        if last.text.split(' ')[0] == ">>"
+        if last.text.split(' ')[0] == '>>'
           @last.text = "#{@self.nick}: eval #{last.text[3..-1]}"
         end
         Commands.new(self, @config)
@@ -129,9 +129,9 @@ module Rubino
         puts "[#{last.recip}] * #{last.sender.nick} #{last.text}"
         case last.text
           when /^kills #{@self.nick}(\s+)?$/
-            react "explodes violently"
+            react 'explodes violently'
           when /^stares oddly at #{@self.nick}$/
-            react "snarls"
+            react 'snarls'
         end
       end # on_ctcp :action
     end   # set_defaults

@@ -163,18 +163,18 @@ module Rubino
 
     def parse(line)
       %w{commands handlers}.each do |x|
-        filename = File.join(File.dirname(__FILE__), "..", "custom", "#{x}.rb")
+        filename = File.join(File.dirname(__FILE__), '..', 'custom', "#{x}.rb")
         begin
           if File.exist?(filename)
             load filename
           end
         rescue Exception, SyntaxError => e
-          puts "----------------------------------------------------"
+          puts '----------------------------------------------------'
           puts "#{e.class}: #{e.message}"
           e.backtrace.each do |line|
             puts line
           end
-          puts "----------------------------------------------------"
+          puts '----------------------------------------------------'
         end
       end
       message = Message.new(line)
@@ -208,7 +208,7 @@ module Rubino
         @connection.close
       end
       @reconnect = true
-      privmsg @self.nick, "Connection check" if @connected
+      privmsg @self.nick, 'Connection check' if @connected
     end
 
   end # class Bot

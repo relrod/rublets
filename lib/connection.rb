@@ -10,7 +10,7 @@ module Rubino
     def send(item)
       str = item.to_s
       if str.length > 406
-        str = str[0..400] + " (...)"
+        str = str[0..400] + ' (...)'
       end
       self.puts str
     end

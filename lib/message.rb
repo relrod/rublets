@@ -4,7 +4,7 @@ module Rubino
     def initialize(var)
       if var.is_a?(Hash)
         var.each do |key, value|
-          instance_variable_set("@" + key.to_s, value)
+          instance_variable_set('@' + key.to_s, value)
           @type = @type.to_s
           @ctcp_type = @ctcp_type.to_s
         end

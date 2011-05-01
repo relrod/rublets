@@ -17,7 +17,7 @@ module Rubino
       ssl = false
       if server.is_a?(Array)
         if server.length != 2
-          raise "Invalid use of Server class"
+          raise 'Invalid use of Server class'
         else
           server, port = server
         end

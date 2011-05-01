@@ -63,7 +63,7 @@ class SafeEval
          sleep @timelimit
          id = 0
          id_parts = `ps aux | grep -v grep | grep -i #{$EXECUTABLE} | grep -i nobody | grep -i "#{random}"`.split(' ')
-         id = id_parts[1].to_i unless id_parts.include?("<defunct>")
+         id = id_parts[1].to_i unless id_parts.include?('<defunct>')
          `sudo kill -XCPU #{id}` unless id == 0
       end
 
