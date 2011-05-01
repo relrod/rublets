@@ -15,17 +15,6 @@ module Rubino
       @server = Server.new(opts['server'], opts['port'])
       @connected = false
       @reconnect = false
-      Thread.new do
-        loop do
-          if @reconnect == true
-            @reconnect = false
-            @connection.close
-          end
-          @reconnect = true
-          privmsg @self.nick, "Connection check" if @connected
-          sleep 120 # Wait 2 minutes
-        end
-      end
     end
 
     def inspect
@@ -211,6 +200,15 @@ module Rubino
         end
       end
       @connection.close
+    end
+
+    def connection_check
+      if @reconnect == true
+        @reconnect = false
+        @connection.close
+      end
+      @reconnect = true
+      privmsg @self.nick, "Connection check" if @connected
     end
 
   end # class Bot

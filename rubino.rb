@@ -15,4 +15,4 @@ else
 end
 
 $manager.run
-$manager.join_last
+$manager.connection_check_loop

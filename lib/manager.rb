@@ -43,6 +43,17 @@ module Rubino
 
     def shutdown
       @bots.each { |k,v| stop_bot(k) }
+      sleep 1 # Wait for things to cleanly exit
+      exit
+    end
+
+    def connection_check_loop
+      loop do
+        @bots.each do |key,bot|
+          bot.connection_check
+        end
+        sleep 120
+      end
     end
   end
 end
