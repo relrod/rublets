@@ -17,22 +17,22 @@ module Rubino
     end
 
     def handler_names
-      @handlers.map {|k,v| k.downcase.gsub('_', ' ') }
+      @handlers.map {|k,v| k }
     end
 
     def ctcp_names
-      @ctcps.map {|k,v| k.downcase.gsub('_', ' ') }
+      @ctcps.map {|k,v| k }
     end
 
     def handle(message)
       if !message.type.nil?
-        if message.type == "CTCP" && @ctcps.include?(message.ctcp_type.upcase)
+        if message.type == "CTCP" && @ctcps.include?(message.ctcp_type)
           puts "[#{message.recip}] #{message.sender.nick}: CTCP #{message.ctcp_type} #{message.text}"
-          ctcp_blocks = @ctcps[message.ctcp_type.upcase]
+          ctcp_blocks = @ctcps[message.ctcp_type]
         end
 
-        if @handlers.include?(message.type.upcase)
-          blocks = @handlers[message.type.upcase]
+        if @handlers.include?(message.type)
+          blocks = @handlers[message.type]
         else
           blocks = @handlers["UNKNOWN"]
         end
@@ -46,7 +46,7 @@ module Rubino
           end
         rescue => e
           puts "----------------------------------------------------"
-          puts "Error running handler for \"#{message.type.upcase}\", details below:"
+          puts "Error running handler for \"#{message.type}\", details below:"
           puts e
           puts "----------------------------------------------------"
         end
@@ -59,7 +59,7 @@ module Rubino
           end
         rescue => e
           puts "----------------------------------------------------"
-          puts "Error running CTCP handler for \"#{message.type.upcase}\", details below:"
+          puts "Error running CTCP handler for \"#{message.type}\", details below:"
           puts e
           puts "----------------------------------------------------"
         end
@@ -67,15 +67,17 @@ module Rubino
     end
 
     def on(name, &block)
-      @handlers[name.to_s.upcase] = [] unless @handlers.include?(name.to_s.upcase)
-      n = @handlers[name.to_s.upcase].size
-      @handlers[name.to_s.upcase][n] = block
+      name = name.to_s.downcase
+      @handlers[name] = [] unless @handlers.include?(name)
+      n = @handlers[name].size
+      @handlers[name][n] = block
     end
 
     def on_ctcp(name, &block)
-      @ctcps[name.to_s.upcase] = [] unless @ctcps.include?(name.to_s.upcase)
-      n = @ctcps[name.to_s.upcase].size
-      @ctcps[name.to_s.upcase][n] = block
+      name = name.to_s.downcase
+      @ctcps[name] = [] unless @ctcps.include?(name)
+      n = @ctcps[name].size
+      @ctcps[name][n] = block
     end
 
     def set_defaults
@@ -102,7 +104,7 @@ module Rubino
         if @config['nicks'].size >= @nick_number
           @nick_number += 1
           puts "NOTICE: Changing nick from #{@self.nick} to #{@config['nicks'][@nick_number]}"
-          nick= @config['nicks'][@nick_number]
+          set_nick @config['nicks'][@nick_number]
         end
       end
 

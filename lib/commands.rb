@@ -43,7 +43,7 @@ module Rubino
       end
 =end
 
-      command = words[1].upcase
+      command = words[1].downcase
 
       if @commands.include?(command)
         #@irc.args = words[(i+1)..-1]
@@ -62,7 +62,7 @@ module Rubino
     end
 
     def command(name, &block)
-      @commands[name.to_s.upcase] = block
+      @commands[name.to_s.downcase] = block
     end
 
     def set_defaults

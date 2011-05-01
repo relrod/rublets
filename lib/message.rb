@@ -75,6 +75,7 @@ module Rubino
           @ctcp_type = words[0]
           @text = words[1..-1].join(' ')
         end
+        @type.downcase!
         @text.delete!("\x01")
       end
     end

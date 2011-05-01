@@ -132,7 +132,7 @@ module Rubino
       @connected = false
     end
 
-    def nick=(nickname)
+    def set_nick(nickname)
       send :nick, nickname
       @self.nick = nickname
     end
