@@ -9,6 +9,12 @@ module Rubino
       @irc = irc
       @config = config
       @commands = Hash.new(0)
+
+      # Why must this be $chroot, instead of @chroot?
+      # I'm not sure, but $chroot works and @chroot doesn't, in Thread.new{}
+      # Saves two an IO-related function call on each `eval` usage
+      $chroot = File.join(File.dirname(__FILE__), "..", "tmp")
+
       set_defaults
       set_custom
       handle(@irc.last) if @irc
@@ -70,11 +76,10 @@ module Rubino
         # Ruby safe eval! WOOHOO!
         Thread.new do
           _last = last.clone
-          chroot = File.join(File.dirname(__FILE__), "..", "tmp")
-          filename = File.join(chroot, "#{_last.sender.nick}-#{Time.now}-#{rand(1000)}.rb".gsub(' ', '_'))
-
+          filename = File.join($chroot, "#{_last.sender.nick}-#{Time.now.to_f}.rb")
+ 
           first, second, code = _last.text.split(' ', 3)
-          result = SafeEval.new(chroot).run(code, filename)
+          result = SafeEval.new($chroot).run(code, filename)
           result = "(No output)" if result.empty?
 
           lines = result.split("\n")
