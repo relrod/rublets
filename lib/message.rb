@@ -2,6 +2,8 @@ module Rubino
   class Message
     attr_accessor :full, :sender, :type, :recip, :text, :ctcp_type
     def initialize(var)
+      # @@unprintable contains all non-printable characters
+      @@unprintable ||= ["\x00", "\x7F", *"\x02".."\x1F"].join ''
       if var.is_a?(Hash)
         var.each do |key, value|
           instance_variable_set('@' + key.to_s, value)
@@ -63,16 +65,12 @@ module Rubino
 
       if !@text.nil?
         @text.gsub!(/\x03\d\d/, '')
-        # non_printable contains all non-printable characters
-        non_printable = ["\x00", "\x7F", *"\x02".."\x1F"]
-        non_printable.map do |c|
-          @text.delete!(c) # Delete all instances of c in @text
-        end
+        @text.delete!(@@unprintable)
 
         if @type == "PRIVMSG" && @text[0] == "\x01" && @text[-1] == "\x01" && @text != "\x01"
           words = @text[1..-2].split(' ') 
           @type = "CTCP"
-          @ctcp_type = words[0]
+          @ctcp_type = words[0].downcase
           @text = words[1..-1].join(' ')
         end
         @type.downcase!

@@ -26,7 +26,7 @@ module Rubino
 
     def handle(message)
       if !message.type.nil?
-        if message.type == 'CTCP' && @ctcps.include?(message.ctcp_type)
+        if message.type == 'ctcp' && @ctcps.include?(message.ctcp_type)
           puts "[#{message.recip}] #{message.sender.nick}: CTCP #{message.ctcp_type} #{message.text}"
           ctcp_blocks = @ctcps[message.ctcp_type]
         end
