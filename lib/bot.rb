@@ -15,6 +15,7 @@ module Rubino
       @server = Server.new(opts['server'], opts['port'])
       @connected = false
       @reconnect = false
+      @last_modified = {}
     end
 
     def inspect
@@ -165,7 +166,8 @@ module Rubino
       %w{commands handlers}.each do |x|
         filename = File.join(File.dirname(__FILE__), '..', 'custom', "#{x}.rb")
         begin
-          if File.exist?(filename)
+          @last_modified[filename] ||= 0
+          if File.exist?(filename) && File.open(filename).mtime != @last_modified[filename]
             load filename
           end
         rescue Exception, SyntaxError => e
