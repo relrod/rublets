@@ -31,17 +31,23 @@ module Rubino
     def handle(message)
       words = message.words
 
-      return unless words[0] =~ /^#{@irc.self.nick}.?$/
+      return unless words[0] =~ /^#{@irc.self.nick}.?$/ || words.length < 2
 
+=begin
+      # Removed for efficiency purposes. This is rather nasty.
       i = words.length-1
       command = words[1..i].join('_').upcase
       until @commands.include?(command) || i < 1
         i -= 1
         command = words[1..i].join('_').upcase
       end
+=end
+
+      command = words[1].upcase
 
       if @commands.include?(command)
-        @irc.args = words[(i+1)..-1]
+        #@irc.args = words[(i+1)..-1]
+        @irc.args = words[2..-1]
         block = @commands[command]
         begin
           @irc.instance_eval &block
