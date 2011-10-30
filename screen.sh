@@ -8,7 +8,7 @@ if [ ! -f "$CONF" ]; then
   CONF="$DIR/config.yaml"
 fi
 
-if [ -f "$CONF" ]; then
+if [ ! -f "$CONF" ]; then
   echo "Config does not exist."
   exit 1
 fi
