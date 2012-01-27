@@ -2,7 +2,6 @@
 
 require 'configru'
 require 'cinch'
-require 'cinch/plugins/basic_ctcp'
 
 load File.join(File.dirname(__FILE__), 'safeeval', 'safeeval.rb')
 load File.join(File.dirname(__FILE__), 'gist.rb')
@@ -32,8 +31,6 @@ Configru.servers.each do |bot|
       c.port     = bot['port']
       c.channels = bot['channels']
       c.nick     = Configru.nick
-      c.plugins.plugins = [Cinch::Plugins::BasicCTCP]
-      c.plugins.options[Cinch::Plugins::BasicCTCP][:commands] = [:version, :time, :ping]
     end
     
     on :message, /^>> / do |m|
