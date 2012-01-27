@@ -16,4 +16,4 @@ Contributions are gladly accepted. Please run the specs and ensure they pass.
 License
 -------
 
-As per the original project (duckinator/rubino) from which Rublets was forked, the code is MIT. Some portions of this project may one day be relicensed as GPLv2+.
+As per the original project (duckinator/rubino) from which Rublets was forked, the code is ISC. Some portions of this project may one day be relicensed as GPLv2+.
