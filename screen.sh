@@ -5,7 +5,7 @@ DIR=$(dirname $(readlink -f $0))
 CONF="$DIR/$1"
 
 if [ ! -f "$CONF" ]; then
-  CONF="$DIR/config.yaml"
+  CONF="$DIR/config.yml"
 fi
 
 if [ ! -f "$CONF" ]; then
