@@ -1,18 +1,57 @@
 #!/usr/bin/env ruby
 
-load File.join(File.dirname(__FILE__), 'lib', 'bot.rb')
+require 'configru'
+require 'cinch'
+require 'cinch/plugins/basic_ctcp'
 
-trap("INT") { $manager.shutdown }
+load File.join(File.dirname(__FILE__), 'safeeval', 'safeeval.rb')
+load File.join(File.dirname(__FILE__), 'gist.rb')
 
-#bot = Rubino::Bot.new(:server => 'irc.ninthbit.net', :channels => ['#programming'])
-#bot.connect
-#bot.run
+Configru.load do
+  just 'config.yml'
+  defaults 'config.yml.dist'
 
-if ARGV.size > 0
-  $manager = Rubino::Manager.new(ARGV[0])
-else
-  $manager = Rubino::Manager.new(File.join(File.dirname(__FILE__), 'config.yaml'))
+  verify do
+    servers do
+      channels Array
+      address  String
+      port     (0..65535)
+    end
+  end
 end
 
-$manager.run
-$manager.connection_check_loop
+bots = []
+threads = []
+
+SafeEval.setup
+
+Configru.servers.each do |bot|
+  bots << Cinch::Bot.new do
+    configure do |c|
+      c.server   = bot['address']
+      c.port     = bot['port']
+      c.channels = bot['channels']
+      c.nick     = Configru.nick
+      c.plugins.plugins = [Cinch::Plugins::BasicCTCP]
+      c.plugins.options[Cinch::Plugins::BasicCTCP][:commands] = [:version, :time, :ping]
+    end
+    
+    on :message, /^>> / do |m|
+      _, code = m.message.split(' ', 2)
+      result = SafeEval.run(code, m.user.nick)
+      result = '(No output)' if result.empty?
+
+      lines = result.split("\n")
+
+      limit = 2
+
+      lines[0...limit].each do |line|
+        m.reply(line, true)
+      end
+    end
+  end
+  
+  threads << Thread.new { bots[-1].start }
+end
+
+threads[-1].join

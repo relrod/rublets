@@ -1,3 +1,2 @@
-custom/*.*
-*.yaml
+*.yml
 tmp

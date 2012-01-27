@@ -1,0 +1,13 @@
+nick: rubino
+
+servers:
+  - address: irc.freenode.net
+    port: 6667
+    channels:
+      - "#botters"
+
+  - address: irc.tenthbit.net
+    port: 6667
+    channels:
+      - "#bots"
+      - "#programming"
