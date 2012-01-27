@@ -49,6 +49,7 @@ Configru.servers.each do |bot|
   end
   
   threads << Thread.new { bots[-1].start }
+  sleep 1
 end
 
 threads[-1].join
