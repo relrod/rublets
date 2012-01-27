@@ -9,6 +9,10 @@ if [ ! -f "$CONF" ]; then
 fi
 
 if [ ! -f "$CONF" ]; then
+  CONF="$DIR/config.yml.dist"
+fi
+
+if [ ! -f "$CONF" ]; then
   echo "Config does not exist."
   exit 1
 fi
