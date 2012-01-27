@@ -7,8 +7,8 @@ load File.join(File.dirname(__FILE__), 'safeeval', 'safeeval.rb')
 load File.join(File.dirname(__FILE__), 'gist.rb')
 
 Configru.load do
-  just 'config.yml'
-  defaults 'config.yml.dist'
+  just File.join(File.dirname(__FILE__), 'config.yml')
+  defaults File.join(File.dirname(__FILE__), 'config.yml.dist')
 
   verify do
     servers do
