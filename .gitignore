@@ -2,5 +2,8 @@
 tmp
 *.swp
 *.swo
-*.#*
+.#*
+*#
 *~
+rvm/
+rubies/

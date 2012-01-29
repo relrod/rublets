@@ -1,0 +1,16 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    eventmachine (0.12.10)
+    on_irc (2.1.3)
+      eventmachine
+    promise (0.3.0)
+    rvm (1.9.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  on_irc
+  promise
+  rvm
