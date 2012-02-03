@@ -4,39 +4,16 @@ require 'fileutils'
 require 'timeout'
 require 'net/https'
 require 'uri'
+
+require './eval.rb'
+
 require 'rubygems'
 require 'bundler/setup'
 require 'json'
 require 'on_irc'
 require 'future'
 
-# Check if `sandbox` exists.
-unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/sandbox' }
-  raise "The `sandbox` executable does not exist and is required."
-end
-
-def gist(nickname, input, output)
-  gist = URI.parse('https://api.github.com/gists')
-  http = Net::HTTP.new(gist.host, gist.port)
-  http.use_ssl = true
-  response = http.post(gist.path, {
-      'public' => false,
-      'description' => "#{nickname}'s ruby eval",
-      'files' => {
-        'input.rb' => {
-          'content' => input
-        },
-        'output.txt' => {
-          'content' => output
-        }
-      }
-    }.to_json)
-  if response.response.code.to_i != 201
-    return 'Unable to post to Gist.'
-  else
-    JSON(response.body)['html_url']
-  end
-end
+require 'pry'
 
 #bot = Thread.new do
 @bot = IRC.new do
@@ -48,15 +25,21 @@ end
   server :tenthbit do
     address 'irc.tenthbit.net'
   end
+
+  server :freenode do
+    address 'irc.freenode.net'
+  end
 end
 
 @bot[:tenthbit].on '001' do
   join '#bots'
-  #join '#progamming'
-  #join '#offtopic'
+  join '#offtopic'
 end
 
-@bot[:tenthbit].on :ping do
+@bot[:freenode].on '001' do
+end
+
+@bot.on :ping do
   pong params[0]
 end
 
@@ -67,18 +50,58 @@ end
     rubies = Dir['./rubies/*'].map { |a| File.basename(a) }
     respond "#{sender.nick}: #{rubies.join(', ')} (You can specify 'all' to evaluate against all rubies, but this might be slowish.)"
 
-  when /^!([\w\.\-]+)?>> (.*)/
-
+    # Scala eval.
+  when /^!scala> (.*)/
+    unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/scala' }
+      respond "Scala is not available on this box." and next
+    end
+    
     # Pull these out of the regex here, because the global captures get reset below.
-    given_version = $1 # might be nil.
-    code = $2
+    code = $1
 
     unless sender.nick =~ /^\w+$/i
       respond "#{sender.nick}: Please use an alphanumeric nick, for now. This requirement should be fixed eventually." and next
     end
 
-    # User wants to evaluate some ruby code.
     future do # We can have multiple evaluations going on at once.
+      sandbox = Sandbox.new(
+        :path => File.expand_path('~/.rublets'),
+        :evaluate_with => "scala -nocompdaemon",
+        :timeout => 20
+        )
+
+      time = sandbox.time
+      file = "#{time.year}-#{time.month}-#{time.day}_#{time.hour}-#{time.min}-#{time.sec}-#{sender.nick}-#{time.to_f}.scala"
+      sandbox.script_filename = file
+
+      # Write the script.
+      rb = File.open("#{sandbox.home}/#{file}", 'w')
+      rb.puts code
+      rb.close
+
+      result = sandbox.evaluate
+
+      # Limit output to two lines, then gist the rest.
+      limit = 2
+      lines = result.split("\n")
+      lines[0...limit].each do |line|
+        respond line
+      end
+      if lines.count > limit
+        respond "<output truncated> #{sandbox.gist}"
+      end
+      
+      sandbox.rm_home!
+    end
+
+    # Ruby eval.
+  when /^!([\w\.\-]+)?>> (.*)/
+    # Pull these out of the regex here, because the global captures get reset below.
+    given_version = $1 # might be nil.
+    code = $2
+
+    # User wants to evaluate some ruby code.
+    #future do # We can have multiple evaluations going on at once.
 
       rubyversion = 'ruby-1.9.3-p0' # Default, set here for scoping. TODO: Config-file this.
 
@@ -100,31 +123,31 @@ end
         end
       end
 
-      time = Time.now # Used for filename generation below.
+      sandbox = Sandbox.new(
+        :path => File.expand_path('~/.rublets'),
+        :evaluate_with => ['bash', 'run-ruby.sh', rubyversion],
+        :timeout => 5
+        )
+
+      time = sandbox.time
       file = "#{time.year}-#{time.month}-#{time.day}_#{time.hour}-#{time.min}-#{time.sec}-#{sender.nick}-#{time.to_f}.rb"
+      sandbox.script_filename = file
 
-      sandbox_path = File.expand_path('~/.rublets')
-      sandbox_home = "#{sandbox_path}/sandbox_home-#{time.to_f}"
-      
-      # Make the sandbox home (specific to this eval, as per Time.now above.
-      FileUtils.mkdir sandbox_home
-
-      # Move rvm into the sandbox's home, along with the appropriate ruby.
-      FileUtils.cp_r('rvm', "#{sandbox_home}/.rvm")
+      sandbox.copy 'rvm', '.rvm'
 
       # If the user wants to eval against all rubies, then copy the entire rubies directory.
       if rubyversion == 'all'
-        FileUtils.cp_r("rubies/", "#{sandbox_home}/.rvm/rubies/")
+        sandbox.copy 'rubies', '.rvm/rubies/'
       else
-        FileUtils.mkdir("#{sandbox_home}/.rvm/rubies")
-        FileUtils.cp_r("rubies/#{rubyversion}", "#{sandbox_home}/.rvm/rubies/#{rubyversion}")
+        sandbox.mkdir(".rvm/rubies")
+        sandbox.copy "rubies/#{rubyversion}", ".rvm/rubies/#{rubyversion}"
       end
 
       # This is a bit of a hack, but lets us set up the rvm environment and call the script.
-      FileUtils.cp('run-ruby.sh', "#{sandbox_home}/run-ruby.sh")
+      sandbox.copy 'run-ruby.sh', 'run-ruby.sh'
 
       # Write the script.
-      rb = File.open("#{sandbox_home}/#{file}", 'w')
+      rb = File.open("#{sandbox.home}/#{file}", 'w')
 
       # Capture output so we can default a "puts" if the user just wants the return value.
       rb.puts "result = ::Kernel.eval(#{code.inspect}, TOPLEVEL_BINDING)"
@@ -138,27 +161,26 @@ end
       end
       rb.close
 
-      # Copy the script to somewhere outside of the sandbox, for audit purposes.
-      FileUtils.cp("#{sandbox_home}/#{file}", "#{sandbox_path}/evaluated/#{file}")
-
-      # The magic. Sandbox!
-      result = `sandbox -H #{sandbox_home}/ -T #{sandbox_path}/sandbox_tmp/ -t sandbox_x_t timeout 5 bash run-ruby.sh #{rubyversion} #{file} 2>&1`
-      result = '(No output)' if result.empty?
+      #binding.pry
+      result = sandbox.evaluate
 
       # Limit output to two lines, then gist the rest.
       lines = result.split("\n")
       limit = (rubyversion == 'all') ? Dir['./rubies/*'].count : 2 #TODO: Config-file this.
-      lines[0...limit].each do |line|
-        respond line
+      if lines.any? { |l| l.length > 255 }
+        respond "<output is long> #{sandbox.gist}"
+      else
+        lines[0...limit].each do |line|
+          respond line
+        end
+        if lines.count > limit
+          respond "<output truncated> #{sandbox.gist}"
+        end
       end
-      if lines.count > limit
-        respond "<output truncated> #{gist(sender.nick, code, result)}"
-      end
+      
+      sandbox.rm_home!
 
-      # Clean up clean up clean up
-      FileUtils.rm_rf sandbox_home
-
-    end # end future
+    #end # end future
   end # end case
 end # end on :privmsg
 @bot.connect
