@@ -59,14 +59,10 @@ end
     # Pull these out of the regex here, because the global captures get reset below.
     code = $1
 
-    unless sender.nick =~ /^\w+$/i
-      respond "#{sender.nick}: Please use an alphanumeric nick, for now. This requirement should be fixed eventually." and next
-    end
-
     future do # We can have multiple evaluations going on at once.
       sandbox = Sandbox.new(
         :path => File.expand_path('~/.rublets'),
-        :evaluate_with => "scala -nocompdaemon",
+        :evaluate_with => ['scala', '-nocompdaemon'],
         :timeout => 20
         )
 

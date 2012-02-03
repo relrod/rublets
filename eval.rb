@@ -36,7 +36,11 @@ class Sandbox
     IO.popen(['sandbox', '-H', @home, '-T', "#{@path}/tmp/", '-t', 'sandbox_x_t', 'timeout', @timeout.to_s, *@evaluate_with, @script_filename, :err => [:child, :out]]) { |stdout|
       @result = stdout.read
     }
-    @result = "No output." if @result.empty?
+    if $?.exitstatus.to_i == 124
+      @result = "Timeout of #{@timeout} seconds was hit."
+    elsif @result.empty?
+      @result = "No output." 
+    end
     @result
   end
 
