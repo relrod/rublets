@@ -33,7 +33,7 @@ class Sandbox
 
   def evaluate
     copy_audit_script
-    IO.popen(['sandbox', '-H', @home, '-T', "#{@path}/tmp/", '-t', 'sandbox_x_t', 'timeout', @timeout.to_s, *@evaluate_with, @script_filename, {:err => [:child, :out]}]) { |stdout|
+    IO.popen(['sandbox', '-H', @home, '-T', "#{@path}/tmp/", '-t', 'sandbox_x_t', 'timeout', @timeout.to_s, *@evaluate_with, @script_filename, :err => [:child, :out]]) { |stdout|
       @result = stdout.read
     }
     if $?.exitstatus.to_i == 124
