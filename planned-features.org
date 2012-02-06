@@ -1,0 +1,26 @@
+* The idea
+** Really, Rublets is just a place for me to experiment with SELinux Sandboxes. They are awesome, and open up a lot of possibilities for doing some really cool stuff.
+** This bot is my chance to work out issues with some ideas, and generally experiment. Once I am confident in my understanding of how to work around issues that arise, I plan to do some other projects using the same technology.
+
+* The implementation
+** When the project started out, it was going to be Ruby-only. That has changed. The bot is still in Ruby, but that can change too. There are no ties to any language.
+** There are, however, ties to an enforcing SELinux system, on the server that runs the bot.
+
+* Languages
+** DONE Ruby
+*** TODO Needs better documentation for how to set it up.
+** TODO Scala, Java, Clojure, $your_favorite_jvm_language
+*** TODO Work out how to make JVM start up fast, or a *secure* way to leave a persistent JVM open that sandboxes can connect to.
+** TODO Io
+** TODO Lua
+** TODO Javascript
+** TODO Erlang
+** TODO Common Lisp
+** TODO Mono-based Languages.
+** TODO Perl
+** TODO PHP
+** TODO Haskell
+** TODO C/C++
+** TODO $your_favorite_language
+
+* Note that for complexity sake, and my sanity, I'd like to ask that any language added here be already packaged for Fedora. At least in a repo somewhere, if not in Fedora base repos.
