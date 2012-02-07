@@ -21,6 +21,8 @@ class Sandbox
     @includes = options[:includes] || []
 
     FileUtils.mkdir_p @home
+    FileUtils.mkdir_p "#{@path}/evaluated"
+    FileUtils.mkdir_p "#{@path}/tmp"
   end
 
   def mkdir(directory)
