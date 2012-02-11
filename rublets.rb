@@ -5,7 +5,7 @@ require 'timeout'
 require 'net/https'
 require 'uri'
 
-require './eval.rb'
+require './eval/eval.rb'
 
 require 'rubygems'
 require 'bundler/setup'
