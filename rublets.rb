@@ -140,7 +140,7 @@ end
       end
 
       # This is a bit of a hack, but lets us set up the rvm environment and call the script.
-      sandbox.copy 'run-ruby.sh', 'run-ruby.sh'
+      sandbox.copy 'eval/run-ruby.sh', 'run-ruby.sh'
 
       # Write the script.
       rb = File.open("#{sandbox.home}/#{file}", 'w')
