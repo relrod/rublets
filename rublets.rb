@@ -62,7 +62,7 @@ end
     future do # We can have multiple evaluations going on at once.
       sandbox = Sandbox.new(
         :path => File.expand_path('~/.rublets'),
-        :evaluate_with => ['scala', '-nocompdaemon'],
+        :evaluate_with => ['scala', '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon'],
         :timeout => 20
         )
 
