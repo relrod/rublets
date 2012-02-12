@@ -82,7 +82,7 @@ end
       sandbox = Sandbox.new(
         :path => File.expand_path('~/.rublets'),
         :evaluate_with => ['gforth'],
-        :timeout => 20,
+        :timeout => 5,
         :extension => 'forth',
         :owner => sender.nick,
         :output_limit_before_gisting => 2,
@@ -130,7 +130,7 @@ end
       sandbox = Sandbox.new(
         :path => File.expand_path('~/.rublets'),
         :evaluate_with => ['bash', 'run-ruby.sh', rubyversion],
-        :timeout => 20,
+        :timeout => 5,
         :extension => 'rb',
         :owner => sender.nick,
         :output_limit_before_gisting => 2,
