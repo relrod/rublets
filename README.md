@@ -25,7 +25,7 @@ Set up RVM as your regular user with however many rubies you want, then from the
 Config
 ------
 
-Rublets uses @programble's ConfigRu gem interally. All this means for you, the user, is that you need to copy rublets.yml.dist to rublets.yml, edit it, and be on your way.
+Rublets uses @programble's Configru gem interally. All this means for you, the user, is that you need to copy rublets.yml.dist to rublets.yml, edit it, and be on your way.
 
 Contributions
 -------------
