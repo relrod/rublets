@@ -17,7 +17,7 @@ require 'pry'
 
 #bot = Thread.new do
 @bot = IRC.new do
-  nick 'rublets_dev'
+  nick 'rublets'
   ident 'rublets'
   realname 'Ruby Safe-Eval bot.'
 
@@ -25,10 +25,19 @@ require 'pry'
   server :tenthbit do
     address 'irc.tenthbit.net'
   end
+
+  server :freenode do
+    address 'irc.freenode.net'
+  end
 end
 
 @bot[:tenthbit].on '001' do
+  join '#bots'
+  join '#offtopic'
   join '#programming'
+end
+
+@bot[:freenode].on '001' do
 end
 
 @bot.on :ping do
