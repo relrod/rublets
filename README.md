@@ -20,13 +20,12 @@ Setting up rubies
 
 Rublets uses RVM so that it can evaluate multiple ruby versions/implementations. Setting up RVM for use with Rublets is a bit tricky.
 
-I hope to have a script that makes this process much easier in the future, but the gist of it is this:
+Set up RVM as your regular user with however many rubies you want, then from the rublets directory, run `./setup-rvm.sh`
 
-1. Install rvm as your user, as if you were actually using RVM for regular use.
-2. `rvm install 1.9.3` or whichever rubies you want Rublets to be able to evaluate.
-3. `mv ~/.rvm ./rublets/rvm`
-4. `mv ./rublets/rvm/rubies ./rublets/rubies`
-5. `rm -rf ./rublets/rvm/gems ./rublets/rvm/archives ./rublets/rvm/src` # This saves a lot of space. The Rublets 'rvm' directory gets copied on each eval. Smaller = faster.
+Config
+------
+
+Rublets uses @programble's ConfigRu gem interally. All this means for you, the user, is that you need to copy rublets.yml.dist to rublets.yml, edit it, and be on your way.
 
 Contributions
 -------------

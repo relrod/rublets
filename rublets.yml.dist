@@ -1,0 +1,8 @@
+nickname: rublets_dev
+servers:
+  tenthbit:
+    address: irc.tenthbit.net
+    channels:
+      - "#offtopic"
+      - "#programming"
+      - "#bots"

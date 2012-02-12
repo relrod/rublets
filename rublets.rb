@@ -12,32 +12,34 @@ require 'bundler/setup'
 require 'json'
 require 'on_irc'
 require 'future'
+require 'configru'
 
 require 'pry'
 
+Configru.load do
+  just 'rublets.yml'
+  defaults { servers {} }
+end
+
 #bot = Thread.new do
 @bot = IRC.new do
-  nick 'rublets'
-  ident 'rublets'
+  nick Configru.nickname
+  ident Configru.nickname
   realname 'Ruby Safe-Eval bot.'
 
-  # TODO: Make this config file managable.
-  server :tenthbit do
-    address 'irc.tenthbit.net'
-  end
-
-  server :freenode do
-    address 'irc.freenode.net'
+  Configru.servers.each_pair do |name, server_cfg|
+    server name do
+      address server_cfg.address
+    end
   end
 end
 
-@bot[:tenthbit].on '001' do
-  join '#bots'
-  join '#offtopic'
-  join '#programming'
-end
-
-@bot[:freenode].on '001' do
+Configru.servers.each_pair do |name, server_cfg|
+  @bot[name].on '001' do
+    server_cfg.channels.each do |channel|
+      join channel
+    end
+  end
 end
 
 @bot.on :ping do
