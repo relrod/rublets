@@ -17,7 +17,7 @@ require 'pry'
 
 #bot = Thread.new do
 @bot = IRC.new do
-  nick 'rublets'
+  nick 'rublets_dev'
   ident 'rublets'
   realname 'Ruby Safe-Eval bot.'
 
@@ -25,18 +25,10 @@ require 'pry'
   server :tenthbit do
     address 'irc.tenthbit.net'
   end
-
-  server :freenode do
-    address 'irc.freenode.net'
-  end
 end
 
 @bot[:tenthbit].on '001' do
-  join '#bots'
-  join '#offtopic'
-end
-
-@bot[:freenode].on '001' do
+  join '#programming'
 end
 
 @bot.on :ping do
@@ -90,7 +82,47 @@ end
       sandbox.rm_home!
     end
 
-    # Ruby eval.
+    # Forth eval.
+  when /^!forth> (.*)/
+    unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/gforth' }
+      respond "Gforth is not available on this box." and next
+    end
+    
+    # Pull these out of the regex here, because the global captures get reset below.
+    code = $1
+
+    future do # We can have multiple evaluations going on at once.
+      sandbox = Sandbox.new(
+        :path => File.expand_path('~/.rublets'),
+        :evaluate_with => ['gforth'],
+        :timeout => 5
+        )
+
+      time = sandbox.time
+      file = "#{time.year}-#{time.month}-#{time.day}_#{time.hour}-#{time.min}-#{time.sec}-#{sender.nick}-#{time.to_f}.forth"
+      sandbox.script_filename = file
+
+      # Write the script.
+      forth = File.open("#{sandbox.home}/#{file}", 'w')
+      forth.puts code + " bye"
+      forth.close
+
+      result = sandbox.evaluate
+
+      # Limit output to two lines, then gist the rest.
+      limit = 2
+      lines = result.split("\n")
+      lines[0...limit].each do |line|
+        respond line
+      end
+      if lines.count > limit
+        respond "<output truncated> #{sandbox.gist}"
+      end
+      
+      sandbox.rm_home!
+    end
+
+  # Ruby eval.
   when /^!([\w\.\-]+)?>> (.*)/
     # Pull these out of the regex here, because the global captures get reset below.
     given_version = $1 # might be nil.
