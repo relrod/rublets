@@ -1,7 +1,7 @@
 require 'fileutils'
 
 class Sandbox
-  attr_accessor :time, :path, :home, :script_filename, :evaluate_with, :timeout, :includes
+  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit_before_gisting, :binaries_must_exist
 
   def initialize(options = {})
     unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/sandbox' }
@@ -15,10 +15,15 @@ class Sandbox
     @time = Time.now
     @path = options[:path]
     @home = options[:home] || "#{@path}/sandbox_home-#{@time.to_f}"
-    @script_filename = options[:script]
+    @extension = options[:extension] || "txt"
+    @script_filename = options[:script] || "#{@time.to_f}.#{@extension}"
     @evaluate_with = options[:evaluate_with]
-    @timeout = options[:timeout].to_i
+    @timeout = options[:timeout].to_i || 5
+    @owner = options[:owner] || 'anonymous'
     @includes = options[:includes] || []
+    @code = options[:code]
+    @output_limit_before_gisting = 2
+    @binaries_must_exist = options[:binaries_must_exist] || [@evaluate_with.first]
 
     FileUtils.mkdir_p @home
     FileUtils.mkdir_p "#{@path}/evaluated"
@@ -34,6 +39,8 @@ class Sandbox
   end
 
   def evaluate
+    "One of (#{@binaries_must_exist.join(', ')}) was not found in $PATH. Try again later." and return unless binaries_all_exist?
+    insert_code_into_file
     copy_audit_script
     IO.popen(['sandbox', '-H', @home, '-T', "#{@path}/tmp/", '-t', 'sandbox_x_t', 'timeout', @timeout.to_s, *@evaluate_with, @script_filename, :err => [:child, :out]]) { |stdout|
       @result = stdout.read
@@ -43,7 +50,19 @@ class Sandbox
     elsif @result.empty?
       @result = "No output." 
     end
-    @result
+    
+    lines, output = @result.split("\n"), []
+    if lines.any? { |l| l.length > 255 }
+      output << "<output is long> #{gist}"
+    else
+      lines[0...@output_limit_before_gisting].each do |line|
+        output << line
+      end
+      if lines.count > @output_limit_before_gisting
+        output << "<output truncated> #{gist}"
+      end
+    end
+    output
   end
 
   def rm_home!
@@ -75,7 +94,19 @@ class Sandbox
 
   private
   def copy_audit_script
-    FileUtils.cp("#{@home}/#{@script_filename}", "#{@path}/evaluated/#{@script_filename}")
+    FileUtils.cp("#{@home}/#{@script_filename}", "#{@path}/evaluated/#{@time.year}-#{@time.month}-#{@time.day}_#{@time.hour}-#{@time.min}-#{@time.sec}-#{@owner}-#{@time.to_f}.#{@extension}")
+  end
+
+  def binaries_all_exist?
+    binaries = []
+    binaries << ENV['PATH'].split(':').any? { |path| File.exists? path + '/' + @evaluate_with.first }
+    !binaries.include? false
+  end
+
+  def insert_code_into_file
+    File.open("#{@home}/#{@time.to_f}.#{@extension}", 'w') do |f|
+      f.puts @code
+    end
   end
 
 end

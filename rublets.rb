@@ -25,7 +25,7 @@ Configru.load do
   end
 
   verify do
-    nickname /^[A-Za-z0-9_\`[{}^|\]\\-]+$/
+    nickname /^[A-Za-z0-9_\`\[\{}^|\]\\-]+$/
   end
 end
 
@@ -61,83 +61,35 @@ end
     rubies = Dir['./rubies/*'].map { |a| File.basename(a) }
     respond "#{sender.nick}: #{rubies.join(', ')} (You can specify 'all' to evaluate against all rubies, but this might be slowish.)"
 
-    # Scala eval.
   when /^!scala> (.*)/
-    unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/scala' }
-      respond "Scala is not available on this box." and next
-    end
-    
-    # Pull these out of the regex here, because the global captures get reset below.
-    code = $1
-
-    future do # We can have multiple evaluations going on at once.
+    future do
       sandbox = Sandbox.new(
         :path => File.expand_path('~/.rublets'),
         :evaluate_with => ['scala', '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon'],
-        :timeout => 20
+        :timeout => 20,
+        :extension => 'scala',
+        :owner => sender.nick,
+        :output_limit_before_gisting => 2,
+        :code => $1
         )
-
-      time = sandbox.time
-      file = "#{time.year}-#{time.month}-#{time.day}_#{time.hour}-#{time.min}-#{time.sec}-#{sender.nick}-#{time.to_f}.scala"
-      sandbox.script_filename = file
-
-      # Write the script.
-      rb = File.open("#{sandbox.home}/#{file}", 'w')
-      rb.puts code
-      rb.close
-
       result = sandbox.evaluate
-
-      # Limit output to two lines, then gist the rest.
-      limit = 2
-      lines = result.split("\n")
-      lines[0...limit].each do |line|
-        respond line
-      end
-      if lines.count > limit
-        respond "<output truncated> #{sandbox.gist}"
-      end
-      
+      result.each { |line| respond line }
       sandbox.rm_home!
     end
 
-    # Forth eval.
   when /^!forth> (.*)/
-    unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/gforth' }
-      respond "Gforth is not available on this box." and next
-    end
-    
-    # Pull these out of the regex here, because the global captures get reset below.
-    code = $1
-
-    future do # We can have multiple evaluations going on at once.
+    future do
       sandbox = Sandbox.new(
         :path => File.expand_path('~/.rublets'),
-        :evaluate_with => ['gforth'],
-        :timeout => 5
+        :evaluate_with => ['forth'],
+        :timeout => 20,
+        :extension => 'forth',
+        :owner => sender.nick,
+        :output_limit_before_gisting => 2,
+        :code => $1
         )
-
-      time = sandbox.time
-      file = "#{time.year}-#{time.month}-#{time.day}_#{time.hour}-#{time.min}-#{time.sec}-#{sender.nick}-#{time.to_f}.forth"
-      sandbox.script_filename = file
-
-      # Write the script.
-      forth = File.open("#{sandbox.home}/#{file}", 'w')
-      forth.puts code + " bye"
-      forth.close
-
       result = sandbox.evaluate
-
-      # Limit output to two lines, then gist the rest.
-      limit = 2
-      lines = result.split("\n")
-      lines[0...limit].each do |line|
-        respond line
-      end
-      if lines.count > limit
-        respond "<output truncated> #{sandbox.gist}"
-      end
-      
+      result.each { |line| respond line }
       sandbox.rm_home!
     end
 
@@ -147,9 +99,7 @@ end
     given_version = $1 # might be nil.
     code = $2
 
-    # User wants to evaluate some ruby code.
     #future do # We can have multiple evaluations going on at once.
-
       rubyversion = 'ruby-1.9.3-p0' # Default, set here for scoping. TODO: Config-file this.
 
       # If a version is given (so not default), scan ./rubies/* to see if it matches.
@@ -170,15 +120,23 @@ end
         end
       end
 
+      eval_code = "result = ::Kernel.eval(#{code.inspect}, TOPLEVEL_BINDING)"
+      if rubyversion == 'all'
+       eval_code += "\n" + 'puts RUBY_VERSION + " #{\'(\' + RUBY_ENGINE + \')\' unless defined?(RUBY_ENGINE).nil?} => " + result.inspect'
+      else
+        eval_code += "\n" + 'puts "=> " + result.inspect'
+      end
+
       sandbox = Sandbox.new(
         :path => File.expand_path('~/.rublets'),
         :evaluate_with => ['bash', 'run-ruby.sh', rubyversion],
-        :timeout => 5
+        :timeout => 20,
+        :extension => 'rb',
+        :owner => sender.nick,
+        :output_limit_before_gisting => 2,
+        :code => $1,
+        :binaries_must_exist => ['ruby', 'bash'],
         )
-
-      time = sandbox.time
-      file = "#{time.year}-#{time.month}-#{time.day}_#{time.hour}-#{time.min}-#{time.sec}-#{sender.nick}-#{time.to_f}.rb"
-      sandbox.script_filename = file
 
       sandbox.copy 'rvm', '.rvm'
 
@@ -192,42 +150,10 @@ end
 
       # This is a bit of a hack, but lets us set up the rvm environment and call the script.
       sandbox.copy 'eval/run-ruby.sh', 'run-ruby.sh'
-
-      # Write the script.
-      rb = File.open("#{sandbox.home}/#{file}", 'w')
-
-      # Capture output so we can default a "puts" if the user just wants the return value.
-      rb.puts "result = ::Kernel.eval(#{code.inspect}, TOPLEVEL_BINDING)"
-
-      # Give the version along with the response, if evaluating against all
-      # rubies, so the user knows which is which.
-      if rubyversion == 'all'
-        rb.puts 'puts RUBY_VERSION + " #{\'(\' + RUBY_ENGINE + \')\' unless defined?(RUBY_ENGINE).nil?} => " + result.inspect'
-      else
-        rb.puts 'puts "=> " + result.inspect'
-      end
-      rb.close
-
-      #binding.pry
       result = sandbox.evaluate
-
-      # Limit output to two lines, then gist the rest.
-      lines = result.split("\n")
-      limit = (rubyversion == 'all') ? Dir['./rubies/*'].count : 2 #TODO: Config-file this.
-      if lines.any? { |l| l.length > 255 }
-        respond "<output is long> #{sandbox.gist}"
-      else
-        lines[0...limit].each do |line|
-          respond line
-        end
-        if lines.count > limit
-          respond "<output truncated> #{sandbox.gist}"
-        end
-      end
-      
+      result.each { |line| respond line }
       sandbox.rm_home!
-
-    #end # end future
+#    end
   end # end case
 end # end on :privmsg
 @bot.connect
