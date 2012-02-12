@@ -39,7 +39,7 @@ class Sandbox
   end
 
   def evaluate
-    "One of (#{@binaries_must_exist.join(', ')}) was not found in $PATH. Try again later." and return unless binaries_all_exist?
+    return ["One of (#{@binaries_must_exist.join(', ')}) was not found in $PATH. Try again later."] unless binaries_all_exist?
     insert_code_into_file
     copy_audit_script
     IO.popen(['sandbox', '-H', @home, '-T', "#{@path}/tmp/", '-t', 'sandbox_x_t', 'timeout', @timeout.to_s, *@evaluate_with, @script_filename, :err => [:child, :out]]) { |stdout|

@@ -81,7 +81,7 @@ end
     future do
       sandbox = Sandbox.new(
         :path => File.expand_path('~/.rublets'),
-        :evaluate_with => ['forth'],
+        :evaluate_with => ['gforth'],
         :timeout => 20,
         :extension => 'forth',
         :owner => sender.nick,
