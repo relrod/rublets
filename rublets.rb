@@ -134,7 +134,7 @@ end
         :extension => 'rb',
         :owner => sender.nick,
         :output_limit_before_gisting => 2,
-        :code => $1,
+        :code => eval_code,
         :binaries_must_exist => ['ruby', 'bash'],
         )
 
