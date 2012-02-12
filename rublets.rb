@@ -25,7 +25,7 @@ Configru.load do
   end
 
   verify do
-    nickname /^[\w\-_]+$/
+    nickname /^[A-Za-z0-9_\`[{}^|\]\\-]+$/
   end
 end
 
