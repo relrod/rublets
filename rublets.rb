@@ -77,6 +77,65 @@ end
       sandbox.rm_home!
     end
 
+  when /^!c> (.*)/
+    includes = [
+      '#include <stdio.h>',
+      '#include <string.h>',
+      '#include <math.h>',
+      '#include <stdlib.h>',
+      '#include <time.h>',
+      '#include <limits.h>',
+    ]
+    code = includes.join("\n") + "\n"
+    code += $1
+    
+    future do
+      sandbox = Sandbox.new(
+        :path => File.expand_path('~/.rublets'),
+        :evaluate_with => ['bash', 'run-c.sh'],
+        :binaries_must_exist => ['gcc', 'bash'],
+        :timeout => 5,
+        :extension => 'c',
+        :owner => sender.nick,
+        :output_limit_before_gisting => 2,
+        :code => code
+        )
+      sandbox.copy 'eval/run-c.sh', 'run-c.sh'
+      result = sandbox.evaluate
+      result.each { |line| respond line }
+      sandbox.rm_home!
+    end
+
+  when /^!c\+\+> (.*)/
+    includes = [
+      '#include <cstdio>',
+      '#include <string>',
+      '#include <cstring>',
+      '#include <cstdlib>',
+      '#include <cmath>',
+      '#include <iostream>',
+      'using namespace std;'
+    ]
+    code = includes.join("\n") + "\n"
+    code += $1
+    
+    future do
+      sandbox = Sandbox.new(
+        :path => File.expand_path('~/.rublets'),
+        :evaluate_with => ['bash', 'run-cpp.sh'],
+        :binaries_must_exist => ['g++', 'bash'],
+        :timeout => 5,
+        :extension => 'cpp',
+        :owner => sender.nick,
+        :output_limit_before_gisting => 2,
+        :code => code
+        )
+      sandbox.copy 'eval/run-cpp.sh', 'run-cpp.sh'
+      result = sandbox.evaluate
+      result.each { |line| respond line }
+      sandbox.rm_home!
+    end
+
   when /^!forth> (.*)/
     future do
       sandbox = Sandbox.new(
