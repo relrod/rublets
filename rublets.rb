@@ -86,7 +86,7 @@ end
         :extension => 'forth',
         :owner => sender.nick,
         :output_limit_before_gisting => 2,
-        :code => $1
+        :code => $1 + ' bye'
         )
       result = sandbox.evaluate
       result.each { |line| respond line }
