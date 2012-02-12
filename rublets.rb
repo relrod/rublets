@@ -18,7 +18,15 @@ require 'pry'
 
 Configru.load do
   just 'rublets.yml'
-  defaults { servers {} }
+  
+  defaults do
+    servers {}
+    nickname 'rublets'
+  end
+
+  verify do
+    nickname /^[\w\-_]+$/
+  end
 end
 
 #bot = Thread.new do
