@@ -109,13 +109,17 @@ end
 
   when /^!c\+\+> (.*)/
     includes = [
-      '#include <cstdio>',
-      '#include <string>',
-      '#include <cstring>',
-      '#include <cstdint>',
-      '#include <cstdlib>',
       '#include <cmath>',
+      '#include <cstdint>',
+      '#include <string>',
+      '#include <map>',
+      '#include <vector>',
+      '#include <algorithm>',
+      '#include <deque>',
+      '#include <sstream>',
+      '#include <fstream>',
       '#include <iostream>',
+      '#include <iomanip>',
       'using namespace std;'
     ]
     code = includes.join("\n") + "\n"
