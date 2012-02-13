@@ -80,6 +80,7 @@ end
   when /^!c> (.*)/
     includes = [
       '#include <stdio.h>',
+      '#include <stdint.h>',
       '#include <string.h>',
       '#include <math.h>',
       '#include <stdlib.h>',
@@ -111,6 +112,7 @@ end
       '#include <cstdio>',
       '#include <string>',
       '#include <cstring>',
+      '#include <cstdint>',
       '#include <cstdlib>',
       '#include <cmath>',
       '#include <iostream>',
