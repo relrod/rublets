@@ -1,2 +1,2 @@
 #!/bin/bash
-g++ -Wall -lm $1 && ./a.out
+g++ -Wall -std=c++0x $1 && ./a.out
