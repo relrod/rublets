@@ -86,6 +86,7 @@ end
       '#include <stdlib.h>',
       '#include <time.h>',
       '#include <limits.h>',
+      '#include <unistd.h>',
     ]
     code = includes.join("\n") + "\n"
     code += $1
