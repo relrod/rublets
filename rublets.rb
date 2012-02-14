@@ -120,6 +120,8 @@ end
       '#include <fstream>',
       '#include <iostream>',
       '#include <iomanip>',
+      '#include <thread>',
+      '#include <mutex>',
       'using namespace std;'
     ]
     code = includes.join("\n") + "\n"
