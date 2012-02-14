@@ -87,6 +87,11 @@ end
       '#include <time.h>',
       '#include <limits.h>',
       '#include <unistd.h>',
+      '#include <sys/types.h>',
+      '#include <sys/sockets.h>',
+      '#include <fcntl.h>',
+      '#include <netdb.h>',
+      '#include <errno.h>',
     ]
     code = includes.join("\n") + "\n"
     code += $1
