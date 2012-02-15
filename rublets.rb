@@ -88,6 +88,11 @@ end
         '#include <time.h>',
         '#include <limits.h>',
         '#include <unistd.h>',
+        '#include <sys/types.h>',
+        '#include <sys/sockets.h>',
+        '#include <fcntl.h>',
+        '#include <netdb.h>',
+        '#include <errno.h>',
       ]
       code = includes.join("\n") + "\n"
       code += $1
@@ -124,7 +129,7 @@ end
         '#include <iomanip>',
         '#include <thread>',
         '#include <mutex>',
-        'using namespace std;'
+        'using namespace std;',
       ]
       code = includes.join("\n") + "\n"
       code += $1
