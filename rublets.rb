@@ -89,7 +89,7 @@ end
         '#include <limits.h>',
         '#include <unistd.h>',
         '#include <sys/types.h>',
-        '#include <sys/sockets.h>',
+        '#include <sys/socket.h>',
         '#include <fcntl.h>',
         '#include <netdb.h>',
         '#include <errno.h>',
