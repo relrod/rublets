@@ -55,122 +55,125 @@ end
 end
 
 @bot.on :privmsg do
-  case params[1]
-  when /^!rubies$/
-    # Lists all available rubies.
-    rubies = Dir['./rubies/*'].map { |a| File.basename(a) }
-    respond "#{sender.nick}: #{rubies.join(', ')} (You can specify 'all' to evaluate against all rubies, but this might be slowish.)"
+  begin
+    case params[1]
+    when /^!rubies$/
+      # Lists all available rubies.
+      rubies = Dir['./rubies/*'].map { |a| File.basename(a) }
+      respond "#{sender.nick}: #{rubies.join(', ')} (You can specify 'all' to evaluate against all rubies, but this might be slowish.)"
 
-  when /^!scala> (.*)/
-    future do
-      sandbox = Sandbox.new(
-        :path => File.expand_path('~/.rublets'),
-        :evaluate_with => ['scala', '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon'],
-        :timeout => 20,
-        :extension => 'scala',
-        :owner => sender.nick,
-        :output_limit_before_gisting => 2,
-        :code => $1
-        )
-      result = sandbox.evaluate
-      result.each { |line| respond line }
-      sandbox.rm_home!
-    end
+    when /^!scala> (.*)/
+      future do
+        sandbox = Sandbox.new(
+          :path => File.expand_path('~/.rublets'),
+          :evaluate_with => ['scala', '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon'],
+          :timeout => 20,
+          :extension => 'scala',
+          :owner => sender.nick,
+          :output_limit_before_gisting => 2,
+          :code => $1
+          )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
 
-  when /^!c> (.*)/
-    includes = [
-      '#include <stdio.h>',
-      '#include <stdint.h>',
-      '#include <string.h>',
-      '#include <math.h>',
-      '#include <stdlib.h>',
-      '#include <time.h>',
-      '#include <limits.h>',
-      '#include <unistd.h>',
-      '#include <sys/types.h>',
-      '#include <sys/sockets.h>',
-      '#include <fcntl.h>',
-      '#include <netdb.h>',
-      '#include <errno.h>',
-    ]
-    code = includes.join("\n") + "\n"
-    code += $1
-    
-    future do
-      sandbox = Sandbox.new(
-        :path => File.expand_path('~/.rublets'),
-        :evaluate_with => ['bash', 'run-c.sh'],
-        :binaries_must_exist => ['gcc', 'bash'],
-        :timeout => 5,
-        :extension => 'c',
-        :owner => sender.nick,
-        :output_limit_before_gisting => 2,
-        :code => code
-        )
-      sandbox.copy 'eval/run-c.sh', 'run-c.sh'
-      result = sandbox.evaluate
-      result.each { |line| respond line }
-      sandbox.rm_home!
-    end
+    when /^!c> (.*)/
+      includes = [
+        '#include <stdio.h>',
+        '#include <stdint.h>',
+        '#include <string.h>',
+        '#include <math.h>',
+        '#include <stdlib.h>',
+        '#include <time.h>',
+        '#include <limits.h>',
+        '#include <unistd.h>',
+        '#include <sys/types.h>',
+        '#include <sys/sockets.h>',
+        '#include <fcntl.h>',
+        '#include <netdb.h>',
+        '#include <errno.h>',
+      ]
+      code = includes.join("\n") + "\n"
+      code += $1
+      
+      future do
+        sandbox = Sandbox.new(
+          :path => File.expand_path('~/.rublets'),
+          :evaluate_with => ['bash', 'run-c.sh'],
+          :binaries_must_exist => ['gcc', 'bash'],
+          :timeout => 5,
+          :extension => 'c',
+          :owner => sender.nick,
+          :output_limit_before_gisting => 2,
+          :code => code
+          )
+        sandbox.copy 'eval/run-c.sh', 'run-c.sh'
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
 
-  when /^!c\+\+> (.*)/
-    includes = [
-      '#include <cmath>',
-      '#include <cstdint>',
-      '#include <string>',
-      '#include <map>',
-      '#include <vector>',
-      '#include <algorithm>',
-      '#include <deque>',
-      '#include <sstream>',
-      '#include <fstream>',
-      '#include <iostream>',
-      '#include <iomanip>',
-      'using namespace std;'
-    ]
-    code = includes.join("\n") + "\n"
-    code += $1
-    
-    future do
-      sandbox = Sandbox.new(
-        :path => File.expand_path('~/.rublets'),
-        :evaluate_with => ['bash', 'run-cpp.sh'],
-        :binaries_must_exist => ['g++', 'bash'],
-        :timeout => 5,
-        :extension => 'cpp',
-        :owner => sender.nick,
-        :output_limit_before_gisting => 2,
-        :code => code
-        )
-      sandbox.copy 'eval/run-cpp.sh', 'run-cpp.sh'
-      result = sandbox.evaluate
-      result.each { |line| respond line }
-      sandbox.rm_home!
-    end
+    when /^!c\+\+> (.*)/
+      includes = [
+        '#include <cmath>',
+        '#include <cstdint>',
+        '#include <string>',
+        '#include <map>',
+        '#include <vector>',
+        '#include <algorithm>',
+        '#include <deque>',
+        '#include <sstream>',
+        '#include <fstream>',
+        '#include <iostream>',
+        '#include <iomanip>',
+        '#include <thread>',
+        '#include <mutex>',
+        'using namespace std;'
+      ]
+      code = includes.join("\n") + "\n"
+      code += $1
+      
+      future do
+        sandbox = Sandbox.new(
+          :path => File.expand_path('~/.rublets'),
+          :evaluate_with => ['bash', 'run-cpp.sh'],
+          :binaries_must_exist => ['g++', 'bash'],
+          :timeout => 5,
+          :extension => 'cpp',
+          :owner => sender.nick,
+          :output_limit_before_gisting => 2,
+          :code => code
+          )
+        sandbox.copy 'eval/run-cpp.sh', 'run-cpp.sh'
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
 
-  when /^!forth> (.*)/
-    future do
-      sandbox = Sandbox.new(
-        :path => File.expand_path('~/.rublets'),
-        :evaluate_with => ['gforth'],
-        :timeout => 5,
-        :extension => 'forth',
-        :owner => sender.nick,
-        :output_limit_before_gisting => 2,
-        :code => $1 + ' bye'
-        )
-      result = sandbox.evaluate
-      result.each { |line| respond line }
-      sandbox.rm_home!
-    end
+    when /^!forth> (.*)/
+      future do
+        sandbox = Sandbox.new(
+          :path => File.expand_path('~/.rublets'),
+          :evaluate_with => ['gforth'],
+          :timeout => 5,
+          :extension => 'forth',
+          :owner => sender.nick,
+          :output_limit_before_gisting => 2,
+          :code => $1 + ' bye'
+          )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
 
-  # Ruby eval.
-  when /^!([\w\.\-]+)?>> (.*)/
-    # Pull these out of the regex here, because the global captures get reset below.
-    given_version = $1 # might be nil.
-    code = $2
+      # Ruby eval.
+    when /^!([\w\.\-]+)?>> (.*)/
+      # Pull these out of the regex here, because the global captures get reset below.
+      given_version = $1 # might be nil.
+      code = $2
 
-    #future do # We can have multiple evaluations going on at once.
+      #future do # We can have multiple evaluations going on at once.
       rubyversion = 'ruby-1.9.3-p0' # Default, set here for scoping. TODO: Config-file this.
 
       # If a version is given (so not default), scan ./rubies/* to see if it matches.
@@ -193,7 +196,7 @@ end
 
       eval_code = "result = ::Kernel.eval(#{code.inspect}, TOPLEVEL_BINDING)"
       if rubyversion == 'all'
-       eval_code += "\n" + 'puts RUBY_VERSION + " #{\'(\' + RUBY_ENGINE + \')\' unless defined?(RUBY_ENGINE).nil?} => " + result.inspect'
+        eval_code += "\n" + 'puts RUBY_VERSION + " #{\'(\' + RUBY_ENGINE + \')\' unless defined?(RUBY_ENGINE).nil?} => " + result.inspect'
       else
         eval_code += "\n" + 'puts "=> " + result.inspect'
       end
@@ -224,8 +227,11 @@ end
       result = sandbox.evaluate
       result.each { |line| respond line }
       sandbox.rm_home!
-#    end
-  end # end case
+      #    end
+    end # end case
+  rescue ThreadError
+    respond "Could not create thread."
+  end
 end # end on :privmsg
 @bot.connect
 #end # end thread
