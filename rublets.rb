@@ -200,6 +200,22 @@ end
         sandbox.rm_home!
       end
 
+    when /^!php> (.*)/
+      future do
+        sandbox = Sandbox.new(
+          :path => File.expand_path('~/.rublets'),
+          :evaluate_with => ['php'],
+          :timeout => 5,
+          :extension => 'php',
+          :owner => sender.nick,
+          :output_limit_before_gisting => 2,
+          :code => $1
+        )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
       # Ruby eval.
     when /^!([\w\.\-]+)?>> (.*)/
       # Pull these out of the regex here, because the global captures get reset below.
