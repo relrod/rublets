@@ -1,7 +1,7 @@
 require 'fileutils'
 
 class Sandbox
-  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit_before_gisting, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines
+  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit_before_gisting, :binaries_must_exist, :stdin, :code_from_stdin
 
   def initialize(options = {})
     unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/sandbox' }
@@ -26,7 +26,6 @@ class Sandbox
     @binaries_must_exist = options[:binaries_must_exist] || [@evaluate_with.first]
     @stdin = options[:stdin] || nil
     @code_from_stdin = options[:code_from_stdin] || false
-    @skip_preceding_lines = options[:skip_preceding_lines] || 0
 
     FileUtils.mkdir_p @home
     FileUtils.mkdir_p "#{@path}/evaluated"
@@ -49,7 +48,9 @@ class Sandbox
       io.write File.read("#{@home}/#{@time.to_f}.#{@extension}") if @code_from_stdin
       io.write @stdin unless @stdin.nil?
       io.close_write
-      @result = io.read.split("\n")[@skip_preceding_lines...-1].join("\n")
+      @result = io.read
+      require 'pp'
+      pp @result
     }
     if $?.exitstatus.to_i == 124
       @result = "Timeout of #{@timeout} seconds was hit."
