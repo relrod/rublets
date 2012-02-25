@@ -217,7 +217,7 @@ end
       end
 
     when /^!perpetual> (.*)/
-#      future do
+      future do
         sandbox = Sandbox.new(
           :path => File.expand_path('~/.rublets'),
           :evaluate_with => ['perpetual', '--no-prompt'],
@@ -232,7 +232,7 @@ end
         result = sandbox.evaluate
         result.each { |line| respond line }
         sandbox.rm_home!
-  #    end
+      end
 
       # Ruby eval.
     when /^!([\w\.\-]+)?>> (.*)/
