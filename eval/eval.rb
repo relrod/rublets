@@ -49,7 +49,7 @@ class Sandbox
       io.write File.read("#{@home}/#{@time.to_f}.#{@extension}") if @code_from_stdin
       io.write @stdin unless @stdin.nil?
       io.close_write
-      @result = io.read.split("\n")[@skip_preceding_lines...-1].join("\n")
+      @result = io.read.split("\n")[@skip_preceding_lines..-1].join("\n")
     }
     if $?.exitstatus.to_i == 124
       @result = "Timeout of #{@timeout} seconds was hit."
