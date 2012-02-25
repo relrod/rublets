@@ -12,21 +12,22 @@ class Sandbox
       raise "The `timeout` executable does not exist and is required. (Is coreutils installed?)"
     end
     
-    @time                        = Time.now
-    @path                        = options[:path]
-    @home                        = options[:home] || "#{@path}/sandbox_home-#{@time.to_f}"
-    @extension                   = options[:extension] || "txt"
-    @script_filename             = options[:script] || "#{@time.to_f}.#{@extension}"
-    @evaluate_with               = options[:evaluate_with]
-    @timeout                     = options[:timeout].to_i || 5
-    @owner                       = options[:owner] || 'anonymous'
-    @includes                    = options[:includes] || []
-    @code                        = options[:code]
-    @output_limit_before_gisting = 2
-    @binaries_must_exist         = options[:binaries_must_exist] || [@evaluate_with.first]
-    @stdin                       = options[:stdin] || nil
-    @code_from_stdin             = options[:code_from_stdin] || false
-    @skip_preceding_lines        = options[:skip_preceding_lines] || 0
+    @time                 = Time.now
+    @path                 = options[:path]
+    @home                 = options[:home] || "#{@path}/sandbox_home-#{@time.to_f}"
+    @extension            = options[:extension] || "txt"
+    @script_filename      = options[:script] || "#{@time.to_f}.#{@extension}"
+    @evaluate_with        = options[:evaluate_with]
+    @timeout              = options[:timeout].to_i || 5
+    @owner                = options[:owner] || 'anonymous'
+    @includes             = options[:includes] || []
+    @code                 = options[:code]
+    @output_limit         = 2
+    @gist_after_limit     = options[:gist_after_limit] || true
+    @binaries_must_exist  = options[:binaries_must_exist] || [@evaluate_with.first]
+    @stdin                = options[:stdin] || nil
+    @code_from_stdin      = options[:code_from_stdin] || false
+    @skip_preceding_lines = options[:skip_preceding_lines] || 0
 
     FileUtils.mkdir_p @home
     FileUtils.mkdir_p "#{@path}/evaluated"
@@ -61,10 +62,10 @@ class Sandbox
     if lines.any? { |l| l.length > 255 }
       output << "<output is long> #{gist}"
     else
-      lines[0...@output_limit_before_gisting].each do |line|
+      lines[0...@output_limit].each do |line|
         output << line
       end
-      if lines.count > @output_limit_before_gisting
+      if lines.count > @output_limit and @gist_after_limit
         output << "<output truncated> #{gist}"
       end
     end

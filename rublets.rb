@@ -65,13 +65,13 @@ end
     when /^!scala> (.*)/
       future do
         sandbox = Sandbox.new(
-          :path => File.expand_path('~/.rublets'),
+          :path          => File.expand_path('~/.rublets'),
           :evaluate_with => ['scala', '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon'],
-          :timeout => 20,
-          :extension => 'scala',
-          :owner => sender.nick,
-          :output_limit_before_gisting => 2,
-          :code => $1
+          :timeout       => 20,
+          :extension     => 'scala',
+          :owner         => sender.nick,
+          :output_limit  => 2,
+          :code          => $1
           )
         result = sandbox.evaluate
         result.each { |line| respond line }
@@ -100,14 +100,14 @@ end
       
       future do
         sandbox = Sandbox.new(
-          :path => File.expand_path('~/.rublets'),
-          :evaluate_with => ['bash', 'run-c.sh'],
+          :path                => File.expand_path('~/.rublets'),
+          :evaluate_with       => ['bash', 'run-c.sh'],
           :binaries_must_exist => ['gcc', 'bash'],
-          :timeout => 5,
-          :extension => 'c',
-          :owner => sender.nick,
-          :output_limit_before_gisting => 2,
-          :code => code
+          :timeout             => 5,
+          :extension           => 'c',
+          :owner               => sender.nick,
+          :output_limit        => 2,
+          :code                => code
           )
         sandbox.copy 'eval/run-c.sh', 'run-c.sh'
         result = sandbox.evaluate
@@ -137,14 +137,14 @@ end
       
       future do
         sandbox = Sandbox.new(
-          :path => File.expand_path('~/.rublets'),
-          :evaluate_with => ['bash', 'run-cpp.sh'],
+          :path                => File.expand_path('~/.rublets'),
+          :evaluate_with       => ['bash', 'run-cpp.sh'],
           :binaries_must_exist => ['g++', 'bash'],
-          :timeout => 5,
-          :extension => 'cpp',
-          :owner => sender.nick,
-          :output_limit_before_gisting => 2,
-          :code => code
+          :timeout             => 5,
+          :extension           => 'cpp',
+          :owner               => sender.nick,
+          :output_limit        => 2,
+          :code                => code
           )
         sandbox.copy 'eval/run-cpp.sh', 'run-cpp.sh'
         result = sandbox.evaluate
@@ -155,13 +155,13 @@ end
     when /^!forth> (.*)/
       future do
         sandbox = Sandbox.new(
-          :path => File.expand_path('~/.rublets'),
+          :path          => File.expand_path('~/.rublets'),
           :evaluate_with => ['gforth'],
-          :timeout => 5,
-          :extension => 'forth',
-          :owner => sender.nick,
-          :output_limit_before_gisting => 2,
-          :code => $1 + ' bye'
+          :timeout       => 5,
+          :extension     => 'forth',
+          :owner         => sender.nick,
+          :output_limit  => 2,
+          :code          => $1 + ' bye'
         )
         result = sandbox.evaluate
         result.each { |line| respond line }
@@ -171,13 +171,13 @@ end
     when /^!(?:bash|\$)> (.*)/
       future do
         sandbox = Sandbox.new(
-          :path => File.expand_path('~/.rublets'),
+          :path          => File.expand_path('~/.rublets'),
           :evaluate_with => ['bash'],
-          :timeout => 5,
-          :extension => 'sh',
-          :owner => sender.nick,
-          :output_limit_before_gisting => 2,
-          :code => $1
+          :timeout       => 5,
+          :extension     => 'sh',
+          :owner         => sender.nick,
+          :output_limit  => 2,
+          :code          => $1
         )
         result = sandbox.evaluate
         result.each { |line| respond line }
@@ -187,13 +187,13 @@ end
     when /^!io> (.*)/
       future do
         sandbox = Sandbox.new(
-          :path => File.expand_path('~/.rublets'),
+          :path          => File.expand_path('~/.rublets'),
           :evaluate_with => ['io'],
-          :timeout => 5,
-          :extension => 'io',
-          :owner => sender.nick,
-          :output_limit_before_gisting => 2,
-          :code => $1
+          :timeout       => 5,
+          :extension     => 'io',
+          :owner         => sender.nick,
+          :output_limit  => 2,
+          :code          => $1
         )
         result = sandbox.evaluate
         result.each { |line| respond line }
@@ -203,13 +203,13 @@ end
     when /^!<\?(?:php|) (.*)/
       future do
         sandbox = Sandbox.new(
-          :path => File.expand_path('~/.rublets'),
+          :path          => File.expand_path('~/.rublets'),
           :evaluate_with => ['php'],
-          :timeout => 5,
-          :extension => 'php',
-          :owner => sender.nick,
-          :output_limit_before_gisting => 2,
-          :code => "<?php " + $1
+          :timeout       => 5,
+          :extension     => 'php',
+          :owner         => sender.nick,
+          :output_limit  => 2,
+          :code          => "<?php " + $1
         )
         result = sandbox.evaluate
         result.each { |line| respond line }
@@ -219,14 +219,14 @@ end
     when /^!perpetual> (.*)/
       future do
         sandbox = Sandbox.new(
-          :path => File.expand_path('~/.rublets'),
-          :evaluate_with => ['perpetual', '--no-prompt'],
-          :timeout => 5,
-          :extension => 'perp',
-          :owner => sender.nick,
-          :output_limit_before_gisting => 2,
-          :code => $1,
-          :code_from_stdin => true,
+          :path                 => File.expand_path('~/.rublets'),
+          :evaluate_with        => ['perpetual', '--no-prompt'],
+          :timeout              => 5,
+          :extension            => 'perp',
+          :owner                => sender.nick,
+          :output_limit         => 2,
+          :code                 => $1,
+          :code_from_stdin      => true,
           :skip_preceding_lines => 1
         )
         result = sandbox.evaluate
@@ -269,13 +269,13 @@ end
       end
 
       sandbox = Sandbox.new(
-        :path => File.expand_path('~/.rublets'),
-        :evaluate_with => ['bash', 'run-ruby.sh', rubyversion],
-        :timeout => 5,
-        :extension => 'rb',
-        :owner => sender.nick,
-        :output_limit_before_gisting => 2,
-        :code => eval_code,
+        :path                => File.expand_path('~/.rublets'),
+        :evaluate_with       => ['bash', 'run-ruby.sh', rubyversion],
+        :timeout             => 5,
+        :extension           => 'rb',
+        :owner               => sender.nick,
+        :output_limit        => 2,
+        :code                => eval_code,
         :binaries_must_exist => ['ruby', 'bash'],
         )
 
