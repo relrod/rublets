@@ -226,7 +226,8 @@ end
           :owner => sender.nick,
           :output_limit_before_gisting => 2,
           :code => $1,
-          :code_from_stdin => true
+          :code_from_stdin => true,
+          :skip_preceding_lines => 1
         )
         result = sandbox.evaluate
         result.each { |line| respond line }
