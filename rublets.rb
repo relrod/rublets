@@ -216,6 +216,24 @@ end
         sandbox.rm_home!
       end
 
+    when /^!perpetual> (.*)/
+#      future do
+        sandbox = Sandbox.new(
+          :path => File.expand_path('~/.rublets'),
+          :evaluate_with => ['perpetual', '--no-prompt'],
+          :timeout => 5,
+          :extension => 'perp',
+          :owner => sender.nick,
+          :output_limit_before_gisting => 2,
+          :code => $1,
+          :code_from_stdin => true,
+          :skip_preceding_lines => 1
+        )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+  #    end
+
       # Ruby eval.
     when /^!([\w\.\-]+)?>> (.*)/
       # Pull these out of the regex here, because the global captures get reset below.
