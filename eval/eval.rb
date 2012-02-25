@@ -12,21 +12,21 @@ class Sandbox
       raise "The `timeout` executable does not exist and is required. (Is coreutils installed?)"
     end
     
-    @time = Time.now
-    @path = options[:path]
-    @home = options[:home] || "#{@path}/sandbox_home-#{@time.to_f}"
-    @extension = options[:extension] || "txt"
-    @script_filename = options[:script] || "#{@time.to_f}.#{@extension}"
-    @evaluate_with = options[:evaluate_with]
-    @timeout = options[:timeout].to_i || 5
-    @owner = options[:owner] || 'anonymous'
-    @includes = options[:includes] || []
-    @code = options[:code]
+    @time                        = Time.now
+    @path                        = options[:path]
+    @home                        = options[:home] || "#{@path}/sandbox_home-#{@time.to_f}"
+    @extension                   = options[:extension] || "txt"
+    @script_filename             = options[:script] || "#{@time.to_f}.#{@extension}"
+    @evaluate_with               = options[:evaluate_with]
+    @timeout                     = options[:timeout].to_i || 5
+    @owner                       = options[:owner] || 'anonymous'
+    @includes                    = options[:includes] || []
+    @code                        = options[:code]
     @output_limit_before_gisting = 2
-    @binaries_must_exist = options[:binaries_must_exist] || [@evaluate_with.first]
-    @stdin = options[:stdin] || nil
-    @code_from_stdin = options[:code_from_stdin] || false
-    @skip_preceding_lines = options[:skip_preceding_lines] || 0
+    @binaries_must_exist         = options[:binaries_must_exist] || [@evaluate_with.first]
+    @stdin                       = options[:stdin] || nil
+    @code_from_stdin             = options[:code_from_stdin] || false
+    @skip_preceding_lines        = options[:skip_preceding_lines] || 0
 
     FileUtils.mkdir_p @home
     FileUtils.mkdir_p "#{@path}/evaluated"
