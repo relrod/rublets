@@ -66,7 +66,7 @@ end
       future do
         sandbox = Sandbox.new(
           :path          => File.expand_path('~/.rublets'),
-          :evaluate_with => ['scala', '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon'],
+          :evaluate_with => ['scala', '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon', '-deprecation'],
           :timeout       => 20,
           :extension     => 'scala',
           :owner         => sender.nick,
