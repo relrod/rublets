@@ -200,7 +200,13 @@ end
         sandbox.rm_home!
       end
 
-    when /^!<\?(?:php|) (.*)/
+    when /^!<\?(php|php=|=|) (.*)/
+      if not $1.nil? and $1.end_with? '='
+        code = "<?php echo #{$2}"
+      else
+        code = "<?php #{$2}"
+      end
+      puts code
       future do
         sandbox = Sandbox.new(
           :path          => File.expand_path('~/.rublets'),
@@ -209,7 +215,7 @@ end
           :extension     => 'php',
           :owner         => sender.nick,
           :output_limit  => 2,
-          :code          => "<?php " + $1
+          :code          => code
         )
         result = sandbox.evaluate
         result.each { |line| respond line }
