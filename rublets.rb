@@ -78,22 +78,6 @@ end
         sandbox.rm_home!
       end
 
-    when /^!java> (.*)/
-      future do
-        sandbox = Sandbox.new(
-          :path          => File.expand_path('~/.rublets'),
-          :evaluate_with => ['bash', 'run-java.sh']
-          :timeout       => 20,
-          :extension     => 'java',
-          :owner         => sender.nick,
-          :output_limit  => 2,
-          :code          => $1
-          )
-        result = sandbox.evaluate
-        result.each { |line| respond line }
-        sandbox.rm_home!
-      end
-
     when /^!c> (.*)/
       includes = [
         '#include <stdio.h>',
