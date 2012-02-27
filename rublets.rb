@@ -255,6 +255,23 @@ end
         sandbox.rm_home!
       end
 
+    when /^!(?:lisp|clisp)> (.*)/
+      future do
+        sandbox = Sandbox.new(
+          :path                 => File.expand_path('~/.rublets'),
+          :evaluate_with        => ['clisp'],
+          :timeout              => 5,
+          :extension            => 'cl',
+          :owner                => sender.nick,
+          :output_limit         => 2,
+          :code                 => $1,
+          :skip_preceding_lines => 1
+        )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
       # Ruby eval.
     when /^!([\w\.\-]+)?>> (.*)/
       # Pull these out of the regex here, because the global captures get reset below.
