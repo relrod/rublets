@@ -255,7 +255,7 @@ end
         sandbox.rm_home!
       end
 
-    when /^!(?:lisp|clisp)> (.*)/
+    when /^!(?:lisp|sbcl)> (.*)/
       future do
         sandbox = Sandbox.new(
           :path                 => File.expand_path('~/.rublets'),
