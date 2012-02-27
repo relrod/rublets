@@ -264,8 +264,7 @@ end
           :extension            => 'cl',
           :owner                => sender.nick,
           :output_limit         => 2,
-          :code                 => $1,
-          :skip_preceding_lines => 1
+          :code                 => $1
         )
         result = sandbox.evaluate
         result.each { |line| respond line }
