@@ -84,7 +84,7 @@ class Sandbox
         'public' => false,
         #'description' => "#{nickname}'s ruby eval",
         'files' => {
-          'input.rb' => {
+          "input.#{@extension}" => {
             'content' => File.open("#{@home}/#{@script_filename}").read
           },
           'output.txt' => {
