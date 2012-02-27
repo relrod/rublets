@@ -184,6 +184,22 @@ end
         sandbox.rm_home!
       end
 
+    when /^!perl> (.*)/
+      future do
+        sandbox = Sandbox.new(
+          :path          => File.expand_path('~/.rublets'),
+          :evaluate_with => ['perl'],
+          :timeout       => 5,
+          :extension     => 'pl',
+          :owner         => sender.nick,
+          :output_limit  => 2,
+          :code          => $1
+        )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
     when /^!io> (.*)/
       future do
         sandbox = Sandbox.new(
