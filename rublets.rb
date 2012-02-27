@@ -259,7 +259,7 @@ end
       future do
         sandbox = Sandbox.new(
           :path                 => File.expand_path('~/.rublets'),
-          :evaluate_with        => ['clisp'],
+          :evaluate_with        => ['sbcl', '--script'],
           :timeout              => 5,
           :extension            => 'cl',
           :owner                => sender.nick,
