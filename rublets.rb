@@ -78,6 +78,30 @@ end
         sandbox.rm_home!
       end
 
+
+    when /^!erlang> (.*)/
+      includes = [
+        '#!/usr/bin/env escript',
+        '%%! -smp enable -mnesia debug verbose',
+      ]
+      code = includes.join("\n") + "\n"
+      code += $1
+      
+      future do
+        sandbox = Sandbox.new(
+          :path                => File.expand_path('~/.rublets'),
+          :evaluate_with       => ['escript'],
+          :timeout             => 5,
+          :extension           => 'erl',
+          :owner               => sender.nick,
+          :output_limit        => 2,
+          :code                => code
+          )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
     when /^!c> (.*)/
       includes = [
         '#include <stdio.h>',
