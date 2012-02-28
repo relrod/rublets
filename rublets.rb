@@ -134,6 +134,54 @@ end
         sandbox.rm_home!
       end
 
+    when /^!javascript> (.*)/
+      future do
+        sandbox = Sandbox.new(
+          :path                => File.expand_path('~/.rublets'),
+          :evaluate_with       => ['js'],
+          :timeout             => 5,
+          :extension           => 'js',
+          :owner               => sender.nick,
+          :output_limit        => 2,
+          :code                => $1
+          )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
+    when /^!lua> (.*)/
+      future do
+        sandbox = Sandbox.new(
+          :path                => File.expand_path('~/.rublets'),
+          :evaluate_with       => ['lua'],
+          :timeout             => 5,
+          :extension           => 'lua',
+          :owner               => sender.nick,
+          :output_limit        => 2,
+          :code                => $1
+          )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
+    when /^!ocaml> (.*)/
+      future do
+        sandbox = Sandbox.new(
+          :path                => File.expand_path('~/.rublets'),
+          :evaluate_with       => ['ocaml'],
+          :timeout             => 5,
+          :extension           => 'ml',
+          :owner               => sender.nick,
+          :output_limit        => 2,
+          :code                => $1
+          )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
     when /^!c> (.*)/
       includes = [
         '#include <stdio.h>',
