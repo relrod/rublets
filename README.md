@@ -35,6 +35,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
 * [Forth](https://www.gnu.org/software/gforth/)
 * [C](http://gcc.gnu.org/)
 * [C++](http://gcc.gnu.org/)
+* [Objective C](http://gcc.gnu.org/)
 * [Bash](https://www.gnu.org/software/bash/)
 * [Erlang](http://erlang.org)
 * [Io](http://iolanguage.com)
