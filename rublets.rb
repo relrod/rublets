@@ -118,6 +118,22 @@ end
         sandbox.rm_home!
       end
 
+    when /^!python> (.*)/
+      future do
+        sandbox = Sandbox.new(
+          :path                => File.expand_path('~/.rublets'),
+          :evaluate_with       => ['python'],
+          :timeout             => 5,
+          :extension           => 'py',
+          :owner               => sender.nick,
+          :output_limit        => 2,
+          :code                => $1
+          )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
     when /^!c> (.*)/
       includes = [
         '#include <stdio.h>',
