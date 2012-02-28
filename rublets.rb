@@ -243,6 +243,31 @@ end
         sandbox.rm_home!
       end
 
+    when /^!go> (.*)/
+      includes = [
+        'package main',
+        'import "fmt"',
+      ]
+      code = includes.join("\n") + "\n"
+      code += $1
+      
+      future do
+        sandbox = Sandbox.new(
+          :path                => File.expand_path('~/.rublets'),
+          :evaluate_with       => ['bash', 'run-go.sh'],
+          :binaries_must_exist => ['gccgo', 'bash'],
+          :timeout             => 5,
+          :extension           => 'go',
+          :owner               => sender.nick,
+          :output_limit        => 2,
+          :code                => code
+          )
+        sandbox.copy 'eval/run-go.sh', 'run-go.sh'
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
     when /^!c\+\+> (.*)/
       includes = [
         '#include <cmath>',

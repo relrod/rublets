@@ -105,9 +105,10 @@ class Sandbox
   end
 
   def binaries_all_exist?
-    binaries = []
-    binaries << ENV['PATH'].split(':').any? { |path| File.exists? path + '/' + @evaluate_with.first }
-    !binaries.include? false
+    @binaries_must_exist.each do |binary|
+      return false unless ENV['PATH'].split(':').any? { |path| File.exists? File.join(path, '/', binary) }
+    end
+    true
   end
 
   def insert_code_into_file
