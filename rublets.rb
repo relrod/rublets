@@ -80,11 +80,11 @@ end
 
 
     when /^!erlang> (.*)/
-      includes = [
+      file_head = [
         '#!/usr/bin/env escript',
         '%%! -smp enable -mnesia debug verbose',
       ]
-      code = includes.join("\n") + "\n"
+      code = file_head.join("\n") + "\n"
       code += $1
       
       future do
@@ -96,6 +96,22 @@ end
           :owner               => sender.nick,
           :output_limit        => 2,
           :code                => code
+          )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
+    when /^!haskell> (.*)/
+      future do
+        sandbox = Sandbox.new(
+          :path                => File.expand_path('~/.rublets'),
+          :evaluate_with       => ['runhaskell'],
+          :timeout             => 5,
+          :extension           => 'hs',
+          :owner               => sender.nick,
+          :output_limit        => 2,
+          :code                => $1
           )
         result = sandbox.evaluate
         result.each { |line| respond line }
