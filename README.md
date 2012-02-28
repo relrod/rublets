@@ -1,7 +1,7 @@
 Rublets
 =======
 
-Rublets is an IRC bot in ruby which uses tsion's *on_irc* library, with a small collection of other rubygems, to provide a safe ruby-evaluation IRC bot.
+Rublets is an IRC bot in ruby which uses tsion's *on_irc* library, with a small collection of other rubygems, to provide a safe general-purpose code-evaluation IRC bot.
 
 How It Works
 ------------
@@ -21,6 +21,26 @@ Setting up rubies
 Rublets uses RVM so that it can evaluate multiple ruby versions/implementations. Setting up RVM for use with Rublets is a bit tricky.
 
 Set up RVM as your regular user with however many rubies you want, then from the rublets directory, run `./setup-rvm.sh`
+
+What it can evaluate (if given selinux permissions, and if the interpreters/compilers are installed) in no particular order:
+
+* [Ruby](http://www.ruby-lang.org)
+* [Python](http://www.python.org) (only one line though - seems pointless)
+* [Perl](http://www.perl.org)
+* [Scala](http://www.scala-lang.org)
+* [JavaScript](https://developer.mozilla.org/en/JavaScript)
+* [Lua](http://lua.org)
+* [Haskell](http://haskell.org)
+* [OCaml](http://caml.inria.fr/)
+* [Forth](https://www.gnu.org/software/gforth/)
+* [C](http://gcc.gnu.org/)
+* [C++](http://gcc.gnu.org/)
+* [Bash](https://www.gnu.org/software/bash/)
+* [Erlang](http://erlang.org)
+* [Io](http://iolanguage.com)
+* [PHP](http://php.net)
+* [Perpetual](https://github.com/programble/perpetual)
+* Common Lisp ([sbcl](http://sbcl.org))
 
 Config
 ------
