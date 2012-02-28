@@ -182,6 +182,30 @@ end
         sandbox.rm_home!
       end
 
+    when /^!obj-c> (.*)/
+      includes = [
+        '#import <Foundation/Foundation.h>',
+      ]
+      code = includes.join("\n") + "\n"
+      code += $1
+      
+      future do
+        sandbox = Sandbox.new(
+          :path                => File.expand_path('~/.rublets'),
+          :evaluate_with       => ['bash', 'run-obj-c.sh'],
+          :binaries_must_exist => ['gcc', 'bash'],
+          :timeout             => 5,
+          :extension           => 'm',
+          :owner               => sender.nick,
+          :output_limit        => 2,
+          :code                => code
+          )
+        sandbox.copy 'eval/run-obj-c.sh', 'run-obj-c.sh'
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
     when /^!c> (.*)/
       includes = [
         '#include <stdio.h>',
