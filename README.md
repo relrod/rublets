@@ -44,6 +44,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
 * [Python](http://www.python.org) (only one line though - seems pointless)
 * [Ruby](http://www.ruby-lang.org)
 * [Scala](http://www.scala-lang.org)
+* [Smalltalk](http://smalltalk.gnu.org)
 
 Config
 ------
