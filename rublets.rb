@@ -268,6 +268,30 @@ end
         sandbox.rm_home!
       end
 
+    when /^!pascal> (.*)/
+      includes = [
+        'program RubletsEval(output);',
+      ]
+      code = includes.join("\n") + "\n"
+      code += $1
+      
+      future do
+        sandbox = Sandbox.new(
+          :path                => File.expand_path('~/.rublets'),
+          :evaluate_with       => ['bash', 'run-pascal.sh'],
+          :binaries_must_exist => ['fpc', 'bash'],
+          :timeout             => 5,
+          :extension           => 'pas',
+          :owner               => sender.nick,
+          :output_limit        => 2,
+          :code                => code
+          )
+        sandbox.copy 'eval/run-pascal.sh', 'run-pascal.sh'
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
     when /^!c\+\+> (.*)/
       includes = [
         '#include <cmath>',
