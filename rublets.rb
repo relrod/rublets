@@ -134,7 +134,7 @@ end
         sandbox.rm_home!
       end
 
-    when /^!javascript> (.*)/
+    when /^!(?:javascript|js)> (.*)/
       future do
         sandbox = Sandbox.new(
           :path                => File.expand_path('~/.rublets'),
@@ -173,6 +173,22 @@ end
           :evaluate_with       => ['ocaml'],
           :timeout             => 5,
           :extension           => 'ml',
+          :owner               => sender.nick,
+          :output_limit        => 2,
+          :code                => $1
+          )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
+    when /^!smalltalk> (.*)/
+      future do
+        sandbox = Sandbox.new(
+          :path                => File.expand_path('~/.rublets'),
+          :evaluate_with       => ['gst'],
+          :timeout             => 5,
+          :extension           => 'st',
           :owner               => sender.nick,
           :output_limit        => 2,
           :code                => $1
