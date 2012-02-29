@@ -22,27 +22,28 @@ Rublets uses RVM so that it can evaluate multiple ruby versions/implementations.
 
 Set up RVM as your regular user with however many rubies you want, then from the rublets directory, run `./setup-rvm.sh`
 
-What it can evaluate (if given selinux permissions, and if the interpreters/compilers are installed) in no particular order:
-----------------------------------------------------------------------------------------------------------------------------
+What it can evaluate (if given selinux permissions, and if the interpreters/compilers are installed):
+-----------------------------------------------------------------------------------------------------
 
-* [Ruby](http://www.ruby-lang.org)
-* [Python](http://www.python.org) (only one line though - seems pointless)
-* [Perl](http://www.perl.org)
-* [Scala](http://www.scala-lang.org)
-* [JavaScript](https://developer.mozilla.org/en/JavaScript)
-* [Lua](http://lua.org)
-* [Haskell](http://haskell.org)
-* [OCaml](http://caml.inria.fr/)
-* [Forth](https://www.gnu.org/software/gforth/)
+* [Bash](https://www.gnu.org/software/bash/)
 * [C](http://gcc.gnu.org/)
 * [C++](http://gcc.gnu.org/)
-* [Objective C](http://gcc.gnu.org/)
-* [Bash](https://www.gnu.org/software/bash/)
-* [Erlang](http://erlang.org)
-* [Io](http://iolanguage.com)
-* [PHP](http://php.net)
-* [Perpetual](https://github.com/programble/perpetual)
 * Common Lisp ([sbcl](http://sbcl.org))
+* [Objective C](http://gcc.gnu.org/)
+* [Erlang](http://erlang.org)
+* [Forth](https://www.gnu.org/software/gforth/)
+* [Haskell](http://haskell.org)
+* [Io](http://iolanguage.com)
+* [JavaScript](https://developer.mozilla.org/en/JavaScript)
+* [Lua](http://lua.org)
+* [OCaml](http://caml.inria.fr/)
+* [Pascal](http://www.freepascal.org/)
+* [Perl](http://www.perl.org)
+* [Perpetual](https://github.com/programble/perpetual)
+* [PHP](http://php.net)
+* [Python](http://www.python.org) (only one line though - seems pointless)
+* [Ruby](http://www.ruby-lang.org)
+* [Scala](http://www.scala-lang.org)
 
 Config
 ------
