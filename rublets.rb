@@ -323,6 +323,8 @@ end
         '#include <iomanip>',
         '#include <thread>',
         '#include <mutex>',
+        '#include <functional>',
+        '#include <numeric>',
         'using namespace std;',
       ]
       code = includes.join("\n") + "\n"
