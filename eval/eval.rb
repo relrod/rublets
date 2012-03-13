@@ -22,7 +22,7 @@ class Sandbox
     @owner                = options[:owner] || 'anonymous'
     @includes             = options[:includes] || []
     @code                 = options[:code]
-    @output_limit         = 2
+    @output_limit         = 3
     @gist_after_limit     = options[:gist_after_limit] || true
     @binaries_must_exist  = options[:binaries_must_exist] || [@evaluate_with.first]
     @stdin                = options[:stdin] || nil
