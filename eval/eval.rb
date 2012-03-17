@@ -31,7 +31,7 @@ class Sandbox
 
     FileUtils.mkdir_p @home
     FileUtils.mkdir_p "#{@path}/evaluated"
-    FileUtils.mkdir_p "#{@path}/tmp"
+    FileUtils.mkdir_p "#{@home}/tmp"
   end
 
   def mkdir(directory)
@@ -46,7 +46,7 @@ class Sandbox
     return ["One of (#{@binaries_must_exist.join(', ')}) was not found in $PATH. Try again later."] unless binaries_all_exist?
     insert_code_into_file
     copy_audit_script
-    IO.popen(['timeout', @timeout.to_s, 'sandbox', '-H', @home, '-T', "#{@path}/tmp/", '-t', 'sandbox_x_t', 'timeout', @timeout.to_s, *@evaluate_with, @script_filename, :err => [:child, :out]], 'w+') { |io|
+    IO.popen(['timeout', @timeout.to_s, 'sandbox', '-H', @home, '-T', "#{@home}/tmp/", '-t', 'sandbox_x_t', 'timeout', @timeout.to_s, *@evaluate_with, @script_filename, :err => [:child, :out]], 'w+') { |io|
       io.write File.read("#{@home}/#{@time.to_f}.#{@extension}") if @code_from_stdin
       io.write @stdin unless @stdin.nil?
       io.close_write
