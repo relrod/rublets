@@ -30,6 +30,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
 * [C++](http://gcc.gnu.org/)
 * Common Lisp ([sbcl](http://sbcl.org))
 * [Objective C](http://gcc.gnu.org/)
+* [Elixir](http://elixir-lang.org)
 * [Erlang](http://erlang.org)
 * [Forth](https://www.gnu.org/software/gforth/)
 * [Google Go](http://www.golang.org/)
