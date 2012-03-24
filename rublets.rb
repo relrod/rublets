@@ -106,12 +106,13 @@ end
       future do
         sandbox = Sandbox.new(
           :path                => File.expand_path('~/.rublets'),
-          :evaluate_with       => ['runhaskell'],
+          :evaluate_with       => ['ghci', '-v0'],
           :timeout             => 5,
           :extension           => 'hs',
           :owner               => sender.nick,
           :output_limit        => 2,
-          :code                => $1
+          :code                => $1,
+          :code_from_stdin     => true
           )
         result = sandbox.evaluate
         result.each { |line| respond line }
