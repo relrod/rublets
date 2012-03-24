@@ -401,6 +401,8 @@ end
       end
 
     when /^!elixir> (.*)/
+      eval_code = $1.gsub("'", "\\'")
+      code = "{r, _} = Erlang.elixir.eval('#{eval_code}'); IO.puts inspect(r)"
       future do
         sandbox = Sandbox.new(
           :path          => File.expand_path('~/.rublets'),
@@ -409,7 +411,7 @@ end
           :extension     => 'exs',
           :owner         => sender.nick,
           :output_limit  => 2,
-          :code          => $1
+          :code          => code
         )
         result = sandbox.evaluate
         result.each { |line| respond line }
