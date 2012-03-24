@@ -6,6 +6,7 @@ GEM
     eventmachine (0.12.10)
     json (1.6.5)
     method_source (0.7.0)
+    nokogiri (1.5.2)
     on_irc (2.1.4)
       eventmachine
     promise (0.3.0)
@@ -22,6 +23,7 @@ PLATFORMS
 DEPENDENCIES
   configru
   json
+  nokogiri
   on_irc
   promise
   pry

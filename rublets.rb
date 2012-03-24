@@ -13,7 +13,7 @@ require 'json'
 require 'on_irc'
 require 'future'
 require 'configru'
-
+require 'nokogiri'
 require 'pry'
 
 Configru.load do
@@ -61,6 +61,10 @@ end
       # Lists all available rubies.
       rubies = Dir['./rubies/*'].map { |a| File.basename(a) }
       respond "#{sender.nick}: #{rubies.join(', ')} (You can specify 'all' to evaluate against all rubies, but this might be slowish.)"
+
+    when /^!lang(?:s|uages)$/
+      readme = Nokogiri::HTML(File.open(File.dirname(__FILE__) + '/README.md'))
+      respond "Documented languages: " + readme.css('table a').collect { |link| link.content }.join(', ')
 
     when /^!scala> (.*)/
       future do
@@ -199,7 +203,7 @@ end
         sandbox.rm_home!
       end
 
-    when /^!obj-c> (.*)/
+    when /^!obj(?:ective|)-c> (.*)/
       includes = [
         '#import <Foundation/Foundation.h>',
       ]
