@@ -58,7 +58,7 @@ class Sandbox
       io.write @stdin unless @stdin.nil?
       io.close_write
       @result = io.read.split("\n")
-      @result.shift if @result[0].start_with? 'WARNING: '
+      @result.shift if @result[0].start_with? 'WARNING: Policy would be downgraded'
       @result = @result[@skip_preceding_lines..-1].join("\n")
     }
     if $?.exitstatus.to_i == 124
