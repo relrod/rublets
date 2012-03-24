@@ -38,6 +38,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
 * [Io](http://iolanguage.com)
 * [JavaScript](https://developer.mozilla.org/en/JavaScript)
 * [Lua](http://lua.org)
+* [Maxima](http://maxima.sourceforge.net/)
 * [OCaml](http://caml.inria.fr/)
 * [Pascal](http://www.freepascal.org/)
 * [Perl](http://www.perl.org)

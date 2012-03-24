@@ -411,6 +411,23 @@ end
         sandbox.rm_home!
       end
 
+    when /^!maxima> (.*)/
+      future do
+        sandbox = Sandbox.new(
+          :path            => File.expand_path('~/.rublets'),
+          :evaluate_with   => ['maxima', '--very-quiet', '--disable-readline'],
+          :timeout         => 5,
+          :extension       => 'maxima',
+          :owner           => sender.nick,
+          :output_limit    => 2,
+          :code            => $1,
+          :code_from_stdin => true
+        )
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+      end
+
     when /^!io> (.*)/
       future do
         sandbox = Sandbox.new(
