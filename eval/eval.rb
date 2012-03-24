@@ -47,7 +47,13 @@ class Sandbox
     insert_code_into_file
     copy_audit_script
     cmd_script_filename = @code_from_stdin ? [] : [@script_filename]
-    IO.popen(['timeout', @timeout.to_s, 'sandbox', '-H', @home, '-T', "#{@home}/tmp/", '-t', 'sandbox_x_t', 'timeout', @timeout.to_s, *@evaluate_with, *cmd_script_filename, :err => [:child, :out]], 'w+') { |io|
+    popen_args = [
+      'timeout', @timeout.to_s,
+      'sandbox', '-H', @home, '-T', "#{@home}/tmp/", '-t', 'sandbox_x_t',
+      'timeout', @timeout.to_s, *@evaluate_with
+    ]
+    popen_args << @script_filename unless @code_from_stdin
+    IO.popen([*popen_args, :err => [:child, :out]], 'w+') { |io|
       io.write File.read("#{@home}/#{@time.to_f}.#{@extension}") if @code_from_stdin
       io.write @stdin unless @stdin.nil?
       io.close_write
