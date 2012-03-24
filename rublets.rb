@@ -412,6 +412,9 @@ end
       end
 
     when /^!maxima> (.*)/
+      code = "display2d: false$ leftjust: true$ #{$1}"
+      code += ';' unless (code.end_with?(';') || code.end_with?('$'))
+      
       future do
         sandbox = Sandbox.new(
           :path            => File.expand_path('~/.rublets'),
@@ -420,7 +423,7 @@ end
           :extension       => 'maxima',
           :owner           => sender.nick,
           :output_limit    => 2,
-          :code            => $1,
+          :code            => code,
           :code_from_stdin => true
         )
         result = sandbox.evaluate
