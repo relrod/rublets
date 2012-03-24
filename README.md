@@ -25,29 +25,82 @@ Set up RVM as your regular user with however many rubies you want, then from the
 What it can evaluate (if given selinux permissions, and if the interpreters/compilers are installed):
 -----------------------------------------------------------------------------------------------------
 
-* [Bash](https://www.gnu.org/software/bash/)
-* [C](http://gcc.gnu.org/)
-* [C++](http://gcc.gnu.org/)
-* Common Lisp ([sbcl](http://sbcl.org))
-* [Objective C](http://gcc.gnu.org/)
-* [Elixir](http://elixir-lang.org)
-* [Erlang](http://erlang.org)
-* [Forth](https://www.gnu.org/software/gforth/)
-* [Google Go](http://www.golang.org/)
-* [Haskell](http://haskell.org)
-* [Io](http://iolanguage.com)
-* [JavaScript](https://developer.mozilla.org/en/JavaScript)
-* [Lua](http://lua.org)
-* [Maxima](http://maxima.sourceforge.net/)
-* [OCaml](http://caml.inria.fr/)
-* [Pascal](http://www.freepascal.org/)
-* [Perl](http://www.perl.org)
-* [Perpetual](https://github.com/programble/perpetual)
-* [PHP](http://php.net)
-* [Python](http://www.python.org) (only one line though - seems pointless)
-* [Ruby](http://www.ruby-lang.org)
-* [Scala](http://www.scala-lang.org)
-* [Smalltalk](http://smalltalk.gnu.org)
+
+<table>
+<tr>
+  <td>Shells</td>
+  <td>
+    <a href="https://www.gnu.org/software/bash/">Bash</a>
+  </td>
+</tr>
+<tr>
+  <td>C-like</td>
+  <td>
+    <a href="http://gcc.gnu.org/">C</a>
+    <a href="http://gcc.gnu.org/">C++</a>
+    <a href="http://www.golang.org/">Go</a>
+    <a href="http://gcc.gnu.org/">Objective-C</a>
+  </td>
+</tr>
+<tr>
+  <td>Lisps</td>
+  <td>
+    <a href="http://sbcl.org">sbcl</a>
+    <a href="https://github.com/programble/perpetual">Perpetual</a>
+  </td>
+</tr>
+<tr>
+  <td>Erlang VM</td>
+  <td>
+    <a href="http://elixir-lang.org">Elixir</a>
+    <a href="http://erlang.org">Erlang</a>
+  </td>
+</tr>
+<tr>
+  <td>Stack-based</td>
+  <td>
+    <a href="https://www.gnu.org/software/gforth/">Forth</a>
+  </td>
+</tr>
+<tr>
+  <td>Functional</td>
+  <td>
+    <a href="http://haskell.org">Haskell</a>
+    <a href="http://caml.inria.fr/">OCaml</a>
+  </td>
+</tr>
+<tr>
+  <td>Prototype-based</td>
+  <td>
+    <a href="http://iolanguage.com">Io</a>
+    <a href="https://developer.mozilla.org/en/JavaScript">JavaScript</a>
+    <a href="http://lua.org">Lua</a>
+  </td>
+</tr>
+<tr>
+  <td>Misc</td>
+  <td>
+    <a href="http://maxima.sourceforge.net/">Maxima</a>
+    <a href="http://www.freepascal.org/">Pascal</a>
+    <a href="http://smalltalk.gnu.org">Smalltalk</a>
+  </td>
+</tr>
+<tr>
+  <td>Scripting</td>
+  <td>
+    <a href="http://www.perl.org">Perl</a>
+    <a href="http://php.net">PHP</a>
+    <a href="http://www.python.org) (only one line though - seems pointless">Python</a>
+    <a href="http://www.ruby-lang.org">Ruby</a>
+  </td>
+</tr>
+<tr>
+  <td>JVM-based</td>
+  <td>
+    <a href="http://www.scala-lang.org">Scala</a>
+  </td>
+</tr>
+</table>
 
 Config
 ------
