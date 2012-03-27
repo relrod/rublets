@@ -174,13 +174,15 @@ end
     when /^!ocaml> (.*)/
       future do
         sandbox = Sandbox.new(
-          :path                => File.expand_path('~/.rublets'),
-          :evaluate_with       => ['ocaml'],
-          :timeout             => 5,
-          :extension           => 'ml',
-          :owner               => sender.nick,
-          :output_limit        => 2,
-          :code                => $1
+          :path                 => File.expand_path('~/.rublets'),
+          :evaluate_with        => ['ocaml', '-noprompt'],
+          :timeout              => 5,
+          :extension            => 'ml',
+          :owner                => sender.nick,
+          :skip_preceding_lines => 2,
+          :code_from_stdin      => true,
+          :output_limit         => 2,
+          :code                 => $1
           )
         result = sandbox.evaluate
         result.each { |line| respond line }
