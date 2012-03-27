@@ -403,8 +403,8 @@ end
       end
 
     when /^!elixir> (.*)/
-      eval_code = $1.gsub("'") { "\\'" }
-      code = "{r, _} = Erlang.elixir.eval('#{eval_code}', []); IO.puts inspect(r)"
+      eval_code = $1.inspect
+      code = "{r, _} = Code.eval(#{eval_code}, []); IO.puts inspect(r)"
       future do
         sandbox = Sandbox.new(
           :path          => File.expand_path('~/.rublets'),
