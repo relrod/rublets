@@ -512,7 +512,7 @@ end
       end
 
       # Ruby eval.
-    when /^!!([\w\.\-]+)?>> (.*)/
+    when /^!([\w\.\-]+)?>> (.*)/
       future do
         # Pull these out of the regex here, because the global captures get reset below.
         given_version = $1 # might be nil.
