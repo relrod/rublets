@@ -404,7 +404,7 @@ end
 
     when /^!elixir> (.*)/
       eval_code = $1.gsub("'") { "\\'" }
-      code = "{r, _} = Erlang.elixir.eval('#{eval_code}'); IO.puts inspect(r)"
+      code = "{r, _} = Erlang.elixir.eval('#{eval_code}', []); IO.puts inspect(r)"
       future do
         sandbox = Sandbox.new(
           :path          => File.expand_path('~/.rublets'),
@@ -512,7 +512,7 @@ end
       end
 
       # Ruby eval.
-    when /^!([\w\.\-]+)?>> (.*)/
+    when /^!!([\w\.\-]+)?>> (.*)/
       future do
         # Pull these out of the regex here, because the global captures get reset below.
         given_version = $1 # might be nil.
