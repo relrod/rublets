@@ -1,7 +1,7 @@
 require 'fileutils'
 
 class Sandbox
-  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit_before_gisting, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines
+  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit_before_gisting, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code
 
   def initialize(options = {})
     unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/sandbox' }
@@ -28,6 +28,13 @@ class Sandbox
     @stdin                = options[:stdin] || nil
     @code_from_stdin      = options[:code_from_stdin] || false
     @skip_preceding_lines = options[:skip_preceding_lines] || 0
+    @alter_code           = options[:alter_code] || nil
+    
+    # @alter_code is a method that gets called on @code immediately after a
+    # Sandbox object is created.
+    @code = @alter_code.call(@code) unless @alter_code.nil?
+   
+      
 
     FileUtils.mkdir_p @home
     FileUtils.mkdir_p "#{@path}/evaluated"
