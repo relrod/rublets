@@ -1,17 +1,17 @@
 require 'fileutils'
 
 class Sandbox
-  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit_before_gisting, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code
+  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :gist_after_limit, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code
 
   def initialize(options = {})
     unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/sandbox' }
       raise "The `sandbox` executable does not exist and is required."
     end
-    
+
     unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/timeout' }
       raise "The `timeout` executable does not exist and is required. (Is coreutils installed?)"
     end
-    
+
     @time                 = Time.now
     @path                 = options[:path]
     @home                 = options[:home] || "#{@path}/sandbox_home-#{@time.to_f}"
@@ -22,19 +22,17 @@ class Sandbox
     @owner                = options[:owner] || 'anonymous'
     @includes             = options[:includes] || []
     @code                 = options[:code]
-    @output_limit         = 3
+    @output_limit         = options[:output_limit] || 3
     @gist_after_limit     = options[:gist_after_limit] || true
     @binaries_must_exist  = options[:binaries_must_exist] || [@evaluate_with.first]
     @stdin                = options[:stdin] || nil
     @code_from_stdin      = options[:code_from_stdin] || false
     @skip_preceding_lines = options[:skip_preceding_lines] || 0
     @alter_code           = options[:alter_code] || nil
-    
+
     # @alter_code is a method that gets called on @code immediately after a
     # Sandbox object is created.
     @code = @alter_code.call(@code) unless @alter_code.nil?
-   
-      
 
     FileUtils.mkdir_p @home
     FileUtils.mkdir_p "#{@path}/evaluated"
