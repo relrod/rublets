@@ -164,12 +164,10 @@ languages = {
     :timeout              => 5,
     :extension            => 'exs',
     :output_limit         => 2,
-    :before               => "{r, _} = Code.eval(",
     :alter_code           => lambda { |code|
       eval_code = code.inspect
       "{r, _} = Code.eval(#{eval_code}, []); IO.puts inspect(r)"
     },
-    :after                => ", []); IO.puts inspect(r)",
   },
   'maxima' => {
     :path                 => File.expand_path('~/.rublets'),
