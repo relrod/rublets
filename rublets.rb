@@ -5,9 +5,6 @@ require 'timeout'
 require 'net/https'
 require 'uri'
 
-require './eval/eval.rb'
-require './eval/languages.rb'
-
 require 'rubygems'
 require 'bundler/setup'
 require 'json'
@@ -16,6 +13,10 @@ require 'future'
 require 'configru'
 require 'nokogiri'
 require 'pry'
+
+$LOAD_PATH.unshift File.dirname(__FILE__)
+require 'eval/eval'
+require 'eval/languages'
 
 Configru.load do
   just 'rublets.yml'
