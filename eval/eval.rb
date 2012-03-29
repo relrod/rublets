@@ -63,6 +63,7 @@ class Sandbox
       io.write @stdin unless @stdin.nil?
       io.close_write
       @result = io.read.split("\n")
+      @result = "An error occurred processing the code you specified, but no error was returned" if @result == nil
       @result.shift if @result[0].start_with? 'WARNING: Policy would be downgraded'
       @result = @result[@skip_preceding_lines..-1].join("\n")
     }
