@@ -60,7 +60,7 @@ end
 @bot.on :privmsg do
   begin
     matches = params[1].match(/#{Configru.comchar}(\S+)> ?(.*)/)
-    unless matches.nil?
+    if matches
       the_lang = Language.by_name(matches[1])
       if the_lang != nil
         future do
