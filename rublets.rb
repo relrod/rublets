@@ -266,11 +266,15 @@ languages = {
     :before               => File.read('eval/rublets-cpp.h'),
   },
   'php' => {
-    :path          => File.expand_path('~/.rublets'),
-    :evaluate_with => ['php'],
-    :timeout       => 5,
-    :extension     => 'php',
-    :output_limit  => 2,
+    :path                 => File.expand_path('~/.rublets'),
+    :evaluate_with        => ['php'],
+    :timeout              => 5,
+    :extension            => 'php',
+    :output_limit         => 2,
+    :alter_code           => lambda { |code|
+      code = "<?php #{code}" unless code.start_with?("<?")
+      code.gsub!(/^<\? /, '<?php ') if code.start_with?("<? ")
+    },
   },
 }
 
