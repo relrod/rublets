@@ -308,17 +308,19 @@ end
 
 @bot.on :privmsg do
   begin
-    params[1].match(/#{Configru.comchar}(\S+)> ?(.*)/)
-    the_lang = lang_from_hash_by_name(languages, $1)
-    if the_lang != nil
-      #future do
-        sandbox = Sandbox.new(the_lang.merge({:owner => sender.nick, :code => $2}))
-        the_lang[:required_files].each { |file,dest| sandbox.copy file, dest } unless the_lang[:required_files].nil?
-        result = sandbox.evaluate
-        result.each { |line| respond line }
-        sandbox.rm_home!
-        next
-      #end
+    matches = params[1].match(/#{Configru.comchar}(\S+)> ?(.*)/)
+    unless matches.nil?
+      the_lang = lang_from_hash_by_name(languages, matches[1])
+      if the_lang != nil
+        future do
+          sandbox = Sandbox.new(the_lang.merge({:owner => sender.nick, :code => matches[2]}))
+          the_lang[:required_files].each { |file,dest| sandbox.copy file, dest } unless the_lang[:required_files].nil?
+          result = sandbox.evaluate
+          result.each { |line| respond line }
+          sandbox.rm_home!
+          next
+        end
+      end
     end
     
     case params[1]
@@ -354,7 +356,7 @@ end
 
     # Ruby eval.
     when /^!(([\w\.\-]+)?>?|>)> (.*)/
-      #future do
+      future do
         # Pull these out of the regex here, because the global captures get reset below.
         given_version = $2 # might be nil.
         code = $3
@@ -413,7 +415,7 @@ end
         result = sandbox.evaluate
         result.each { |line| respond line }
         sandbox.rm_home!
-      #end
+      end
     end # end case
   rescue ThreadError
     respond "Could not create thread."
