@@ -274,6 +274,7 @@ languages = {
     :alter_code           => lambda { |code|
       code = "<?php #{code}" unless code.start_with?("<?")
       code.gsub!(/^<\? /, '<?php ') if code.start_with?("<? ")
+      code
     },
   },
 }
