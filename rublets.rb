@@ -369,7 +369,7 @@ end
             if rubies.count > 1
               respond "#{sender.nick}: You matched multiple rubies. Be more specific. See !rubies for the full list." and next
             elsif rubies.count == 0
-              respond "#{sender.nick}: That ruby isn't available. See !rubies for a list." and next
+              next
             end
             rubyversion = rubies[0]
           end
