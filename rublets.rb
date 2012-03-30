@@ -60,7 +60,7 @@ end
 
 @bot.on :privmsg do
   begin
-    matches = params[1].match(/#{Configru.comchar}(\S+)> ?(.*)/)
+    matches = params[1].match(/^#{Configru.comchar}(\S+)> ?(.*)/)
     if matches
       the_lang = Language.by_name(matches[1])
       if the_lang != nil
@@ -76,15 +76,15 @@ end
     end
     
     case params[1]
-    when /^!rubies$/
+    when /^#{Configru.comchar}rubies$/
       # Lists all available rubies.
       rubies = Dir['./rubies/*'].map { |a| File.basename(a) }
       respond "#{sender.nick}: #{rubies.join(', ')} (You can specify 'all' to evaluate against all rubies, but this might be slowish.)"
 
-    when /^!lang(?:s|uages)$/
+    when /^#{Configru.comchar}lang(?:s|uages)$/
       respond "You can use any of these languages: #{Language.list_all}"
 
-    when /^!<\?(php|php=|=|) (.*)/
+    when /^#{Configru.comchar}<\?(php|php=|=|) (.*)/
       respond "#{sender.nick}, this PHP syntax is deprecated.  Use !php> <?php /* Your code */ instead."
       if not $1.nil? and $1.end_with? '='
         code = "<?php echo #{$2}"
@@ -107,7 +107,7 @@ end
       end
 
     # Ruby eval.
-    when /^!(([\w\.\-]+)?>?|>)> (.*)/
+    when /^#{Configru.comchar}(([\w\.\-]+)?>?|>)> (.*)/
       future do
         # Pull these out of the regex here, because the global captures get reset below.
         given_version = $2 # might be nil.
