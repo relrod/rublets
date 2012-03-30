@@ -1,4 +1,9 @@
 default_ruby: 1.9.3-p125
+comchar: "!"
+default_ruby: "ruby-1.9.3-p0"
+github_credentials:
+  username: rublets
+  password: Your_P4ssw0rd_G0eS.Here!
 nickname: rublets_dev
 servers:
   tenthbit:

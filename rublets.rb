@@ -65,7 +65,7 @@ end
       the_lang = Language.by_name(matches[1])
       if the_lang != nil
         future do
-          sandbox = Sandbox.new(the_lang.merge({:owner => sender.nick, :code => matches[2]}))
+          sandbox = Sandbox.new(the_lang.merge({:owner => sender.nick, :code => matches[2], :github_credentials => Configru.github_credentials}))
           the_lang[:required_files].each { |file,dest| sandbox.copy file, dest } unless the_lang[:required_files].nil?
           result = sandbox.evaluate
           result.each { |line| respond line }
@@ -93,13 +93,14 @@ end
       end
       future do
         sandbox = Sandbox.new(
-          :path          => File.expand_path('~/.rublets'),
-          :evaluate_with => ['php'],
-          :timeout       => 5,
-          :extension     => 'php',
-          :owner         => sender.nick,
-          :output_limit  => 2,
-          :code          => code
+          :path               => File.expand_path('~/.rublets'),
+          :evaluate_with      => ['php'],
+          :timeout            => 5,
+          :extension          => 'php',
+          :owner              => sender.nick,
+          :output_limit       => 2,
+          :code               => code,
+          :github_credentials => Configru.github_credentials
         )
         result = sandbox.evaluate
         result.each { |line| respond line }
@@ -150,6 +151,7 @@ end
           :output_limit        => 2,
           :code                => eval_code,
           :binaries_must_exist => ['ruby', 'bash'],
+          :github_credentials  => Configru.github_credentials
           )
 
         sandbox.copy 'rvm', '.rvm'

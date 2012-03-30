@@ -1,7 +1,10 @@
 require 'fileutils'
+require 'uri'
+require 'net/https'
+require 'base64'
 
 class Sandbox
-  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :gist_after_limit, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :size_limit
+  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :gist_after_limit, :github_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :size_limit
 
   def initialize(options = {})
     unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/sandbox' }
@@ -24,6 +27,7 @@ class Sandbox
     @code                 = "#{options[:before]}#{options[:code]}#{options[:after]}"
     @output_limit         = options[:output_limit] || 3
     @gist_after_limit     = options[:gist_after_limit] || true
+    @github_credentials   = options[:github_credentials] || {}
     @binaries_must_exist  = options[:binaries_must_exist] || [@evaluate_with.first]
     @stdin                = options[:stdin] || nil
     @code_from_stdin      = options[:code_from_stdin] || false
@@ -81,7 +85,7 @@ class Sandbox
         output << line
       end
       if lines.count > @output_limit and @gist_after_limit
-        output << "<output truncated> #{gist}"
+        output << "<output truncated> #{gist(@github_credentials)}"
       end
     end
     if $?.exitstatus.to_i == 124
@@ -94,10 +98,17 @@ class Sandbox
     FileUtils.rm_rf @home
   end
 
-  def gist
+  def gist(credentials = {})
+    username = credentials[:username] || nil
+    password = credentials[:password] || nil
+
     gist = URI.parse('https://api.github.com/gists')
     http = Net::HTTP.new(gist.host, gist.port)
     http.use_ssl = true
+    
+    headers = {}
+    headers['Authorization'] = 'Basic ' + Base64.encode64("#{username}:#{password}").chop unless username.nil? or password.nil?
+    
     response = http.post(gist.path, {
         'public' => false,
         #'description' => "#{nickname}'s ruby eval",
@@ -109,7 +120,7 @@ class Sandbox
             'content' => @result
           }
         }
-      }.to_json)
+      }.to_json, headers)
     if response.response.code.to_i != 201
       return "Unable to Gist output."
     else
