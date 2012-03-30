@@ -1,7 +1,7 @@
 require 'fileutils'
 
 class Sandbox
-  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :gist_after_limit, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code
+  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :gist_after_limit, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :size_limit
 
   def initialize(options = {})
     unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/sandbox' }
@@ -29,6 +29,7 @@ class Sandbox
     @code_from_stdin      = options[:code_from_stdin] || false
     @skip_preceding_lines = options[:skip_preceding_lines] || 0
     @alter_code           = options[:alter_code] || nil
+    @size_limit            = options[:size_limit] || 2048 # bytes
 
     # @alter_code is a method that gets called on @code immediately after a
     # Sandbox object is created.
@@ -62,14 +63,14 @@ class Sandbox
       io.write File.read("#{@home}/#{@time.to_f}.#{@extension}") if @code_from_stdin
       io.write @stdin unless @stdin.nil?
       io.close_write
-      @result = io.read.split("\n")
+      @result = io.read(@size_limit).split("\n")
       @result = "An error occurred processing the code you specified, but no error was returned" if @result == nil
       @result.shift if @result[0].start_with? 'WARNING: Policy would be downgraded'
       @result = @result[@skip_preceding_lines..-1].join("\n")
     }
     if $?.exitstatus.to_i == 124
       @result = "Timeout of #{@timeout} seconds was hit."
-    elsif @result.empty?
+    elsif @result.nil? or @result.empty?
       @result = "No output." 
     end
     
