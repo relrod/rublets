@@ -68,9 +68,8 @@ class Sandbox
       @result.shift if @result[0].start_with? 'WARNING: Policy would be downgraded'
       @result = @result[@skip_preceding_lines..-1].join("\n")
     }
-    if $?.exitstatus.to_i == 124
-      @result = "Timeout of #{@timeout} seconds was hit."
-    elsif @result.nil? or @result.empty?
+
+    if @result.nil? or @result.empty?
       @result = "No output." 
     end
     
@@ -84,6 +83,9 @@ class Sandbox
       if lines.count > @output_limit and @gist_after_limit
         output << "<output truncated> #{gist}"
       end
+    end
+    if $?.exitstatus.to_i == 124
+      output << "Timeout of #{@timeout} seconds was hit."
     end
     output
   end
