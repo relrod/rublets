@@ -107,6 +107,28 @@ end
         sandbox.rm_home!
       end
 
+      # Special cased to warn about using ;; for \n
+    when /^#{Configru.comchar}lolcode> (.*)/i
+      code = $1
+        sandbox = Sandbox.new(
+          :path          => File.expand_path('~/.rublets'),
+          :evaluate_with => ['lol-pl'],
+          :timeout       => 5,
+          :extension     => 'lol',
+          :output_limit  => 2,
+          :code          => code,
+          :alter_code    => lambda { |code|
+            code.gsub(";;", "\n")
+          }
+        )
+        if code.include? ";" and !code.include? ";;"
+          respond "USE ;; 2 SEPURRRATE UR CODEZ N INSURT NEW LINE KTHX"
+        end
+        result = sandbox.evaluate
+        result.each { |line| respond line }
+        sandbox.rm_home!
+
+
     # Ruby eval.
     when /^#{Configru.comchar}(([\w\.\-]+)?>?|>)> (.*)/
       future do
