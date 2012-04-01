@@ -116,6 +116,7 @@ end
           :timeout       => 5,
           :extension     => 'lol',
           :output_limit  => 2,
+          :github_credentials => Configru.github_credentials,
           :code          => code,
           :alter_code    => lambda { |code|
             code.gsub(";;", "\n")
