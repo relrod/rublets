@@ -45,6 +45,20 @@ class Language
         :extension            => 'lua',
         :output_limit         => 2,
       },
+      'arroyo' => {
+        :path                 => File.expand_path('~/.rublets'),
+        :evaluate_with        => ['arroyo'],
+        :timeout              => 5,
+        :extension            => 'arr',
+        :output_limit         => 2,
+      },
+      'clay' => {
+        :path                 => File.expand_path('~/.rublets'),
+        :evaluate_with        => ['clay', '-run'],
+        :timeout              => 5,
+        :extension            => 'clay',
+        :output_limit         => 2,
+      },
       'ocaml' => {
         :path                 => File.expand_path('~/.rublets'),
         :evaluate_with        => [
