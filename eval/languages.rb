@@ -258,12 +258,11 @@ class Language
   end
 
   def self.list_all
-    supported = ""
+    supported = []
     languages.each do |lang, params|
-      supported += "#{lang}"
-      supported += " (aka #{params[:aliases].join(", ")})" unless params[:aliases].nil?
-      supported += ", "
+      lang += " (aka #{params[:aliases].join(", ")})" unless params[:aliases].nil?
+      supported << lang
     end
-    supported
+    supported.sort.join(', ')
   end
 end
