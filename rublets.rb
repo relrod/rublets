@@ -82,7 +82,7 @@ end
       respond "#{sender.nick}: #{rubies.join(', ')} (You can specify 'all' to evaluate against all rubies, but this might be slowish.)"
 
     when /^#{Configru.comchar}lang(?:s|uages)$/
-      respond "You can use any of these languages: #{Language.list_all}"
+      respond "\x01ACTION supports: #{Language.list_all}\x01"
 
     when /^#{Configru.comchar}<\?(php|php=|=|) (.*)/
       respond "#{sender.nick}, this PHP syntax is deprecated.  Use !php> <?php /* Your code */ instead."
