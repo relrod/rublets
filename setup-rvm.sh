@@ -15,7 +15,7 @@ echo "Copying `whoami`'s ~/.rvm/."
 cp -r ~/.rvm/ $DIR/rvm/
 
 echo "Removing useless files."
-rm -rf $DIR/rvm/{gems,archives,examples,man,patches,patchsets,README,src,tmp,user}
+rm -rf $DIR/rvm/{gems,archives,examples,man,patches,patchsets,README,src,tmp,user,repos}
 
 echo "Moving 'rubies' out."
 mv -v $DIR/rvm/rubies/ $DIR/rubies
