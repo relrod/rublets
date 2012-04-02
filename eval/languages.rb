@@ -115,9 +115,18 @@ class Language
         :output_limit         => 2,
       },
       'perl' => {
+        :aliases              => ['perl5'],
         :path                 => File.expand_path('~/.rublets'),
         :evaluate_with        => ['perl'],
         :timeout              => 5,
+        :extension            => 'pl',
+        :output_limit         => 2,
+      },
+      'perl6' => {
+        :aliases              => ['rakudo'],
+        :path                 => File.expand_path('~/.rublets'),
+        :evaluate_with        => ['perl6'],
+        :timeout              => 6,
         :extension            => 'pl',
         :output_limit         => 2,
       },
