@@ -249,6 +249,16 @@ class Language
           code
         },
       },
+      'c#' => {
+        :aliases              => ['csharp'],
+        :path                 => File.expand_path('~/.rublets'),
+        :evaluate_with        => ['bash', 'run-cs.sh'],
+        :binaries_must_exist  => ['mcs', 'bash'],
+        :timeout              => 5,
+        :extension            => 'cs',
+        :output_limit         => 2,
+        :required_files       => {'eval/run-cs.sh' => 'run-cs.sh'},
+      },
     }
   end
   

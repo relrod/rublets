@@ -103,6 +103,12 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
     <a href="http://www.scala-lang.org">Scala</a>
   </td>
 </tr>
+<tr>
+  <td>.NET</td>
+  <td>
+    C#
+  </td>
+</tr>
 </table>
 
 Config
