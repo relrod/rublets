@@ -90,7 +90,8 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
 <tr>
   <td>Scripting</td>
   <td>
-    <a href="http://www.perl.org">Perl</a>
+    <a href="http://www.perl.org">Perl 5</a>
+    <a href="http://perl6.org">Perl 6</a>>
     <a href="http://php.net">PHP</a>
     <a href="http://www.python.org">Python</a>
     <a href="http://www.ruby-lang.org">Ruby</a>
