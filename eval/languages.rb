@@ -271,7 +271,9 @@ class Language
       },
       'frink' => {
         :path                 => File.expand_path('~/.rublets'),
-        :evaluate_with        => ['java', '-cp', '/usr/share/java/frink.jar', 'frink.parser.Frink'],
+        :evaluate_with        => [
+          'java', '-cp', '/usr/share/java/frink.jar', 'frink.parser.Frink'
+        ] + (File.exists?('/etc/frink/units.txt') ? ['-u', '/etc/frink/units.txt'] : []),
         :timeout              => 6,
         :extension            => 'frink',
         :output_limit         => 2,
