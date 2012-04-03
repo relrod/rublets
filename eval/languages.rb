@@ -259,6 +259,16 @@ class Language
         :output_limit         => 2,
         :required_files       => {'eval/run-cs.sh' => 'run-cs.sh'},
       },
+      'java' => {
+        :path                 => File.expand_path('~/.rublets'),
+        :evaluate_with        => ['bash', 'run-java.sh'],
+        :binaries_must_exist  => ['javac', 'java', 'bash'],
+        :timeout              => 5,
+        :extension            => 'java',
+        :output_limit         => 2,
+        :required_files       => {'eval/run-java.sh' => 'run-java.sh'},
+        :script_filename      => 'Rublets.java'
+      },
     }
   end
   
