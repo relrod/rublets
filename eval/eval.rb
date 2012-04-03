@@ -64,7 +64,7 @@ class Sandbox
     ]
     popen_args << @script_filename unless @code_from_stdin
     IO.popen([*popen_args, :err => [:child, :out]], 'w+') { |io|
-      io.write File.read("#{@home}/#{@time.to_f}.#{@extension}") if @code_from_stdin
+      io.write File.read("#{@home}/#{@script_filename}") if @code_from_stdin
       io.write @stdin unless @stdin.nil?
       io.close_write
       @result = io.read(@size_limit).split("\n")
@@ -141,7 +141,7 @@ class Sandbox
   end
 
   def insert_code_into_file
-    File.open("#{@home}/#{@time.to_f}.#{@extension}", 'w') do |f|
+    File.open("#{@home}/#{@script_filename}", 'w') do |f|
       f.puts @code
     end
   end
