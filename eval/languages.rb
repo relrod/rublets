@@ -269,6 +269,16 @@ class Language
         :required_files       => {'eval/run-java.sh' => 'run-java.sh'},
         :script_filename      => 'Rublets.java'
       },
+      'frink' => {
+        :path                 => File.expand_path('~/.rublets'),
+        :evaluate_with        => ['java', '-cp', '/usr/share/java/frink.jar', 'frink.parser.Frink'],
+        :timeout              => 6,
+        :extension            => 'frink',
+        :output_limit         => 2,
+        :code_from_stdin      => true,
+        :skip_preceding_lines => 1,
+        :skip_ending_lines    => 1
+      },
     }
   end
   
