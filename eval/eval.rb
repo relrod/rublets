@@ -32,8 +32,9 @@ class Sandbox
     @stdin                = options[:stdin] || nil
     @code_from_stdin      = options[:code_from_stdin] || false
     @skip_preceding_lines = options[:skip_preceding_lines] || 0
+    @skip_ending_lines    = options[:skip_ending_lines] || 0
     @alter_code           = options[:alter_code] || nil
-    @size_limit            = options[:size_limit] || 2048 # bytes
+    @size_limit           = options[:size_limit] || 2048 # bytes
 
     # @alter_code is a method that gets called on @code immediately after a
     # Sandbox object is created.
@@ -70,7 +71,7 @@ class Sandbox
       @result = io.read(@size_limit).split("\n")
       @result = "An error occurred processing the code you specified, but no error was returned" if @result == nil
       @result.shift if @result[0].start_with? 'WARNING: Policy would be downgraded'
-      @result = @result[@skip_preceding_lines..-1].join("\n")
+      @result = @result[@skip_preceding_lines..-(@skip_ending_lines + 1)].join("\n")
     }
 
     if @result.nil? or @result.empty?
