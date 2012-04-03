@@ -19,7 +19,7 @@ class Sandbox
     @path                 = options[:path]
     @home                 = options[:home] || "#{@path}/sandbox_home-#{@time.to_f}"
     @extension            = options[:extension] || "txt"
-    @script_filename      = options[:script] || "#{@time.to_f}.#{@extension}"
+    @script_filename      = options[:script_filename] || "#{@time.to_f}.#{@extension}"
     @evaluate_with        = options[:evaluate_with]
     @timeout              = options[:timeout].to_i || 5
     @owner                = options[:owner] || 'anonymous'
