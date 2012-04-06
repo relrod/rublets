@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Rublets by CodeBlock</title>
+    
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Rublets</h1>
+        <p>An IRC bot that uses SELinux Sandboxes to let you evaluate code in a large number languages</p>
+        <p class="view"><a href="https://github.com/CodeBlock/rublets">View the Project on GitHub <small>CodeBlock/rublets</small></a></p>
+        <ul>
+          <li><a href="https://github.com/CodeBlock/rublets/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/CodeBlock/rublets/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/CodeBlock/rublets">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h3>Welcome to Rublets</h3>
+
+<p>Rublets is a code evaluation IRC bot which uses selinux's <code>sandbox</code> command to safely allow for evaluation and compilation of code by users in an irc channel.</p>
+
+<div class="highlight">
+<pre><span class="nt">&lt;CodeBlock&gt; </span>!perl6&gt; print "Hello!";
+<span class="nt">&lt;rublets&gt; </span>Hello!
+<span class="nt">&lt;CodeBlock&gt; </span>!io&gt; "Hello world!" println
+<span class="nt">&lt;rublets&gt; </span>Hello world!
+<span class="nt">&lt;CodeBlock&gt; </span>!io&gt; "Hello world!" utoh_syntax_error
+<span class="nt">&lt;rublets&gt;   </span><span class="na">Exception:</span> Sequence does not respond to 'utoh_syntax_error'
+<span class="nt">&lt;rublets&gt; </span>&lt;output truncated&gt; <a href="https://gist.github.com/2faf508b0415df2b4c76">https://gist.github.com/2faf508b0415df2b4c76</a>
+</pre>
+</div>
+
+
+<h3>Setting Rublets up</h3>
+
+<p>Unfortunately, Rublets is a bit complex to set up, due to the nature of how it works.</p>
+
+<p>At minimum, Rublets requires:
+* SELinux (<strong>enforcing!</strong>)
+* <code>sandbox</code> (In Fedora, this is found in the <code>policycoreutils-python</code> package)
+* Interpreters for each language that Rublets supports, or each language that you wish to allow evaluations for.
+** See the readme for a list of languages that it can currently evaluate.</p>
+
+<p>Rublets doesn't require anything special beyond this, however. It doesn't need its own server, or even its own user account.</p>
+
+<p>You can daemonize it with <code>nohup</code>, or just do like I do, and run it in <code>tmux</code> or <code>screen</code>.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/CodeBlock">CodeBlock</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+  </body>
+</html>
