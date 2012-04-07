@@ -281,6 +281,7 @@ class Language
         :evaluate_with        => [
           'java', '-cp', '/usr/share/java/frink.jar', 'frink.parser.Frink'
         ] + (File.exists?('/etc/frink/units.txt') ? ['-u', '/etc/frink/units.txt'] : []),
+        :version_against      => 'frink',
         :timeout              => 6,
         :extension            => 'frink',
         :output_limit         => 2,
@@ -324,5 +325,66 @@ class Language
       supported << lang
     end
     supported.sort.join(', ')
+  end
+
+  # Public: Give the version of a supported language.
+  #
+  # language        - A Hash containing information about a language.
+  # version_command - A String with the default way to get the version of the
+  #                   language. A literal (sans quotes) "{}" will be replaced
+  #                   with the FULL PATH to the binary. Otherwise the FULL
+  #                   PATH will be appended to the end of the String.
+  #
+  # If the language has a defined :version_against, that binary is used.
+  # Otherwise, the first element of :evaluate_with is used.
+  #
+  # The binary to version against MUST be in $PATH or no version will return.
+  #
+  # Examples
+  #
+  #   # Fedora, RHEL, CentOS, Scientific Linux, etc.
+  #   Language.version(Language.by_name('php'), 'rpm -qf')
+  #   # => php-cli-5.4.0-5.fc18.x86_64
+  #
+  #   # Debian, Ubuntu, etc.
+  #   Language.version(Language.by_name('perl'),
+  #     "dpkg-query -W -f '${Package}-${Version}\n' $(dpkg -S {} | awk -F: '{print $1}')"
+  #
+  # Returns the version of the language as a String, or nil if the language is
+  #   not in $PATH.
+  def self.version(language, version_command)
+    # Use :version_against or :binaries_must_exist[0]
+    binary = if language[:version_against]
+               language[:version_against]
+             else
+               if language[:binaries_must_exist]
+                 language[:binaries_must_exist][0]
+               elsif language[:evaluate_with]
+                 language[:evaluate_with][0]
+               else
+                 nil
+               end
+             end
+    return nil if binary == nil
+    
+    # Get the absolute path of the interpreter/compiler.
+    path_to_binary = ''
+    ENV['PATH'].split(':').each do |path|
+      if File.exists? File.join(path, '/', binary)
+        path_to_binary = File.join(path, '/', binary)
+        break
+      end
+    end
+    return nil if path_to_binary == ''
+
+    # Swap out all '{}' with the actual path, if we need to.
+    # If '{}' doesn't appear, just throw path_to_binary on the end.
+    if version_command.include? '{}'
+      version_command.gsub!('{}', path_to_binary)
+    else
+      version_command = "#{version_command} #{path_to_binary}"
+    end
+
+    return `#{version_command}`.strip
   end
 end
