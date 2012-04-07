@@ -281,6 +281,7 @@ class Language
         :evaluate_with        => [
           'java', '-cp', '/usr/share/java/frink.jar', 'frink.parser.Frink'
         ] + (File.exists?('/etc/frink/units.txt') ? ['-u', '/etc/frink/units.txt'] : []),
+        :version_against      => 'frink',
         :timeout              => 6,
         :extension            => 'frink',
         :output_limit         => 2,
@@ -324,5 +325,78 @@ class Language
       supported << lang
     end
     supported.sort.join(', ')
+  end
+
+  # Public: Give the version of a supported language.
+  #
+  # language        - A Hash containing information about a language.
+  # version_command - A String with the default way to get the version of the
+  #                   language. A literal (sans quotes) "{}" will be replaced
+  #                   with the FULL PATH to the binary. Otherwise the FULL
+  #                   PATH will be appended to the end of the String.
+  #
+  # If the language has a defined :version_against, that binary is used.
+  # Otherwise, the first element of :evaluate_with is used.
+  #
+  # The binary to version against MUST be in $PATH or no version will return.
+  #
+  # The reason this uses package managers to do its work is because Rublets
+  # supports (and likes supporting) newer, in-development languages, and
+  # those often don't have stable releases, just git commits. Rather than
+  # the maintainer of the language requiring a .git directory, and making
+  # git a build requirement, so that the compiler compiles in the git hash
+  # for `the_language --version`, we just assume that the *packager* of the
+  # language will put the git commit (or at least the date that git was pulled
+  # from) in the version of the package. This is required per e.g. Fedora
+  # snapshot packages as seen here:
+  # http://fedoraproject.org/wiki/Packaging:NamingGuidelines#Snapshot_packages
+  #
+  # This takes burden off of the developer, and still lets users be able to
+  # quickly and easily find out how far out of date the version we're evaluating
+  # against is. This is the reason that we rely on the package manager to show
+  # what version we have.
+  #
+  # Examples
+  #
+  #   # Fedora, RHEL, CentOS, Scientific Linux, etc.
+  #   Language.version(Language.by_name('php'), 'rpm -qf')
+  #   # => php-cli-5.4.0-5.fc18.x86_64
+  #
+  #   # Debian, Ubuntu, etc.
+  #   Language.version(Language.by_name('perl'),
+  #     "dpkg-query -W -f '${Package}-${Version}\n' $(dpkg -S {} | awk -F: '{print $1}')"
+  #
+  # Returns the version of the language as a String, or nil if the language is
+  #   not in $PATH.
+  def self.version(language, version_command)
+    # Use :version_against or :binaries_must_exist[0]
+    binary = if language[:version_against]
+               language[:version_against]
+             elsif language[:binaries_must_exist]
+               language[:binaries_must_exist][0]
+             elsif language[:evaluate_with]
+               language[:evaluate_with][0]
+             end
+    return nil unless binary
+    
+    # Get the absolute path of the interpreter/compiler.
+    path_to_binary = ''
+    ENV['PATH'].split(':').each do |path|
+      if File.exists? File.join(path, '/', binary)
+        path_to_binary = File.join(path, '/', binary)
+        break
+      end
+    end
+    return nil if path_to_binary.empty?
+
+    # Swap out all '{}' with the actual path, if we need to.
+    # If '{}' doesn't appear, just throw path_to_binary on the end.
+    if version_command.include? '{}'
+      version_command.gsub!('{}', path_to_binary)
+    else
+      version_command = "#{version_command} #{path_to_binary}"
+    end
+
+    return `#{version_command}`.strip
   end
 end

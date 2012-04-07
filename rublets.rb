@@ -76,6 +76,10 @@ end
     end
     
     case params[1]
+    when /^#{Configru.comchar}version (.+)/
+      language = Language.by_name($1)
+      respond Language.version(language, 'rpm -qf') and next unless language.nil?
+      respond "That language is not supported."
     when /^#{Configru.comchar}rubies$/
       # Lists all available rubies.
       rubies = Dir['./rubies/*'].map { |a| File.basename(a) }
