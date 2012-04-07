@@ -6,6 +6,13 @@ require 'base64'
 class Sandbox
   attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :gist_after_limit, :github_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :size_limit
 
+  # Public: Creates a Sandbox instance.
+  #
+  # options - A Hash which contains any number of options for tweaking how code
+  #           is evaluated.
+  #
+  # Returns the new instance of Sandbox, after making necessary directories to
+  #   proceed with an evaluation.
   def initialize(options = {})
     unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/sandbox' }
       raise "The `sandbox` executable does not exist and is required."
@@ -45,14 +52,39 @@ class Sandbox
     FileUtils.mkdir_p "#{@home}/tmp"
   end
 
+  # Public: Creates a directory in the Sandbox. Can create directories and their
+  #         parent directories (similar to `mkdir -p`).
+  #
+  # directory - The name (or path) of the directory to create, relative to the
+  #             home directory of the Sandbox.
+  #
+  # Returns the output of FileUtils.mkdir_p (an Array containing one element,
+  #   the name of the directory we just created.)
   def mkdir(directory)
     FileUtils.mkdir_p "#{@home}/#{directory}"
   end
 
+  # Public: Copies a file into the sandbox.
+  #
+  # source      - A String containing a path to the original file that we want
+  #               to copy. Relative to the directory containing rublets.rb. This
+  #               can optionally be an Array of Strings.
+  # destination - A String containing the path to place the copy, relative to
+  #               the home directory of the sandbox.
+  #
+  # Returns nothing.
   def copy(source, destination)
     FileUtils.cp_r source, "#{@home}/#{destination}"
   end
 
+  # Public: Performs an actual evaluation.
+  #
+  # This is the method that actually performs an evaluation within the Sandbox,
+  # using the information contained in the Hash that was passwd instance of
+  # Sandbox was created.
+  #
+  # Returns a String containing the result of the evaluation, or any errors that
+  #   occurred while trying to evaluate.
   def evaluate
     return ["One of (#{@binaries_must_exist.join(', ')}) was not found in $PATH. Try again later."] unless binaries_all_exist?
     insert_code_into_file
@@ -95,10 +127,24 @@ class Sandbox
     output
   end
 
+  # Public: Forcibly removes the Sandbox instance's home directory.
+  #
+  # Returns nothing.
   def rm_home!
     FileUtils.rm_rf @home
   end
 
+  # Public: Gists (https://gist.github.com/) the result of a code evaluation.
+  #
+  # This is used when the output of an evaluation is too long for IRC. The
+  # full result is pastebinned using Gist.
+  #
+  # credentials - An optional Hash containing two keys, :username, and :password
+  #               which, if present, are used to authenticate with Github, to
+  #               have the given account own the Gist.
+  #
+  # Returns a String containing link to the Gist, or an error message stating
+  #   why we couldn't get it.
   def gist(credentials = {})
     username = credentials[:username] || nil
     password = credentials[:password] || nil
@@ -130,10 +176,23 @@ class Sandbox
   end
 
   private
+
+  # Internal: Copies evaluated code to someplace safe, for audit purposes.
+  #
+  # Before code is evaluated, Sandbox.evaluate() calls this to copy the code
+  # to somewhere safe (@path/evaluated/*) for auditing purposes in case we ever
+  # need to see what caused a bug. Not that Rublets has bugs. ;-)
+  #
+  # Returns nothing.
   def copy_audit_script
     FileUtils.cp("#{@home}/#{@script_filename}", "#{@path}/evaluated/#{@time.year}-#{@time.month}-#{@time.day}_#{@time.hour}-#{@time.min}-#{@time.sec}-#{@owner}-#{@time.to_f}.#{@extension}")
   end
 
+  # Internal: Checks to make sure all needed binaries to perform an evaluation
+  #           (@binaries_must_exist) exist and are located in a directory that
+  #           is in $PATH.
+  #
+  # Returns false if a needed binary doesn't exist, and true if they all do.
   def binaries_all_exist?
     @binaries_must_exist.each do |binary|
       return false unless ENV['PATH'].split(':').any? { |path| File.exists? File.join(path, '/', binary) }
@@ -141,6 +200,10 @@ class Sandbox
     true
   end
 
+  # Internal: Takes the code that we are about to evaluate, and actually puts it
+  #           in the file, so that we can...evaluate it.
+  #
+  # Returns the File.
   def insert_code_into_file
     File.open("#{@home}/#{@script_filename}", 'w') do |f|
       f.puts @code

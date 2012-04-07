@@ -1,5 +1,12 @@
 class Language
   attr_accessor :languages
+
+  # Public: A Hash containing every language that we support (sans special
+  #         cases which are in rublets.rb itself), which includes information
+  #         about how to evaluate the language.
+  #
+  # Returns a large Hash of Hashes which explains how to run an evaluation
+  #   and contains necessary metadata for doing so.
   def self.languages
     {
       'scala' => {
@@ -284,6 +291,14 @@ class Language
     }
   end
   
+  # Public: Finds a Hash for a given languages that we can evaluate.
+  #
+  # lang_name - A String containing a language name that a Hash should be
+  #             returned for.
+  #
+  # Returns a Hash containing information about how we should execute a language
+  #   or nil if the language is not supported.
+  #
   def self.by_name(lang_name)
     return nil if name == nil
 
@@ -298,6 +313,10 @@ class Language
     nil
   end
 
+  # Public: A method to return, in human-readable form, a String that lists all
+  #         the languages that we can evaluate.
+  #
+  # Returns a String containing all of the languages that we can evaluate.
   def self.list_all
     supported = []
     languages.each do |lang, params|
