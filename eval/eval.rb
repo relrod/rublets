@@ -96,7 +96,7 @@ class Sandbox
       'timeout', @timeout.to_s, *@evaluate_with
     ]
     popen_args << @script_filename unless @code_from_stdin
-    IO.popen([*popen_args, :err => [:child, :out]], 'w+') { |io|
+    IO.popen(popen_args + [{:err => [:child, :out]}], 'w+') { |io|
       io.write File.read("#{@home}/#{@script_filename}") if @code_from_stdin
       io.write @stdin unless @stdin.nil?
       io.close_write
