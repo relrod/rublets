@@ -340,7 +340,7 @@ class Language
   #
   # The binary to version against MUST be in $PATH or no version will return.
   #
-  # The reason this uses package managers to do its works is because Rublets
+  # The reason this uses package managers to do its work is because Rublets
   # supports (and likes supporting) newer, in-development languages, and
   # those often don't have stable releases, just git commits. Rather than
   # the maintainer of the language requiring a .git directory, and making
