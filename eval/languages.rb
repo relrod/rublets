@@ -340,6 +340,22 @@ class Language
   #
   # The binary to version against MUST be in $PATH or no version will return.
   #
+  # The reason this uses package managers to do its works is because Rublets
+  # supports (and likes supporting) newer, in-development languages, and
+  # those often don't have stable releases, just git commits. Rather than
+  # the maintainer of the language requiring a .git directory, and making
+  # git a build requirement, so that the compiler compiles in the git hash
+  # for `the_language --version`, we just assume that the *packager* of the
+  # language will put the git commit (or at least the date that git was pulled
+  # from) in the version of the package. This is required per e.g. Fedora
+  # snapshot packages as seen here:
+  # http://fedoraproject.org/wiki/Packaging:NamingGuidelines#Snapshot_packages
+  #
+  # This takes burden off of the developer, and still lets users be able to
+  # quickly and easily find out how far out of date the version we're evaluating
+  # against is. This is the reason that we rely on the package manager to show
+  # what version we have.
+  #
   # Examples
   #
   #   # Fedora, RHEL, CentOS, Scientific Linux, etc.
