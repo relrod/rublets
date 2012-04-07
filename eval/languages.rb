@@ -372,16 +372,12 @@ class Language
     # Use :version_against or :binaries_must_exist[0]
     binary = if language[:version_against]
                language[:version_against]
-             else
-               if language[:binaries_must_exist]
-                 language[:binaries_must_exist][0]
-               elsif language[:evaluate_with]
-                 language[:evaluate_with][0]
-               else
-                 nil
-               end
+             elsif language[:binaries_must_exist]
+               language[:binaries_must_exist][0]
+             elsif language[:evaluate_with]
+               language[:evaluate_with][0]
              end
-    return nil if binary == nil
+    return nil unless binary
     
     # Get the absolute path of the interpreter/compiler.
     path_to_binary = ''
@@ -391,7 +387,7 @@ class Language
         break
       end
     end
-    return nil if path_to_binary == ''
+    return nil if path_to_binary.empty?
 
     # Swap out all '{}' with the actual path, if we need to.
     # If '{}' doesn't appear, just throw path_to_binary on the end.
