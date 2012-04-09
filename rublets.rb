@@ -26,6 +26,7 @@ Configru.load do
     nickname 'rublets'
     comchar '!'
     default_ruby 'ruby-1.9.3-p0'
+    version_command 'rpm -qf'
   end
 
   verify do
@@ -78,7 +79,7 @@ end
     case params[1]
     when /^#{Configru.comchar}version (.+)/
       language = Language.by_name($1)
-      respond Language.version(language, 'rpm -qf') and next unless language.nil?
+      respond Language.version(language, Configru.version_command) and next unless language.nil?
       respond "That language is not supported."
     when /^#{Configru.comchar}rubies$/
       # Lists all available rubies.

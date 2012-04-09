@@ -1,9 +1,25 @@
+# Triggered with "#{comchar}>>" (e.g.: !>> puts "hi"). Must exist in ./[directory containing rublets.rb]/rvm/
 default_ruby: 1.9.3-p125
+
+# How to get versions of packages
+# Fedora/CentOS/RHEL/SciLinux/etc.
+version_command: "rpm -qf"
+
+# Ubuntu/Debian/etc. (Comment the above version_command, and uncomment the one below)
+# version_command: "dpkg-query -W -f '${Package}-${Version}\n' $(dpkg -S {} | awk -F: '{print $1}')"
+
+# How to trigger the bot in a channel
 comchar: "!"
+
+# Github credentials (used for making the bot own its gists)
 github_credentials:
   username: rublets
   password: Your_P4ssw0rd_G0eS.Here!
+
+# Bot nickname
 nickname: rublets_dev
+
+# IRC Servers to connect to
 servers:
   tenthbit:
     address: irc.tenthbit.net
