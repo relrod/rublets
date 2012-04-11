@@ -47,10 +47,13 @@ class Language
       },
       'lua' => {
         :path                 => File.expand_path('~/.rublets'),
-        :evaluate_with        => ['lua'],
+        :evaluate_with        => ['lua', '-i'],
         :timeout              => 5,
         :extension            => 'lua',
         :output_limit         => 2,
+        :skip_preceding_lines => 2,
+        :skip_ending_lines    => 1,
+        :code_from_stdin      => true,
       },
       'arroyo' => {
         :path                 => File.expand_path('~/.rublets'),
