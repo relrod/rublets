@@ -7,3 +7,5 @@ notifications:
     channels:
       - "irc.freenode.org##rublets"
       - "irc.tenthbit.net#programming"
+    on_success: always
+    on_failure: always
