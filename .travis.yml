@@ -1,0 +1,9 @@
+language: ruby
+script: "ruby doccheck.rb"
+rvm:
+  - 1.9.3
+notifications:
+  irc:
+    channels:
+      - "irc.freenode.org##rublets"
+      - "irc.tenthbit.net#programming"
