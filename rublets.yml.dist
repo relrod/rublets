@@ -27,3 +27,7 @@ servers:
       - "#offtopic"
       - "#programming"
       - "#bots"
+
+special_languages:
+  - "lolcode"
+  - "ruby (see !rubies)"
