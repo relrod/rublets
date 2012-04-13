@@ -107,7 +107,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
 <tr>
   <td>.NET</td>
   <td>
-    C#
+    <a href="http://msdn.microsoft.com/en-us/vstudio/hh388566">C#</a>
   </td>
 </tr>
 </table>
