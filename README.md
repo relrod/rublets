@@ -81,6 +81,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
 <tr>
   <td>Misc</td>
   <td>
+    <a href="https://futureboy.us/frinkdocs/">Frink (non-foss)</a>
     <a href="http://lolcode.com/">LOLCODE</a>
     <a href="http://maxima.sourceforge.net/">Maxima</a>
     <a href="http://www.freepascal.org/">Pascal</a>
@@ -91,7 +92,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
   <td>Scripting</td>
   <td>
     <a href="http://www.perl.org">Perl 5</a>
-    <a href="http://perl6.org">Perl 6</a>>
+    <a href="http://perl6.org">Perl 6</a>
     <a href="http://php.net">PHP</a>
     <a href="http://www.python.org">Python</a>
     <a href="http://www.ruby-lang.org">Ruby</a>
