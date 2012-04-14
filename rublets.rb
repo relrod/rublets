@@ -61,6 +61,15 @@ end
     end
     
     case params[1]
+    when /^#{Configru.comchar}gist (.+)/
+      gist_url = $1.split(' ')
+      if gist_url.size == 1
+        respond GistEval.evaluate(gist_url[0])
+      elsif gist_url.size == 2
+        respond GistEval.evaluate(gist_url[0], gist_url[1])
+      else
+        respond "Usage: #{Configru.comchar}gist GIST_URL [filename]"
+      end
     when /^#{Configru.comchar}version (.+)/
       language = Language.by_name($1)
       respond Language.version(language, Configru.version_command) and next unless language.nil?
