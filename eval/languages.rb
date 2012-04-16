@@ -293,6 +293,14 @@ class Language
       :skip_preceding_lines => 1,
       :skip_ending_lines    => 1
     },
+    'brainfuck' => {
+      :path                 => File.expand_path('~/.rublets'),
+      :evaluate_with        => ['bf.rb'],
+      :timeout              => 5,
+      :aliases              => ['bf'],
+      :extension            => 'b',
+      :output_limit         => 2,
+    },
   }
 
   # Be able to modify the map of languages dynamically.
