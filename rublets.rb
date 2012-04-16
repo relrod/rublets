@@ -48,7 +48,7 @@ end
     matches = params[1].match(/^#{Configru.comchar}(\S+)> ?(.*)/)
     if matches
       the_lang = Language.by_name(matches[1])
-      unless the_lang.nil?
+      if the_lang
         future do
           sandbox = Sandbox.new(the_lang.merge({:owner => sender.nick, :code => matches[2], :github_credentials => Configru.github_credentials}))
           the_lang[:required_files].each { |file,dest| sandbox.copy file, dest } unless the_lang[:required_files].nil?
