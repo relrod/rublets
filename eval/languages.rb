@@ -278,7 +278,7 @@ class Language
       :extension            => 'java',
       :output_limit         => 2,
       :required_files       => {'eval/run-java.sh' => 'run-java.sh'},
-      :script_filename      => 'Rublets.java'
+      :script_filename      => 'Rublets.java',
     },
     'frink' => {
       :path                 => File.expand_path('~/.rublets'),
@@ -291,7 +291,7 @@ class Language
       :output_limit         => 2,
       :code_from_stdin      => true,
       :skip_preceding_lines => 1,
-      :skip_ending_lines    => 1
+      :skip_ending_lines    => 1,
     },
     'brainfuck' => {
       :path                 => File.expand_path('~/.rublets'),
@@ -300,6 +300,15 @@ class Language
       :aliases              => ['bf'],
       :extension            => 'b',
       :output_limit         => 2,
+    },
+    'sqlite' => {
+      :path                 => File.expand_path('~/.rublets'),
+      :evaluate_with        => ['sqlite3', Time.now.to_f.to_s],
+      :timeout              => 5,
+      :aliases              => ['sqlite3'],
+      :extension            => 'sqlite',
+      :output_limit         => 2,
+      :code_from_stdin      => true,
     },
   }
 
