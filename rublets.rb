@@ -62,9 +62,16 @@ end
     
     case params[1]
     when /^#{Configru.comchar}version (.+)/
-      language = Language.by_name($1)
-      respond Language.version(language, Configru.version_command) and next unless language.nil?
-      respond "That language is not supported."
+      versions = []
+      $1.gsub(' ', '').split(',').each do |given_language|
+        language = Language.by_name(given_language)
+        if language
+          versions << Language.version(language, Configru.version_command)
+        else
+          versions << "['#{given_language}' is not supported]"
+        end
+      end
+      respond versions.join(', ')
     when /^#{Configru.comchar}rubies$/
       # Lists all available rubies.
       rubies = Dir['./rubies/*'].map { |a| File.basename(a) }
