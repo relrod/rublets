@@ -133,7 +133,6 @@ end
         given_version = $2 # might be nil.
         code = $3
 
-        #future do # We can have multiple evaluations going on at once.
         rubyversion = Configru.default_ruby
 
         # If a version is given (so not default), scan ./rubies/* to see if it matches.
@@ -143,7 +142,7 @@ end
           if given_version == 'all'
             rubyversion = 'all'
           else
-            rubies = Dir['./rubies/*'].map { |a| File.basename(a) }
+            rubies = Dir[File.join(Configru.rvm_path, 'rubies') + '/*'].map { |a| File.basename(a) }
             rubies = rubies.delete_if { |ruby| ruby.scan(given_version).empty? }
             if rubies.count > 1
               respond "#{sender.nick}: You matched multiple rubies. Be more specific. See !rubies for the full list." and next
@@ -163,7 +162,7 @@ end
 
         sandbox = Sandbox.new(
           :path                => File.expand_path('~/.rublets'),
-          :evaluate_with       => ['bash', 'run-ruby.sh', rubyversion],
+          :evaluate_with       => ['bash', 'run-ruby.sh', Configru.rvm_path, rubyversion],
           :timeout             => 5,
           :extension           => 'rb',
           :owner               => sender.nick,
@@ -172,16 +171,6 @@ end
           :binaries_must_exist => ['ruby', 'bash'],
           :github_credentials  => Configru.github_credentials
           )
-
-        sandbox.copy 'rvm', '.rvm'
-
-        # If the user wants to eval against all rubies, then copy the entire rubies directory.
-        if rubyversion == 'all'
-          sandbox.copy 'rubies', '.rvm/rubies/'
-        else
-          sandbox.mkdir(".rvm/rubies")
-          sandbox.copy "rubies/#{rubyversion}", ".rvm/rubies/#{rubyversion}"
-        end
 
         # This is a bit of a hack, but lets us set up the rvm environment and call the script.
         sandbox.copy 'eval/run-ruby.sh', 'run-ruby.sh'

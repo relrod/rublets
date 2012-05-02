@@ -1,3 +1,5 @@
 #!/bin/bash
-source ~/.rvm/scripts/rvm
-rvm $1 do ruby $2
+# $1 - rvm_path
+# $2 - ruby_version
+# $3 - script_path
+$1/scripts/rvm $2 do ruby $3

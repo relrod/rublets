@@ -10,7 +10,8 @@ Configru.load do
     servers {}
     nickname 'rublets'
     comchar '!'
-    default_ruby 'ruby-1.9.3-p0'
+    default_ruby 'ruby-1.9.3-p125'
+    rvm_path '/usr/local/rvm'
     version_command 'rpm -qf'
     special_languages [
       'lolcode',
