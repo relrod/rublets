@@ -74,7 +74,7 @@ end
       respond versions.join(', ')
     when /^#{Configru.comchar}rubies$/
       # Lists all available rubies.
-      rubies = Dir['./rubies/*'].map { |a| File.basename(a) }
+      rubies = Dir[File.join(Configru.rvm_path, 'rubies') + '/*'].map { |a| File.basename(a) }
       respond "#{sender.nick}: #{rubies.join(', ')} (You can specify 'all' to evaluate against all rubies, but this might be slowish.)"
 
     when /^#{Configru.comchar}lang(?:s|uages)$/
