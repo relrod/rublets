@@ -312,6 +312,13 @@ class Language
       :output_limit         => 2,
       :code_from_stdin      => true,
     },
+     'mruby' => {
+      :path                 => File.expand_path('~/.rublets'),
+      :evaluate_with        => ['mruby', Time.now.to_f.to_s],
+      :timeout              => 5,
+      :extension            => 'rb',
+      :output_limit         => 2,
+    },
   }
 
   # Be able to modify the map of languages dynamically.
