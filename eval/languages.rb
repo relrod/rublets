@@ -1,5 +1,7 @@
 class Language
 
+  @eval_path = File.dirname(__FILE__)
+
   # Public: A Hash containing every language that we support (sans special
   #         cases which are in rublets.rb itself), which includes information
   #         about how to evaluate the language.
@@ -97,7 +99,7 @@ class Language
       :timeout              => 5,
       :extension            => 'm',
       :output_limit         => 2,
-      :required_files       => {'eval/run-obj-c.sh' => 'run-obj-c.sh'},
+      :required_files       => {"#{@eval_path}/run-obj-c.sh" => 'run-obj-c.sh'},
       :before               => [
         '#import <Foundation/Foundation.h>',
       ].join("\n") + "\n",
@@ -173,7 +175,7 @@ class Language
       :timeout              => 5,
       :extension            => 'go',
       :output_limit         => 2,
-      :required_files       => {'eval/run-go.sh' => 'run-go.sh'},
+      :required_files       => {"#{@eval_path}/run-go.sh" => 'run-go.sh'},
       :before               => [
         'package main',
         'import "fmt"',
@@ -186,7 +188,7 @@ class Language
       :timeout              => 5,
       :extension            => 'pas',
       :output_limit         => 2,
-      :required_files       => {'eval/run-pascal.sh' => 'run-pascal.sh'},
+      :required_files       => {"#{@eval_path}/run-pascal.sh" => 'run-pascal.sh'},
       :before               => 'program RubletsEval(output);' + "\n",
     },
     'io' => {
@@ -234,8 +236,8 @@ class Language
       :timeout              => 5,
       :extension            => 'c',
       :output_limit         => 2,
-      :required_files       => {'eval/run-c.sh' => 'run-c.sh',
-        'eval/rublets-c.h' => 'stdinc.h'},
+      :required_files       => {"#{@eval_path}/run-c.sh" => 'run-c.sh',
+        "#{@eval_path}/rublets-c.h" => 'stdinc.h'},
       :before               => "#include \"stdinc.h\"\n",
     },
     'c++' => {
@@ -245,8 +247,8 @@ class Language
       :timeout              => 5,
       :extension            => 'cpp',
       :output_limit         => 2,
-      :required_files       => {'eval/run-cpp.sh' => 'run-cpp.sh'},
-      :before               => File.read('eval/rublets-cpp.h'),
+      :required_files       => {"#{@eval_path}/run-cpp.sh" => 'run-cpp.sh'},
+      :before               => File.read("#{@eval_path}/rublets-cpp.h"),
     },
     'php' => {
       :path                 => File.expand_path('~/.rublets'),
@@ -268,7 +270,7 @@ class Language
       :timeout              => 5,
       :extension            => 'cs',
       :output_limit         => 2,
-      :required_files       => {'eval/run-cs.sh' => 'run-cs.sh'},
+      :required_files       => {"#{@eval_path}/run-cs.sh" => 'run-cs.sh'},
     },
     'java' => {
       :path                 => File.expand_path('~/.rublets'),
@@ -277,7 +279,7 @@ class Language
       :timeout              => 5,
       :extension            => 'java',
       :output_limit         => 2,
-      :required_files       => {'eval/run-java.sh' => 'run-java.sh'},
+      :required_files       => {"#{@eval_path}/run-java.sh" => 'run-java.sh'},
       :script_filename      => 'Rublets.java',
     },
     'frink' => {
