@@ -314,10 +314,16 @@ class Language
     },
      'mruby' => {
       :path                 => File.expand_path('~/.rublets'),
-      :evaluate_with        => ['mruby', Time.now.to_f.to_s],
+      :evaluate_with        => ['mruby'],
       :timeout              => 5,
       :extension            => 'rb',
       :output_limit         => 2,
+# mruby doesn't seem to be able to TOPLEVEL_BIND. -CodeBlock.
+#      :alter_code           => lambda { |code|
+#        code = "result = ::Kernel.eval(#{code.inspect}, TOPLEVEL_BINDING)"
+#        code += "\n" + 'puts "=> " + result.inspect'
+#        code
+#      },
     },
   }
 
