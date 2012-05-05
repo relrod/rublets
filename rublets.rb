@@ -89,6 +89,7 @@ end
       end
       future do
         sandbox = Sandbox.new(
+          :path               => Configru.rublets_home,
           :evaluate_with      => ['php'],
           :timeout            => 5,
           :extension          => 'php',
@@ -106,6 +107,7 @@ end
     when /^#{Configru.comchar}lolcode> (.*)/i
       code = $1
         sandbox = Sandbox.new(
+          :path          => Configru.rublets_home,
           :evaluate_with => ['lol-pl'],
           :timeout       => 5,
           :extension     => 'lol',
@@ -159,6 +161,7 @@ end
         end
 
         sandbox = Sandbox.new(
+          :path                => Configru.rublets_home,
           :evaluate_with       => ['bash', 'run-ruby.sh', Configru.rvm_path, rubyversion],
           :timeout             => 5,
           :extension           => 'rb',
