@@ -6,3 +6,7 @@ gem 'pry'
 gem 'json'
 gem 'configru'
 gem 'nokogiri'
+
+# For the statistics web if
+gem 'sinatra'
+gem 'language_sniffer', :git => "git://github.com/CodeBlock/language_sniffer.git"

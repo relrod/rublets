@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Rublets Statistics</title>
+    <style>
+      @import url('http://fonts.googleapis.com/css?family=Exo:400,700');
+      h1, h2, h3, h4, h5 { font-family: 'Exo', inherit; }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        text-align: center;
+        border-top: 5px solid #00bb00;
+      }
+      body {
+        text-align: left; /* yay ie6 */
+        margin: 0 auto;
+        width: 960px;
+      }
+    </style>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>    
+
+    <!-- Language graph -->
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Language', 'Total Uses'],
+          <%= @languages.sort_by { |k,v| v }.map{ |k,v| "['#{k}', #{v}]"}.join(",\n") %>
+        ]);
+
+        var options = {
+          title: 'Languages Used',
+          vAxis: {direction: -1}
+        };
+
+        var chart = new google.visualization.BarChart(document.getElementById('language_chart'));
+        chart.draw(data, options);
+      }
+    </script>
+
+    <!-- Users graph -->
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['User', 'Total Evaluations'],
+          <%= @users.sort_by {|k,v| v}.reverse.take(10).map { |k,v| "['#{k}', #{v}]"}.join(",\n") %>
+        ]);
+
+        var options = {
+          title: 'Evaluations',
+          vAxis: {direction: 1}
+        };
+
+        var chart = new google.visualization.BarChart(document.getElementById('user_chart'));
+        chart.draw(data, options);
+      }
+    </script>
+
+
+  </head>
+  <body>
+    <h1>Rublets Statistics</h1>
+    <h3>Total Languages Used</h3>
+    <div id="language_chart" style="height: 600px;"></div>
+
+    <h3>Top Ten Users</h3>
+    <div id="user_chart" style=""></div>
+  </body>
+</html>
