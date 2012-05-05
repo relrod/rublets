@@ -37,7 +37,7 @@ PLATFORMS
 
 DEPENDENCIES
   backports
-  configru
+  configru (~> 0.5)
   json
   language_sniffer!
   nokogiri

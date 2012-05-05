@@ -4,7 +4,7 @@ gem 'promise'
 gem 'rvm'
 gem 'pry'
 gem 'json'
-gem 'configru'
+gem 'configru', '~> 0.5'
 gem 'nokogiri'
 gem 'backports'
 
