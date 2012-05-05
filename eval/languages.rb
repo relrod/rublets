@@ -66,15 +66,12 @@ class Language
       :output_limit         => 2,
     },
     'ocaml' => {
-      :evaluate_with        => [
-        'ocaml',
-        '-noprompt'
-      ],
+      :evaluate_with        => ['bash', 'run-ocaml.sh'],
       :timeout              => 5,
       :extension            => 'ml',
-      :skip_preceding_lines => 2,
-      :code_from_stdin      => true,
       :output_limit         => 2,
+      :required_files       => {"#{@eval_path}/run-ocaml.sh" => 'run-ocaml.sh'},
+      :script_filename      => 'evaluation.ml',
     },
     'smalltalk' => {
       :evaluate_with        => ['gst'],
