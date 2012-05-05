@@ -7,6 +7,7 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
+    backports (2.5.1)
     coderay (1.0.6)
     configru (0.5.0)
     eventmachine (0.12.10)
@@ -35,6 +36,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  backports
   configru
   json
   language_sniffer!

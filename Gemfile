@@ -6,6 +6,7 @@ gem 'pry'
 gem 'json'
 gem 'configru'
 gem 'nokogiri'
+gem 'backports'
 
 # For the statistics web if
 gem 'sinatra'

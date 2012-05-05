@@ -61,14 +61,38 @@
       }
     </script>
 
+    <!-- Evaluations over time -->
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Day', 'Evaluations'],
+        <%= @evaluations.sort_by {|k,v| k.to_i}.reverse.map { |k,v| "['#{k.strftime("%m/%d/%Y")}', #{v}]"}.join(",\n") %>
+        ]);
+
+        var options = {
+          title: 'Evaluations over Time',
+          hAxis: {direction: -1}
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('evaluations_chart'));
+        chart.draw(data, options);
+      }
+    </script>
 
   </head>
   <body>
     <h1>Rublets Statistics</h1>
+    
+    <h3>Evaluations over Time</h3>
+    <div id="evaluations_chart" style=""></div>
+
     <h3>Total Languages Used</h3>
     <div id="language_chart" style="height: 600px;"></div>
 
     <h3>Top Ten Users</h3>
     <div id="user_chart" style=""></div>
+    
   </body>
 </html>
