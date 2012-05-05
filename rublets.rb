@@ -50,7 +50,7 @@ end
       the_lang = Language.by_name(matches[1])
       if the_lang
         future do
-          sandbox = Sandbox.new(the_lang.merge({:owner => sender.nick, :code => matches[2], :github_credentials => Configru.github_credentials}))
+          sandbox = Sandbox.new(the_lang.merge({:owner => sender.nick, :code => matches[2], :github_credentials => Configru.github_credentials, :path => Configru.rublets_home}))
           the_lang[:required_files].each { |file,dest| sandbox.copy file, dest } unless the_lang[:required_files].nil?
           result = sandbox.evaluate
           result.each { |line| respond line }
@@ -89,7 +89,6 @@ end
       end
       future do
         sandbox = Sandbox.new(
-          :path               => File.expand_path('~/.rublets'),
           :evaluate_with      => ['php'],
           :timeout            => 5,
           :extension          => 'php',
@@ -107,7 +106,6 @@ end
     when /^#{Configru.comchar}lolcode> (.*)/i
       code = $1
         sandbox = Sandbox.new(
-          :path          => File.expand_path('~/.rublets'),
           :evaluate_with => ['lol-pl'],
           :timeout       => 5,
           :extension     => 'lol',
@@ -161,7 +159,6 @@ end
         end
 
         sandbox = Sandbox.new(
-          :path                => File.expand_path('~/.rublets'),
           :evaluate_with       => ['bash', 'run-ruby.sh', Configru.rvm_path, rubyversion],
           :timeout             => 5,
           :extension           => 'rb',

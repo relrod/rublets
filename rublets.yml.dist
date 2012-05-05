@@ -9,6 +9,13 @@ rvm_path: /usr/local/rvm
 # Fedora/CentOS/RHEL/SciLinux/etc.
 version_command: "rpm -qf"
 
+# Rublets needs a place to:
+# 1) store sandboxes when evaluations happens, and
+# 2) store its evaluated results for auditing purposes.
+# This is passed to File.expand_path, so you can use ~/ here.
+# The bot MUST have read/write access to this directory.
+rublets_home: "~/.rublets/"
+
 # Ubuntu/Debian/etc. (Comment the above version_command, and uncomment the one below)
 # version_command: "dpkg-query -W -f '${Package}-${Version}\n' $(dpkg -S {} | awk -F: '{print $1}')"
 

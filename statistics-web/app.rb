@@ -6,12 +6,15 @@ require "language_sniffer"
 $: << File.dirname(__FILE__)
 require "extra_languages"
 
-$path = '/home/ricky/.rublets/evaluated'
+$: << File.join(File.dirname(__FILE__), '..')
+require "eval/config"
 
 get '/' do
+  evaluated_path = File.join(Configru.rublets_home, 'evaluated', '*')
+  puts evaluated_path
   @languages = Hash.new { |h,k| h[k] = 0 }
   @users = Hash.new { |h,k| h[k] = 0 }
-  Dir[$path + '/*'].each do |file|
+  Dir[evaluated_path].each do |file|
     user = file.split('-')[5]
     language = LanguageSniffer.detect("#{file}").language
     puts file if language.nil?

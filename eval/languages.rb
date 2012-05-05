@@ -10,7 +10,6 @@ class Language
   #   and contains necessary metadata for doing so.
   @languages = {
     'scala' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => [
         'scala',
         '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon', '-deprecation'
@@ -20,14 +19,12 @@ class Language
       :output_limit         => 2,
     },
     'python' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['python'],
       :timeout              => 5,
       :extension            => 'py',
       :output_limit         => 2,
     },
     'erlang' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['escript'],
       :timeout              => 5,
       :extension            => 'erl',
@@ -39,14 +36,12 @@ class Language
     },
     'javascript' => {
       :aliases              => ['js'],
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['js'],
       :timeout              => 5,
       :extension            => 'js',
       :output_limit         => 2,
     },
     'lua' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['lua', '-i'],
       :timeout              => 5,
       :extension            => 'lua',
@@ -56,7 +51,6 @@ class Language
       :code_from_stdin      => true,
     },
     'arroyo' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['arroyo', '-r'],
       :timeout              => 5,
       :extension            => 'arr',
@@ -66,14 +60,12 @@ class Language
       :code_from_stdin      => true,
     },
     'clay' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['clay', '-run'],
       :timeout              => 5,
       :extension            => 'clay',
       :output_limit         => 2,
     },
     'ocaml' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => [
         'ocaml',
         '-noprompt'
@@ -85,7 +77,6 @@ class Language
       :output_limit         => 2,
     },
     'smalltalk' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['gst'],
       :timeout              => 5,
       :extension            => 'st',
@@ -93,7 +84,6 @@ class Language
     },
     'objective-c' => {
       :aliases              => ['obj-c'],
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['bash', 'run-obj-c.sh'],
       :binaries_must_exist  => ['gcc', 'bash'],
       :timeout              => 5,
@@ -105,7 +95,6 @@ class Language
       ].join("\n") + "\n",
     },
     'haskell' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['ghci', '-v0'],
       :timeout              => 5,
       :extension            => 'hs',
@@ -114,14 +103,12 @@ class Language
     },
     'bash' => {
       :aliases              => ['$'],
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['bash'],
       :timeout              => 5,
       :extension            => 'sh',
       :output_limit         => 2,
     },
     'zsh' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['zsh'],
       :timeout              => 5,
       :extension            => 'sh',
@@ -129,7 +116,6 @@ class Language
     },
     'perl' => {
       :aliases              => ['perl5'],
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['perl'],
       :timeout              => 5,
       :extension            => 'pl',
@@ -137,14 +123,12 @@ class Language
     },
     'perl6' => {
       :aliases              => ['rakudo'],
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['perl6'],
       :timeout              => 6,
       :extension            => 'pl',
       :output_limit         => 2,
     },
     'elixir' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['elixir'],
       :timeout              => 5,
       :extension            => 'exs',
@@ -155,7 +139,6 @@ class Language
       },
     },
     'maxima' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => [
         'maxima',
         '--very-quiet', '--disable-readline'
@@ -169,7 +152,6 @@ class Language
       },
     },
     'go' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['bash', 'run-go.sh'],
       :binaries_must_exist  => ['gccgo', 'bash'],
       :timeout              => 5,
@@ -182,7 +164,6 @@ class Language
       ].join("\n") + "\n",
     },
     'pascal' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['bash', 'run-pascal.sh'],
       :binaries_must_exist  => ['fpc', 'bash'],
       :timeout              => 5,
@@ -192,14 +173,12 @@ class Language
       :before               => 'program RubletsEval(output);' + "\n",
     },
     'io' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['io'],
       :timeout              => 5,
       :extension            => 'io',
       :output_limit         => 2,
     },
     'forth' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['gforth'],
       :timeout              => 5,
       :extension            => 'forth',
@@ -207,7 +186,6 @@ class Language
       :after                => ' bye',
     },
     'perpetual' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => [
         'perpetual',
         '--no-prompt'
@@ -220,7 +198,6 @@ class Language
     },
     'lisp' => {
       :aliases              => ['sbcl'],
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => [
         'sbcl',
         '--script'
@@ -230,7 +207,6 @@ class Language
       :output_limit         => 2,
     },
     'c' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['bash', 'run-c.sh'],
       :binaries_must_exist  => ['gcc', 'bash'],
       :timeout              => 5,
@@ -241,7 +217,6 @@ class Language
       :before               => "#include \"stdinc.h\"\n",
     },
     'c++' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['bash', 'run-cpp.sh'],
       :binaries_must_exist  => ['g++', 'bash'],
       :timeout              => 5,
@@ -251,7 +226,6 @@ class Language
       :before               => File.read("#{@eval_path}/rublets-cpp.h"),
     },
     'php' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['php'],
       :timeout              => 5,
       :extension            => 'php',
@@ -264,7 +238,6 @@ class Language
     },
     'c#' => {
       :aliases              => ['csharp'],
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['bash', 'run-cs.sh'],
       :binaries_must_exist  => ['mcs', 'bash'],
       :timeout              => 5,
@@ -273,7 +246,6 @@ class Language
       :required_files       => {"#{@eval_path}/run-cs.sh" => 'run-cs.sh'},
     },
     'java' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['bash', 'run-java.sh'],
       :binaries_must_exist  => ['javac', 'java', 'bash'],
       :timeout              => 5,
@@ -283,7 +255,6 @@ class Language
       :script_filename      => 'Rublets.java',
     },
     'frink' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => [
         'java', '-cp', '/usr/share/java/frink.jar', 'frink.parser.Frink'
       ] + (File.exists?('/etc/frink/units.txt') ? ['-u', '/etc/frink/units.txt'] : []),
@@ -296,7 +267,6 @@ class Language
       :skip_ending_lines    => 1,
     },
     'brainfuck' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['bf.rb'],
       :timeout              => 5,
       :aliases              => ['bf'],
@@ -304,7 +274,6 @@ class Language
       :output_limit         => 2,
     },
     'sqlite' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['sqlite3', Time.now.to_f.to_s],
       :timeout              => 5,
       :aliases              => ['sqlite3'],
@@ -313,7 +282,6 @@ class Language
       :code_from_stdin      => true,
     },
      'mruby' => {
-      :path                 => File.expand_path('~/.rublets'),
       :evaluate_with        => ['mruby'],
       :timeout              => 5,
       :extension            => 'rb',

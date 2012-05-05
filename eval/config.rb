@@ -11,6 +11,7 @@ Configru.load do
     nickname 'rublets'
     comchar '!'
     default_ruby 'ruby-1.9.3-p125'
+    rublets_home '~/.rublets/'
     rvm_path '/usr/local/rvm'
     version_command 'rpm -qf'
     special_languages [
@@ -23,6 +24,9 @@ Configru.load do
     nickname /^[A-Za-z0-9_\`\[\{}^|\]\\-]+$/
   end
 end
+
+Configru.raw['rublets-home'] = File.expand_path(Configru.rublets_home)
+Configru.raw['rvm-path'] = File.expand_path(Configru.rvm_path)
 
 # Append special cased languages to Language.languages
 Configru.special_languages.each do |language|
