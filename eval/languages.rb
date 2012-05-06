@@ -24,6 +24,12 @@ class Language
       :extension            => 'py',
       :output_limit         => 2,
     },
+    'python3' => {
+      :evaluate_with        => ['python3'],
+      :timeout              => 5,
+      :extension            => 'py',
+      :output_limit         => 2,
+    },
     'erlang' => {
       :evaluate_with        => ['escript'],
       :timeout              => 5,
