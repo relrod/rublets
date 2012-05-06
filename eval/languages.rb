@@ -6,29 +6,78 @@ class Language
   #         cases which are in rublets.rb itself), which includes information
   #         about how to evaluate the language.
   #
+  # !!! PLEASE KEEP THIS LIST ALPHABETICAL !!!
+  # !!! PLEASE KEEP THIS LIST ALPHABETICAL !!!
+  # !!! PLEASE KEEP THIS LIST ALPHABETICAL !!!
+  #
   # Returns a large Hash of Hashes which explains how to run an evaluation
   #   and contains necessary metadata for doing so.
   @languages = {
-    'scala' => {
-      :evaluate_with        => [
-        'scala',
-        '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon', '-deprecation'
-      ],
-      :timeout              => 20,
-      :extension            => 'scala',
+    'arroyo' => {
+      :evaluate_with        => ['arroyo'],
+      :timeout              => 5,
+      :extension            => 'arr',
+      :output_limit         => 2,
+      :before               => 'print (',
+      :after                => ')',
+    },
+    'bash' => {
+      :aliases              => ['$'],
+      :evaluate_with        => ['bash'],
+      :timeout              => 5,
+      :extension            => 'sh',
       :output_limit         => 2,
     },
-    'python' => {
-      :evaluate_with        => ['python'],
+    'brainfuck' => {
+      :evaluate_with        => ['bf.rb'],
       :timeout              => 5,
-      :extension            => 'py',
+      :aliases              => ['bf'],
+      :extension            => 'b',
       :output_limit         => 2,
     },
-    'python3' => {
-      :evaluate_with        => ['python3'],
+    'c' => {
+      :evaluate_with        => ['bash', 'run-c.sh'],
+      :binaries_must_exist  => ['gcc', 'bash'],
       :timeout              => 5,
-      :extension            => 'py',
+      :extension            => 'c',
       :output_limit         => 2,
+      :required_files       => {"#{@eval_path}/run-c.sh" => 'run-c.sh',
+        "#{@eval_path}/rublets-c.h" => 'stdinc.h'},
+      :before               => "#include \"stdinc.h\"\n",
+    },
+    'c#' => {
+      :aliases              => ['csharp'],
+      :evaluate_with        => ['bash', 'run-cs.sh'],
+      :binaries_must_exist  => ['mcs', 'bash'],
+      :timeout              => 5,
+      :extension            => 'cs',
+      :output_limit         => 2,
+      :required_files       => {"#{@eval_path}/run-cs.sh" => 'run-cs.sh'},
+    },
+    'c++' => {
+      :evaluate_with        => ['bash', 'run-cpp.sh'],
+      :binaries_must_exist  => ['g++', 'bash'],
+      :timeout              => 5,
+      :extension            => 'cpp',
+      :output_limit         => 2,
+      :required_files       => {"#{@eval_path}/run-cpp.sh" => 'run-cpp.sh'},
+      :before               => File.read("#{@eval_path}/rublets-cpp.h"),
+    },
+    'clay' => {
+      :evaluate_with        => ['clay', '-run'],
+      :timeout              => 5,
+      :extension            => 'clay',
+      :output_limit         => 2,
+    },
+    'elixir' => {
+      :evaluate_with        => ['elixir'],
+      :timeout              => 5,
+      :extension            => 'exs',
+      :output_limit         => 2,
+      :alter_code           => lambda { |code|
+        eval_code = code.inspect
+        "{r, _} = Code.eval(#{eval_code}, []); IO.puts inspect(r)"
+      },
     },
     'erlang' => {
       :evaluate_with        => ['escript'],
@@ -40,11 +89,74 @@ class Language
         '%%! -smp enable -mnesia debug verbose',
       ].join("\n") + "\n",
     },
+    'forth' => {
+      :evaluate_with        => ['gforth'],
+      :timeout              => 5,
+      :extension            => 'forth',
+      :output_limit         => 2,
+      :after                => ' bye',
+    },
+    'frink' => {
+      :evaluate_with        => [
+        'java', '-cp', '/usr/share/java/frink.jar', 'frink.parser.Frink'
+      ] + (File.exists?('/etc/frink/units.txt') ? ['-u', '/etc/frink/units.txt'] : []),
+      :version_against      => 'frink',
+      :timeout              => 6,
+      :extension            => 'frink',
+      :output_limit         => 2,
+      :code_from_stdin      => true,
+      :skip_preceding_lines => 1,
+      :skip_ending_lines    => 1,
+    },
+    'go' => {
+      :evaluate_with        => ['bash', 'run-go.sh'],
+      :binaries_must_exist  => ['gccgo', 'bash'],
+      :timeout              => 5,
+      :extension            => 'go',
+      :output_limit         => 2,
+      :required_files       => {"#{@eval_path}/run-go.sh" => 'run-go.sh'},
+      :before               => [
+        'package main',
+        'import "fmt"',
+      ].join("\n") + "\n",
+    },
+    'haskell' => {
+      :evaluate_with        => ['ghci', '-v0'],
+      :timeout              => 5,
+      :extension            => 'hs',
+      :output_limit         => 2,
+      :code_from_stdin      => true,
+    },
+    'io' => {
+      :evaluate_with        => ['io'],
+      :timeout              => 5,
+      :extension            => 'io',
+      :output_limit         => 2,
+    },
+    'java' => {
+      :evaluate_with        => ['bash', 'run-java.sh'],
+      :binaries_must_exist  => ['javac', 'java', 'bash'],
+      :timeout              => 5,
+      :extension            => 'java',
+      :output_limit         => 2,
+      :required_files       => {"#{@eval_path}/run-java.sh" => 'run-java.sh'},
+      :script_filename      => 'Rublets.java',
+    },
     'javascript' => {
       :aliases              => ['js'],
       :evaluate_with        => ['js'],
       :timeout              => 5,
       :extension            => 'js',
+      :output_limit         => 2,
+    },
+    'lisp' => {
+      :aliases              => ['sbcl'],
+      :evaluate_with        => [
+        'sbcl',
+        '--script'
+      ],
+      :timeout              => 5,
+      :extension            => 'cl',
       :output_limit         => 2,
     },
     'lua' => {
@@ -56,33 +168,30 @@ class Language
       :skip_ending_lines    => 1,
       :code_from_stdin      => true,
     },
-    'arroyo' => {
-      :evaluate_with        => ['arroyo'],
+    'maxima' => {
+      :evaluate_with        => [
+        'maxima',
+        '--very-quiet', '--disable-readline'
+      ],
       :timeout              => 5,
-      :extension            => 'arr',
+      :extension            => 'maxima',
       :output_limit         => 2,
-      :before               => 'print (',
-      :after                => ')',
+      :code_from_stdin      => true,
+      :alter_code           => lambda { |code|
+        "display2d: false$ leftjust: true$ #{code}#{";" unless (code.end_with?(';') || code.end_with?('$'))}"
+      },
     },
-    'clay' => {
-      :evaluate_with        => ['clay', '-run'],
+     'mruby' => {
+      :evaluate_with        => ['mruby'],
       :timeout              => 5,
-      :extension            => 'clay',
+      :extension            => 'rb',
       :output_limit         => 2,
-    },
-    'ocaml' => {
-      :evaluate_with        => ['bash', 'run-ocaml.sh'],
-      :timeout              => 5,
-      :extension            => 'ml',
-      :output_limit         => 2,
-      :required_files       => {"#{@eval_path}/run-ocaml.sh" => 'run-ocaml.sh'},
-      :script_filename      => 'evaluation.ml',
-    },
-    'smalltalk' => {
-      :evaluate_with        => ['gst'],
-      :timeout              => 5,
-      :extension            => 'st',
-      :output_limit         => 2,
+      # mruby doesn't seem to be able to TOPLEVEL_BIND. -CodeBlock.
+      #      :alter_code           => lambda { |code|
+      #        code = "result = ::Kernel.eval(#{code.inspect}, TOPLEVEL_BINDING)"
+      #        code += "\n" + 'puts "=> " + result.inspect'
+      #        code
+      #      },
     },
     'objective-c' => {
       :aliases              => ['obj-c'],
@@ -96,25 +205,22 @@ class Language
         '#import <Foundation/Foundation.h>',
       ].join("\n") + "\n",
     },
-    'haskell' => {
-      :evaluate_with        => ['ghci', '-v0'],
+    'ocaml' => {
+      :evaluate_with        => ['bash', 'run-ocaml.sh'],
       :timeout              => 5,
-      :extension            => 'hs',
+      :extension            => 'ml',
       :output_limit         => 2,
-      :code_from_stdin      => true,
+      :required_files       => {"#{@eval_path}/run-ocaml.sh" => 'run-ocaml.sh'},
+      :script_filename      => 'evaluation.ml',
     },
-    'bash' => {
-      :aliases              => ['$'],
-      :evaluate_with        => ['bash'],
+    'pascal' => {
+      :evaluate_with        => ['bash', 'run-pascal.sh'],
+      :binaries_must_exist  => ['fpc', 'bash'],
       :timeout              => 5,
-      :extension            => 'sh',
+      :extension            => 'pas',
       :output_limit         => 2,
-    },
-    'zsh' => {
-      :evaluate_with        => ['zsh'],
-      :timeout              => 5,
-      :extension            => 'sh',
-      :output_limit         => 2,
+      :required_files       => {"#{@eval_path}/run-pascal.sh" => 'run-pascal.sh'},
+      :before               => 'program RubletsEval(output);' + "\n",
     },
     'perl' => {
       :aliases              => ['perl5'],
@@ -130,63 +236,6 @@ class Language
       :extension            => 'pl',
       :output_limit         => 2,
     },
-    'elixir' => {
-      :evaluate_with        => ['elixir'],
-      :timeout              => 5,
-      :extension            => 'exs',
-      :output_limit         => 2,
-      :alter_code           => lambda { |code|
-        eval_code = code.inspect
-        "{r, _} = Code.eval(#{eval_code}, []); IO.puts inspect(r)"
-      },
-    },
-    'maxima' => {
-      :evaluate_with        => [
-        'maxima',
-        '--very-quiet', '--disable-readline'
-      ],
-      :timeout              => 5,
-      :extension            => 'maxima',
-      :output_limit         => 2,
-      :code_from_stdin      => true,
-      :alter_code           => lambda { |code|
-        "display2d: false$ leftjust: true$ #{code}#{";" unless (code.end_with?(';') || code.end_with?('$'))}"
-      },
-    },
-    'go' => {
-      :evaluate_with        => ['bash', 'run-go.sh'],
-      :binaries_must_exist  => ['gccgo', 'bash'],
-      :timeout              => 5,
-      :extension            => 'go',
-      :output_limit         => 2,
-      :required_files       => {"#{@eval_path}/run-go.sh" => 'run-go.sh'},
-      :before               => [
-        'package main',
-        'import "fmt"',
-      ].join("\n") + "\n",
-    },
-    'pascal' => {
-      :evaluate_with        => ['bash', 'run-pascal.sh'],
-      :binaries_must_exist  => ['fpc', 'bash'],
-      :timeout              => 5,
-      :extension            => 'pas',
-      :output_limit         => 2,
-      :required_files       => {"#{@eval_path}/run-pascal.sh" => 'run-pascal.sh'},
-      :before               => 'program RubletsEval(output);' + "\n",
-    },
-    'io' => {
-      :evaluate_with        => ['io'],
-      :timeout              => 5,
-      :extension            => 'io',
-      :output_limit         => 2,
-    },
-    'forth' => {
-      :evaluate_with        => ['gforth'],
-      :timeout              => 5,
-      :extension            => 'forth',
-      :output_limit         => 2,
-      :after                => ' bye',
-    },
     'perpetual' => {
       :evaluate_with        => [
         'perpetual',
@@ -197,35 +246,6 @@ class Language
       :output_limit         => 2,
       :code_from_stdin      => true,
       :skip_preceding_lines => 1,
-    },
-    'lisp' => {
-      :aliases              => ['sbcl'],
-      :evaluate_with        => [
-        'sbcl',
-        '--script'
-      ],
-      :timeout              => 5,
-      :extension            => 'cl',
-      :output_limit         => 2,
-    },
-    'c' => {
-      :evaluate_with        => ['bash', 'run-c.sh'],
-      :binaries_must_exist  => ['gcc', 'bash'],
-      :timeout              => 5,
-      :extension            => 'c',
-      :output_limit         => 2,
-      :required_files       => {"#{@eval_path}/run-c.sh" => 'run-c.sh',
-        "#{@eval_path}/rublets-c.h" => 'stdinc.h'},
-      :before               => "#include \"stdinc.h\"\n",
-    },
-    'c++' => {
-      :evaluate_with        => ['bash', 'run-cpp.sh'],
-      :binaries_must_exist  => ['g++', 'bash'],
-      :timeout              => 5,
-      :extension            => 'cpp',
-      :output_limit         => 2,
-      :required_files       => {"#{@eval_path}/run-cpp.sh" => 'run-cpp.sh'},
-      :before               => File.read("#{@eval_path}/rublets-cpp.h"),
     },
     'php' => {
       :evaluate_with        => ['php'],
@@ -238,41 +258,31 @@ class Language
         code
       },
     },
-    'c#' => {
-      :aliases              => ['csharp'],
-      :evaluate_with        => ['bash', 'run-cs.sh'],
-      :binaries_must_exist  => ['mcs', 'bash'],
+    'python' => {
+      :evaluate_with        => ['python'],
       :timeout              => 5,
-      :extension            => 'cs',
+      :extension            => 'py',
       :output_limit         => 2,
-      :required_files       => {"#{@eval_path}/run-cs.sh" => 'run-cs.sh'},
     },
-    'java' => {
-      :evaluate_with        => ['bash', 'run-java.sh'],
-      :binaries_must_exist  => ['javac', 'java', 'bash'],
+    'python3' => {
+      :evaluate_with        => ['python3'],
       :timeout              => 5,
-      :extension            => 'java',
+      :extension            => 'py',
       :output_limit         => 2,
-      :required_files       => {"#{@eval_path}/run-java.sh" => 'run-java.sh'},
-      :script_filename      => 'Rublets.java',
     },
-    'frink' => {
+    'scala' => {
       :evaluate_with        => [
-        'java', '-cp', '/usr/share/java/frink.jar', 'frink.parser.Frink'
-      ] + (File.exists?('/etc/frink/units.txt') ? ['-u', '/etc/frink/units.txt'] : []),
-      :version_against      => 'frink',
-      :timeout              => 6,
-      :extension            => 'frink',
+        'scala',
+        '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon', '-deprecation'
+      ],
+      :timeout              => 20,
+      :extension            => 'scala',
       :output_limit         => 2,
-      :code_from_stdin      => true,
-      :skip_preceding_lines => 1,
-      :skip_ending_lines    => 1,
     },
-    'brainfuck' => {
-      :evaluate_with        => ['bf.rb'],
+    'smalltalk' => {
+      :evaluate_with        => ['gst'],
       :timeout              => 5,
-      :aliases              => ['bf'],
-      :extension            => 'b',
+      :extension            => 'st',
       :output_limit         => 2,
     },
     'sqlite' => {
@@ -283,17 +293,11 @@ class Language
       :output_limit         => 2,
       :code_from_stdin      => true,
     },
-     'mruby' => {
-      :evaluate_with        => ['mruby'],
+    'zsh' => {
+      :evaluate_with        => ['zsh'],
       :timeout              => 5,
-      :extension            => 'rb',
+      :extension            => 'sh',
       :output_limit         => 2,
-# mruby doesn't seem to be able to TOPLEVEL_BIND. -CodeBlock.
-#      :alter_code           => lambda { |code|
-#        code = "result = ::Kernel.eval(#{code.inspect}, TOPLEVEL_BINDING)"
-#        code += "\n" + 'puts "=> " + result.inspect'
-#        code
-#      },
     },
   }
 
