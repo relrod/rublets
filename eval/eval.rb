@@ -109,6 +109,13 @@ class Sandbox
     if @result.nil? or @result.empty?
       @result = "No output." 
     end
+
+    # Fix a Ruby 1.9-specific encoding bug in which causes incomplete IO chunks
+    # to be encoded as ASCII-8BIT. Thanks to the opscode/ohai folks, which this
+    # fix comes from. See http://git.io/mqTfLg for more info (their fix).
+    if "".respond_to?(:force_encoding) && defined?(Encoding)
+      @result = @result.force_encoding(Encoding.default_external)
+    end
     
     lines, output = @result.split("\n"), []
     if lines.any? { |l| l.length > 255 }
