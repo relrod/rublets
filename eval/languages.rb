@@ -57,13 +57,11 @@ class Language
       :code_from_stdin      => true,
     },
     'arroyo' => {
-      :evaluate_with        => ['arroyo', '-r'],
+      :evaluate_with        => ['arroyo'],
       :timeout              => 5,
       :extension            => 'arr',
       :output_limit         => 2,
-      :skip_preceding_lines => 1,
-      :skip_ending_lines    => 1,
-      :code_from_stdin      => true,
+      :before               => 'print '
     },
     'clay' => {
       :evaluate_with        => ['clay', '-run'],
