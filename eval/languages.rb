@@ -61,7 +61,8 @@ class Language
       :timeout              => 5,
       :extension            => 'arr',
       :output_limit         => 2,
-      :before               => 'print '
+      :before               => 'print (',
+      :after                => ')',
     },
     'clay' => {
       :evaluate_with        => ['clay', '-run'],
