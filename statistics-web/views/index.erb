@@ -2,6 +2,8 @@
 <html lang="en">
   <head>
     <title>Rublets Statistics</title>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" />
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/south-street/jquery-ui.css" rel="stylesheet" />
     <style>
       @import url('http://fonts.googleapis.com/css?family=Exo:400,700');
       h1, h2, h3, h4, h5 { font-family: 'Exo', inherit; }
@@ -18,8 +20,18 @@
         margin: 0 auto;
         width: 960px;
       }
+      .ui-tabs-panel { height: 700px; }
+      .ui-tabs-panel iframe { height: 680px; width: 900px; }
     </style>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>    
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+
+    <script type="text/javascript">
+      $(function() {
+        $('#stats').tabs();
+      });
+    </script>
 
     <!-- Language graph -->
     <script type="text/javascript">
@@ -32,6 +44,8 @@
         ]);
 
         var options = {
+          height: 680,
+          width: 900,
           title: 'Languages Used',
           legend: {position: 'none'},
           vAxis: {direction: -1}
@@ -53,6 +67,8 @@
         ]);
 
         var options = {
+          height: 680,
+          width: 900,
           title: 'Evaluations',
           legend: {position: 'none'},
           vAxis: {direction: 1}
@@ -74,6 +90,8 @@
         ]);
 
         var options = {
+          height: 680,
+          width: 900,
           title: 'Evaluations over Time',
           legend: {position: 'none'},
           hAxis: {direction: -1}
@@ -83,19 +101,21 @@
         chart.draw(data, options);
       }
     </script>
-
   </head>
   <body>
     <h1>Rublets Statistics</h1>
     
-    <h3>Evaluations over Time</h3>
-    <div id="evaluations_chart" style=""></div>
-
-    <h3>Total Languages Used</h3>
-    <div id="language_chart" style="height: 700px;"></div>
-
-    <h3>Top Ten Users</h3>
-    <div id="user_chart" style=""></div>
-    
+    <div id="stats">
+      <ul id="stats-nav">
+        <li><a href="#evaluations_chart">Over Time</a></li>
+        <li><a href="#language_chart">By Language</a></li>
+        <li><a href="#user_chart">By User</a></li>
+      </ul>
+      <div>
+        <div id="evaluations_chart" style=""></div>
+        <div id="language_chart"></div>
+        <div id="user_chart" style=""></div>
+      </div>
+    </div>
   </body>
 </html>
