@@ -39,7 +39,7 @@
       google.setOnLoadCallback(drawChart);
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Language', 'Total Uses'],
+          ['Language', 'Total Evaluations'],
           <%= @languages.sort_by { |k,v| v }.map{ |k,v| "['#{k}', #{v}]"}.join(",\n") %>
         ]);
 
@@ -48,7 +48,7 @@
           colors: ['#00bb00'],
           height: 680,
           width: 900,
-          title: 'Languages Used',
+          title: 'Languages Evaluated',
           legend: {position: 'none'},
           vAxis: {direction: -1}
         };
@@ -98,7 +98,7 @@
           colors: ['#00bb00'],
           height: 680,
           width: 900,
-          title: 'Evaluations over Time',
+          title: 'Evaluations per Day',
           legend: {position: 'none'},
           hAxis: {direction: -1}
         };
@@ -113,7 +113,7 @@
     
     <div id="stats">
       <ul id="stats-nav">
-        <li><a href="#evaluations_chart">Over Time</a></li>
+        <li><a href="#evaluations_chart">By Day</a></li>
         <li><a href="#language_chart">By Language</a></li>
         <li><a href="#user_chart">By User</a></li>
       </ul>
