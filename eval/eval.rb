@@ -119,7 +119,7 @@ class Sandbox
     
     lines, output = @result.split("\n"), []
     if lines.any? { |l| l.length > 255 }
-      output << "<output is long> #{gist}"
+      output << "<output is long> #{gist(@github_credentials)}"
     else
       lines[0...@output_limit].each do |line|
         output << line
