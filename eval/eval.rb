@@ -121,6 +121,7 @@ class Sandbox
     if lines.any? { |l| l.length > 255 }
       output << "<output is long> #{gist(@github_credentials)}"
     else
+      @output_limit += 1 if lines.size == @output_limit + 1
       lines[0...@output_limit].each do |line|
         output << line
       end
