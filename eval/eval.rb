@@ -123,7 +123,7 @@ class Sandbox
     else
       @output_limit += 1 if lines.size == @output_limit + 1
       lines[0...@output_limit].each do |line|
-        output << line
+        output << ANSIRC.to_irc(line)
       end
       if lines.count > @output_limit and @gist_after_limit
         output << "<output truncated> #{gist(@github_credentials)}"

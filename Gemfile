@@ -7,6 +7,7 @@ gem 'json'
 gem 'configru', '~> 0.5'
 gem 'nokogiri'
 gem 'backports'
+gem 'ansirc'
 
 # For the statistics web if
 gem 'sinatra'
