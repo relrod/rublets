@@ -2,6 +2,7 @@ require 'fileutils'
 require 'uri'
 require 'net/https'
 require 'base64'
+require 'ansirc'
 
 class Sandbox
   attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :gist_after_limit, :github_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :size_limit
