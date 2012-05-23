@@ -144,10 +144,13 @@ class Language
     },
     'javascript' => {
       :aliases              => ['js'],
-      :evaluate_with        => ['js'],
+      :evaluate_with        => ['js', '-i'],
       :timeout              => 5,
       :extension            => 'js',
       :output_limit         => 2,
+      :code_from_stdin      => true,
+      :skip_preceding_lines => 1,
+      :skip_ending_lines    => 1,
     },
     'lisp' => {
       :aliases              => ['sbcl'],
