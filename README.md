@@ -92,6 +92,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
 <tr>
   <td>Scripting</td>
   <td>
+    <a href="https://github.com/programble/befrunge">Befunge</a>
     <a href="https://github.com/mruby/mruby">MRuby</a>
     <a href="http://www.perl.org">Perl 5</a>
     <a href="http://perl6.org">Perl 6</a>
