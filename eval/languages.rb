@@ -139,6 +139,14 @@ class Language
       :extension            => 'io',
       :output_limit         => 2,
     },
+    'j' => {
+      :evaluate_with        => ['j-language'],
+      :timeout              => 5,
+      :extension            => 'j',
+      :output_limit         => 2,
+      :code_from_stdin      => true,
+      :skip_ending_lines    => 1,
+    },
     'java' => {
       :evaluate_with        => ['bash', 'run-java.sh'],
       :binaries_must_exist  => ['javac', 'java', 'bash'],
