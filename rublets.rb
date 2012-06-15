@@ -55,8 +55,8 @@ end
           result = sandbox.evaluate
           result.each { |line| respond line }
           sandbox.rm_home!
-          next
         end
+        next
       end
     end
     
