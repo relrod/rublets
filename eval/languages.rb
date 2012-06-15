@@ -28,6 +28,12 @@ class Language
       :extension            => 'sh',
       :output_limit         => 2,
     },
+    'befunge' => {
+      :evaluate_with        => ['befrunge'],
+      :timeout              => 5,
+      :extension            => 'bf',
+      :output_limit         => 2,
+    },
     'brainfuck' => {
       :evaluate_with        => ['bf.rb'],
       :timeout              => 5,
