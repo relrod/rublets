@@ -367,7 +367,7 @@ class Language
   #                   with the FULL PATH to the binary. Otherwise the FULL
   #                   PATH will be appended to the end of the String.
   #
-  # If the language has a defined :version_against, that binary is used.
+  # If the language has a defined :version_against, that path is used.
   # Otherwise, the first element of :evaluate_with is used.
   #
   # The binary to version against MUST be in $PATH or no version will return.
