@@ -412,14 +412,18 @@ class Language
     return nil unless binary
     
     # Get the absolute path of the interpreter/compiler.
-    path_to_binary = ''
-    ENV['PATH'].split(':').each do |path|
-      if File.exists? File.join(path, '/', binary)
-        path_to_binary = File.join(path, '/', binary)
-        break
+    if language[:version_against]
+      path_to_binary = language[:version_against]
+    else
+      path_to_binary = ''
+      ENV['PATH'].split(':').each do |path|
+        if File.exists? File.join(path, '/', binary)
+          path_to_binary = File.join(path, '/', binary)
+          break
+        end
       end
+      return nil if path_to_binary.empty?
     end
-    return nil if path_to_binary.empty?
 
     # Swap out all '{}' with the actual path, if we need to.
     # If '{}' doesn't appear, just throw path_to_binary on the end.
