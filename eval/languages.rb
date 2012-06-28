@@ -106,7 +106,7 @@ class Language
       :evaluate_with        => [
         'java', '-cp', '/usr/share/java/frink.jar', 'frink.parser.Frink'
       ] + (File.exists?('/etc/frink/units.txt') ? ['-u', '/etc/frink/units.txt'] : []),
-      :version_against      => 'frink',
+      :version_against      => '/usr/share/java/frink.jar',
       :timeout              => 6,
       :extension            => 'frink',
       :output_limit         => 2,
