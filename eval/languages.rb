@@ -126,6 +126,13 @@ class Language
         'import "fmt"',
       ].join("\n") + "\n",
     },
+    'golfscript' => {
+      :evaluate_with        => ['golfscript'],
+      :binaries_must_exist  => ['golfscript'],
+      :timeout              => 5,
+      :extension            => 'gs',
+      :output_limit         => 2,
+    },
     'haskell' => {
       :evaluate_with        => ['ghci', '-v0'],
       :timeout              => 5,
