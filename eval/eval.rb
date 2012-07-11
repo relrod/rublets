@@ -42,7 +42,7 @@ class Sandbox
     @skip_preceding_lines = options[:skip_preceding_lines] || 0
     @skip_ending_lines    = options[:skip_ending_lines] || 0
     @alter_code           = options[:alter_code] || nil
-    @size_limit           = options[:size_limit] || 2048 # bytes
+    @size_limit           = options[:size_limit] || 10240 # bytes
 
     # @alter_code is a method that gets called on @code immediately after a
     # Sandbox object is created.
