@@ -33,7 +33,7 @@ class Sandbox
     @owner                = options[:owner] || 'anonymous'
     @includes             = options[:includes] || []
     @code                 = "#{options[:before]}#{options[:code]}#{options[:after]}"
-    @output_limit         = options[:output_limit] || 3
+    @output_limit         = options[:output_limit] || 2
     @gist_after_limit     = options[:gist_after_limit] || true
     @github_credentials   = options[:github_credentials] || {}
     @binaries_must_exist  = options[:binaries_must_exist] || [@evaluate_with.first]

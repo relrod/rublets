@@ -17,7 +17,6 @@ class Language
       :evaluate_with        => ['arroyo'],
       :timeout              => 5,
       :extension            => 'arr',
-      :output_limit         => 2,
       :before               => 'print (',
       :after                => ')',
     },
@@ -26,27 +25,23 @@ class Language
       :evaluate_with        => ['bash'],
       :timeout              => 5,
       :extension            => 'sh',
-      :output_limit         => 2,
     },
     'befunge' => {
       :evaluate_with        => ['befrunge'],
       :timeout              => 5,
       :extension            => 'bf',
-      :output_limit         => 2,
     },
     'brainfuck' => {
       :evaluate_with        => ['bf.rb'],
       :timeout              => 5,
       :aliases              => ['bf'],
       :extension            => 'b',
-      :output_limit         => 2,
     },
     'c' => {
       :evaluate_with        => ['bash', 'run-c.sh'],
       :binaries_must_exist  => ['gcc', 'bash'],
       :timeout              => 5,
       :extension            => 'c',
-      :output_limit         => 2,
       :required_files       => {"#{@eval_path}/run-c.sh" => 'run-c.sh',
         "#{@eval_path}/rublets-c.h" => 'stdinc.h'},
       :before               => "#include \"stdinc.h\"\n",
@@ -57,7 +52,6 @@ class Language
       :binaries_must_exist  => ['mcs', 'bash'],
       :timeout              => 5,
       :extension            => 'cs',
-      :output_limit         => 2,
       :required_files       => {"#{@eval_path}/run-cs.sh" => 'run-cs.sh'},
     },
     'c++' => {
@@ -65,7 +59,6 @@ class Language
       :binaries_must_exist  => ['g++', 'bash'],
       :timeout              => 5,
       :extension            => 'cpp',
-      :output_limit         => 2,
       :required_files       => {"#{@eval_path}/run-cpp.sh" => 'run-cpp.sh'},
       :before               => File.read("#{@eval_path}/rublets-cpp.h"),
     },
@@ -73,13 +66,11 @@ class Language
       :evaluate_with        => ['clay', '-run'],
       :timeout              => 5,
       :extension            => 'clay',
-      :output_limit         => 2,
     },
     'elixir' => {
       :evaluate_with        => ['elixir'],
       :timeout              => 5,
       :extension            => 'exs',
-      :output_limit         => 2,
       :alter_code           => lambda { |code|
         eval_code = code.inspect
         "{r, _} = Code.eval(#{eval_code}, []); IO.puts inspect(r)"
@@ -89,7 +80,6 @@ class Language
       :evaluate_with        => ['escript'],
       :timeout              => 5,
       :extension            => 'erl',
-      :output_limit         => 2,
       :before               => [
         '#!/usr/bin/env escript',
         '%%! -smp enable -mnesia debug verbose',
@@ -99,7 +89,6 @@ class Language
       :evaluate_with        => ['gforth'],
       :timeout              => 5,
       :extension            => 'forth',
-      :output_limit         => 2,
       :after                => ' bye',
     },
     'frink' => {
@@ -109,7 +98,6 @@ class Language
       :version_against      => '/usr/share/java/frink.jar',
       :timeout              => 6,
       :extension            => 'frink',
-      :output_limit         => 2,
       :code_from_stdin      => true,
       :skip_preceding_lines => 1,
       :skip_ending_lines    => 1,
@@ -119,7 +107,6 @@ class Language
       :binaries_must_exist  => ['gccgo', 'bash'],
       :timeout              => 5,
       :extension            => 'go',
-      :output_limit         => 2,
       :required_files       => {"#{@eval_path}/run-go.sh" => 'run-go.sh'},
       :before               => [
         'package main',
@@ -131,26 +118,22 @@ class Language
       :binaries_must_exist  => ['golfscript'],
       :timeout              => 5,
       :extension            => 'gs',
-      :output_limit         => 2,
     },
     'haskell' => {
       :evaluate_with        => ['ghci', '-v0'],
       :timeout              => 5,
       :extension            => 'hs',
-      :output_limit         => 2,
       :code_from_stdin      => true,
     },
     'io' => {
       :evaluate_with        => ['io'],
       :timeout              => 5,
       :extension            => 'io',
-      :output_limit         => 2,
     },
     'j' => {
       :evaluate_with        => ['j-language'],
       :timeout              => 5,
       :extension            => 'j',
-      :output_limit         => 2,
       :code_from_stdin      => true,
       :skip_ending_lines    => 1,
     },
@@ -159,7 +142,6 @@ class Language
       :binaries_must_exist  => ['javac', 'java', 'bash'],
       :timeout              => 5,
       :extension            => 'java',
-      :output_limit         => 2,
       :required_files       => {"#{@eval_path}/run-java.sh" => 'run-java.sh'},
       :script_filename      => 'Rublets.java',
     },
@@ -168,7 +150,6 @@ class Language
       :evaluate_with        => ['js', '-i'],
       :timeout              => 5,
       :extension            => 'js',
-      :output_limit         => 2,
       :code_from_stdin      => true,
       :skip_preceding_lines => 1,
       :skip_ending_lines    => 1,
@@ -181,13 +162,11 @@ class Language
       ],
       :timeout              => 5,
       :extension            => 'cl',
-      :output_limit         => 2,
     },
     'lua' => {
       :evaluate_with        => ['lua', '-i'],
       :timeout              => 5,
       :extension            => 'lua',
-      :output_limit         => 2,
       :skip_preceding_lines => 2,
       :skip_ending_lines    => 1,
       :code_from_stdin      => true,
@@ -199,7 +178,6 @@ class Language
       ],
       :timeout              => 5,
       :extension            => 'maxima',
-      :output_limit         => 2,
       :code_from_stdin      => true,
       :alter_code           => lambda { |code|
         "display2d: false$ leftjust: true$ #{code}#{";" unless (code.end_with?(';') || code.end_with?('$'))}"
@@ -209,7 +187,6 @@ class Language
       :evaluate_with        => ['mruby'],
       :timeout              => 5,
       :extension            => 'rb',
-      :output_limit         => 2,
       # mruby doesn't seem to be able to TOPLEVEL_BIND. -CodeBlock.
       #      :alter_code           => lambda { |code|
       #        code = "result = ::Kernel.eval(#{code.inspect}, TOPLEVEL_BINDING)"
@@ -223,7 +200,6 @@ class Language
       :binaries_must_exist  => ['gcc', 'bash'],
       :timeout              => 5,
       :extension            => 'm',
-      :output_limit         => 2,
       :required_files       => {"#{@eval_path}/run-obj-c.sh" => 'run-obj-c.sh'},
       :before               => [
         '#import <Foundation/Foundation.h>',
@@ -233,7 +209,6 @@ class Language
       :evaluate_with        => ['bash', 'run-ocaml.sh'],
       :timeout              => 5,
       :extension            => 'ml',
-      :output_limit         => 2,
       :required_files       => {"#{@eval_path}/run-ocaml.sh" => 'run-ocaml.sh'},
       :script_filename      => 'evaluation.ml',
     },
@@ -242,7 +217,6 @@ class Language
       :binaries_must_exist  => ['fpc', 'bash'],
       :timeout              => 5,
       :extension            => 'pas',
-      :output_limit         => 2,
       :required_files       => {"#{@eval_path}/run-pascal.sh" => 'run-pascal.sh'},
       :before               => 'program RubletsEval(output);' + "\n",
     },
@@ -251,14 +225,12 @@ class Language
       :evaluate_with        => ['perl'],
       :timeout              => 5,
       :extension            => 'pl',
-      :output_limit         => 2,
     },
     'perl6' => {
       :aliases              => ['rakudo'],
       :evaluate_with        => ['perl6'],
       :timeout              => 6,
       :extension            => 'pl',
-      :output_limit         => 2,
     },
     'perpetual' => {
       :evaluate_with        => [
@@ -267,7 +239,6 @@ class Language
       ],
       :timeout              => 5,
       :extension            => 'perp',
-      :output_limit         => 2,
       :code_from_stdin      => true,
       :skip_preceding_lines => 1,
     },
@@ -275,7 +246,6 @@ class Language
       :evaluate_with        => ['php'],
       :timeout              => 5,
       :extension            => 'php',
-      :output_limit         => 2,
       :alter_code           => lambda { |code|
         code = "<?php #{code}" unless code.start_with?("<?")
         code.gsub!(/^<\? /, '<?php ') if code.start_with?("<? ")
@@ -286,7 +256,6 @@ class Language
       :evaluate_with        => ['python'],
       :timeout              => 5,
       :extension            => 'py',
-      :output_limit         => 2,
     },
     'python3' => {
       :evaluate_with        => ['python3'],
@@ -301,7 +270,6 @@ class Language
       ],
       :timeout              => 7,
       :extension            => 'scala',
-      :output_limit         => 2,
       :code_from_stdin      => true,
       :skip_preceding_lines => 5,
       :skip_ending_lines    => 2,
@@ -310,21 +278,18 @@ class Language
       :evaluate_with        => ['gst'],
       :timeout              => 5,
       :extension            => 'st',
-      :output_limit         => 2,
     },
     'sqlite' => {
       :evaluate_with        => ['sqlite3', Time.now.to_f.to_s],
       :timeout              => 5,
       :aliases              => ['sqlite3'],
       :extension            => 'sqlite',
-      :output_limit         => 2,
       :code_from_stdin      => true,
     },
     'zsh' => {
       :evaluate_with        => ['zsh'],
       :timeout              => 5,
       :extension            => 'sh',
-      :output_limit         => 2,
     },
   }
 
