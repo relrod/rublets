@@ -302,6 +302,9 @@ class Language
       :timeout              => 20,
       :extension            => 'scala',
       :output_limit         => 2,
+      :code_from_stdin      => true,
+      :skip_preceding_lines => 5,
+      :skip_ending_lines    => 2,
     },
     'smalltalk' => {
       :evaluate_with        => ['gst'],
