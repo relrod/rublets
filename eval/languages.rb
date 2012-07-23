@@ -299,7 +299,7 @@ class Language
         'scala',
         '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon', '-deprecation'
       ],
-      :timeout              => 20,
+      :timeout              => 7,
       :extension            => 'scala',
       :output_limit         => 2,
       :code_from_stdin      => true,
