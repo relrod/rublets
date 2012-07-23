@@ -82,12 +82,14 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
   <td>Misc</td>
   <td>
     <a href="https://github.com/pocmo/Ruby-Brainfuck">Brainfuck</a>
+    <a href="http://claylabs.com/clay/">Clay</a>
     <a href="https://futureboy.us/frinkdocs/">Frink (non-foss)</a>
     <a href="http://www.jsoftware.com/">J</a>
     <a href="http://lolcode.com/">LOLCODE</a>
     <a href="http://maxima.sourceforge.net/">Maxima</a>
     <a href="http://www.freepascal.org/">Pascal</a>
     <a href="http://smalltalk.gnu.org">Smalltalk</a>
+    <a href="https://www.sqlite.org/">SQLite 3</a>
   </td>
 </tr>
 <tr>
@@ -106,6 +108,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
 <tr>
   <td>JVM-based</td>
   <td>
+    <a href="http://openjdk.java.net/">Java</a>
     <a href="http://www.scala-lang.org">Scala</a>
   </td>
 </tr>
