@@ -5,7 +5,7 @@ require 'base64'
 require 'ansirc'
 
 class Sandbox
-  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :gist_after_limit, :github_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :size_limit
+  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :gist_after_limit, :github_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :alter_result, :size_limit
 
   # Public: Creates a Sandbox instance.
   #
@@ -42,6 +42,7 @@ class Sandbox
     @skip_preceding_lines = options[:skip_preceding_lines] || 0
     @skip_ending_lines    = options[:skip_ending_lines] || 0
     @alter_code           = options[:alter_code] || nil
+    @alter_result         = options[:alter_result] || nil
     @size_limit           = options[:size_limit] || 10240 # bytes
 
     # @alter_code is a method that gets called on @code immediately after a
@@ -117,6 +118,9 @@ class Sandbox
     if "".respond_to?(:force_encoding) && defined?(Encoding)
       @result = @result.force_encoding(Encoding.default_external)
     end
+
+    # Do we need to do anything to the result before we show it?
+    @result = @alter_result.call(@result) unless @alter_result.nil?
     
     lines, output = @result.split("\n"), []
     if lines.any? { |l| l.length > 255 }

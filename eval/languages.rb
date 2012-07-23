@@ -136,6 +136,7 @@ class Language
       :extension            => 'j',
       :code_from_stdin      => true,
       :skip_ending_lines    => 1,
+      :alter_result         => lambda { |result| result.lstrip }
     },
     'java' => {
       :evaluate_with        => ['bash', 'run-java.sh'],
