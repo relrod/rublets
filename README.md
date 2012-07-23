@@ -83,6 +83,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
   <td>
     <a href="https://github.com/pocmo/Ruby-Brainfuck">Brainfuck</a>
     <a href="https://futureboy.us/frinkdocs/">Frink (non-foss)</a>
+    <a href="http://www.jsoftware.com/">J</a>
     <a href="http://lolcode.com/">LOLCODE</a>
     <a href="http://maxima.sourceforge.net/">Maxima</a>
     <a href="http://www.freepascal.org/">Pascal</a>
