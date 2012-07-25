@@ -145,6 +145,10 @@ class Language
       :extension            => 'java',
       :required_files       => {"#{@eval_path}/run-java.sh" => 'run-java.sh'},
       :script_filename      => 'Rublets.java',
+      :alter_code           => lambda { |code|
+        return code if code.include? 'class Rublets'
+        return "public class Rublets { #{code} }"
+      }
     },
     'javascript' => {
       :aliases              => ['js'],
