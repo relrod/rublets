@@ -14,10 +14,14 @@ class Language
   #   and contains necessary metadata for doing so.
   @languages = {
     'apricot' => {
-      :evaluate_with        => ['/usr/local/rvm/bin/rvm', 'rbx-head', 'do', 'rbx', '-X19', '/opt/rublets/programble-apricot/bin/apricot'],
+      :evaluate_with        => ['/usr/local/rvm/bin/rvm',
+        'rbx-head', 'do', 'rbx', '-X19',
+        '-I/opt/rublets/programble-apricot/lib', '-rapricot'
+      ],
       :timeout              => 5,
-      :extension            => 'apr',
-      :code_from_stdin      => true,
+      :alter_code           => lambda { |code|
+        "puts Apricot::Compiler.eval(#{code.inspect}).apricot_inspect"
+      },
       :version_lambda       => lambda {
         Dir.chdir('/opt/rublets/programble-apricot')
         `git log --format='%h - %cD' -1`
