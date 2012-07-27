@@ -32,3 +32,29 @@ get '/' do
 
   erb :index
 end
+
+
+Dir.chdir('/opt/rublets')
+
+[
+  'programble-apricot',
+].each do |name|
+  if File.exists?(name)
+    Dir.chdir(name)
+    `git pull origin master`
+  else
+    owner, repo = name.split('-')
+    `git clone git://github.com/#{owner}/#{repo}.git #{name}`
+  end
+end
+
+post '/rublets/pull' do
+  push = JSON.parse(params[:payload])
+  directory = "/opt/rublets/#{push['repository']['owner']['name']}-#{push['repository']['name']}"
+  if File.exists?(directory)
+    Dir.chdir(directory)
+    `git pull origin master`
+  else
+    puts 'Whoopsie! An error occurred: The directory #{directory} was not found.'
+  end
+end
