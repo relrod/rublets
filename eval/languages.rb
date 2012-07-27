@@ -13,6 +13,16 @@ class Language
   # Returns a large Hash of Hashes which explains how to run an evaluation
   #   and contains necessary metadata for doing so.
   @languages = {
+    'apricot' => {
+      :evaluate_with        => ['/usr/local/rvm/bin/rvm', 'rbx-head', 'do', 'rbx', '-X19', '/opt/rublets/programble-apricot/bin/apricot'],
+      :timeout              => 5,
+      :extension            => 'apr',
+      :code_from_stdin      => true,
+      :version_lambda       => lambda {
+        Dir.chdir('/opt/rublets/programble-apricot')
+        `git log --format='%h - %cD' -1`
+      },
+    },
     'arroyo' => {
       :evaluate_with        => ['arroyo'],
       :timeout              => 5,
@@ -313,9 +323,9 @@ class Language
   #   or nil if the language is not supported.
   #
   def self.by_name(lang_name)
-    return nil if name == nil
+    return nil if lang_name == nil
 
-    name.downcase!
+    lang_name.downcase!
 
     return languages[lang_name] if languages.has_key?(lang_name)
 
@@ -381,6 +391,10 @@ class Language
   # Returns the version of the language as a String, or nil if the language is
   #   not in $PATH.
   def self.version(language, version_command)
+    if language[:version_lambda]
+      return language[:version_lambda].call
+    end
+
     # Use :version_against or :binaries_must_exist[0]
     binary = if language[:version_against]
                language[:version_against]

@@ -208,6 +208,7 @@ class Sandbox
   # Returns false if a needed binary doesn't exist, and true if they all do.
   def binaries_all_exist?
     @binaries_must_exist.each do |binary|
+      next if File.exists? binary
       return false unless ENV['PATH'].split(':').any? { |path| File.exists? File.join(path, '/', binary) }
     end
     true
