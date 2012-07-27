@@ -33,7 +33,7 @@ get '/' do
   erb :index
 end
 
-
+statistics_dir = Dir.pwd
 Dir.chdir('/opt/rublets')
 
 [
@@ -48,12 +48,15 @@ Dir.chdir('/opt/rublets')
   end
 end
 
+Dir.chdir(statistics_dir)
+
 post '/rublets/pull' do
   push = JSON.parse(params[:payload])
   directory = "/opt/rublets/#{push['repository']['owner']['name']}-#{push['repository']['name']}"
   if File.exists?(directory)
     Dir.chdir(directory)
     `git pull origin master`
+    Dir.chdir(statistics_dir)
   else
     puts 'Whoopsie! An error occurred: The directory #{directory} was not found.'
   end
