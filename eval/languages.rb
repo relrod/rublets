@@ -357,12 +357,7 @@ class Language
   #
   # Returns a String containing all of the languages that we can evaluate.
   def self.list_all
-    supported = []
-    languages.each do |lang, params|
-      lang += " (aka #{params[:aliases].join(", ")})" unless params[:aliases].nil?
-      supported << lang
-    end
-    supported.sort.join(', ')
+    languages.keys.sort.join(', ')
   end
 
   # Public: Give the version of a supported language.
