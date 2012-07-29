@@ -14,6 +14,7 @@ class Language
   #   and contains necessary metadata for doing so.
   @languages = {
     'apricot' => {
+      :aliases              => ['apr'],
       :evaluate_with        => ['/usr/local/rvm/bin/rvm',
         'rbx-head', 'do', 'rbx', '-X19',
         '-I/opt/rublets/programble-apricot/lib', '-rapricot'
@@ -80,6 +81,17 @@ class Language
       :evaluate_with        => ['clay', '-run'],
       :timeout              => 5,
       :extension            => 'clay',
+    },
+    'clojure' => {
+      :aliases              => ['clj'],
+      :evaluate_with        => ['clojure'],
+      :timeout              => 5,
+      :code_from_stdin      => true,
+      :alter_result         => lambda { |result|
+        result.gsub(/^user=> /, '')
+      },
+      :skip_preceding_lines => 1,
+      :extension            => 'clj',
     },
     'elixir' => {
       :evaluate_with        => ['elixir'],
