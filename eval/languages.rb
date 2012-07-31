@@ -21,7 +21,14 @@ class Language
       ],
       :timeout              => 5,
       :alter_code           => lambda { |code|
-        "puts Apricot::Compiler.eval(#{code.inspect}).apricot_inspect"
+        "begin
+  puts \"=> \" + Apricot::Compiler.eval(#{code.inspect}).apricot_inspect
+rescue Exception => e
+  puts \"#{e.class}: #{e.message}\"
+  e.backtrace.each do |line|
+    puts \" from #{line}\"
+  end
+end"
       },
       :version_lambda       => lambda {
         Dir.chdir('/opt/rublets/programble-apricot')
