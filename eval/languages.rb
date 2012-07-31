@@ -24,9 +24,9 @@ class Language
         "begin
   puts \"=> \" + Apricot::Compiler.eval(#{code.inspect}).apricot_inspect
 rescue Exception => e
-  puts \"#{e.class}: #{e.message}\"
+  puts \"\#{e.class}: \#{e.message}\"
   e.backtrace.each do |line|
-    puts \" from #{line}\"
+    puts \" from \#{line}\"
   end
 end"
       },
