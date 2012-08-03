@@ -5,7 +5,7 @@ require 'base64'
 require 'ansirc'
 
 class Sandbox
-  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :gist_after_limit, :github_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :alter_result, :size_limit
+  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :gist_after_limit, :github_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :alter_result, :size_limit, :sandbox_net_t
 
   # Public: Creates a Sandbox instance.
   #
@@ -44,6 +44,7 @@ class Sandbox
     @alter_code           = options[:alter_code] || nil
     @alter_result         = options[:alter_result] || nil
     @size_limit           = options[:size_limit] || 10240 # bytes
+    @sandbox_net_t        = options[:sandbox_net_t] || false
 
     # @alter_code is a method that gets called on @code immediately after a
     # Sandbox object is created.
@@ -92,9 +93,10 @@ class Sandbox
     insert_code_into_file
     copy_audit_script
     cmd_script_filename = @code_from_stdin ? [] : [@script_filename]
+    sandbox_type = @sandbox_net_t ? 'sandbox_net_t' : 'sandbox_x_t'
     popen_args = [
       'timeout', @timeout.to_s,
-      'sandbox', '-H', @home, '-T', "#{@home}/tmp/", '-t', 'sandbox_x_t',
+      'sandbox', '-H', @home, '-T', "#{@home}/tmp/", '-t', "#{sandbox_type}",
       'timeout', @timeout.to_s, *@evaluate_with
     ]
     popen_args << @script_filename unless @code_from_stdin

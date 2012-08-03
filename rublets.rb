@@ -18,6 +18,10 @@ require 'eval/config'
 require 'eval/eval'
 require 'eval/languages'
 
+sandbox_net_t_users = Configru.sandbox_net_t_users.map do |hostmask|
+  Regexp.new(hostmask)
+end
+
 #bot = Thread.new do
 @bot = IRC.new do
   nick Configru.nickname
@@ -50,7 +54,13 @@ end
       the_lang = Language.by_name(matches[1])
       if the_lang
         future do
-          sandbox = Sandbox.new(the_lang.merge({:owner => sender.nick, :code => matches[2], :github_credentials => Configru.github_credentials, :path => Configru.rublets_home}))
+          sandbox = Sandbox.new(the_lang.merge({
+                :owner => sender.nick,
+                :code => matches[2],
+                :github_credentials => Configru.github_credentials,
+                :path => Configru.rublets_home,
+                :sandbox_net_t => (sandbox_net_t_users.any? { |regex| !sender.host.match(regex).nil? })
+              }))
           the_lang[:required_files].each { |file,dest| sandbox.copy file, dest } unless the_lang[:required_files].nil?
           result = sandbox.evaluate
           result.each { |line| respond line }
