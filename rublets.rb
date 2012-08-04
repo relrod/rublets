@@ -163,7 +163,7 @@ end
           end
         end
 
-        eval_code = "begin"
+        eval_code = "begin\n"
         eval_code += "  result = ::Kernel.eval(#{code.inspect}, TOPLEVEL_BINDING)\n"
         if rubyversion == 'all'
           eval_code += '  puts RUBY_VERSION + " #{\'(\' + RUBY_ENGINE + \')\' unless defined?(RUBY_ENGINE).nil?} => " + result.inspect' + "\n"
@@ -172,7 +172,7 @@ end
         end
         eval_code += "rescue Exception => e\n"
         eval_code += '  puts "#{e.class}: #{e.message}"'
-        eval_code += "end"
+        eval_code += "\nend"
 
         sandbox = Sandbox.new(
           :path                => Configru.rublets_home,

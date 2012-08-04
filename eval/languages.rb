@@ -31,6 +31,7 @@ end"
         Dir.chdir('/opt/rublets/programble-apricot')
         `git log --format='%h - %cD' -1`
       },
+      :extension            => 'rb',
     },
     'arroyo' => {
       :evaluate_with        => ['arroyo'],
