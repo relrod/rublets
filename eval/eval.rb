@@ -170,7 +170,7 @@ class Sandbox
 
     input = File.open("#{@home}/#{@script_filename}").read
     language = Linguist::FileBlob.new("#{@home}/#{@script_filename}").language.name
-    paste = "Input:\n#{input}\n\nOutput:\n#{@result}"
+    paste = "Input (#{@script_filename}):\n#{input}\n\nOutput:\n#{@result}"
     paste = heap.create(paste, :language => language, :private => true)
 
     "Output truncated: #{paste['url']} (#{paste['lines']} lines)"
