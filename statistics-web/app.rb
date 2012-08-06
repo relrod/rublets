@@ -1,7 +1,7 @@
 require "rubygems"
 require "bundler/setup"
 require "sinatra"
-require "language_sniffer"
+require "linguist/file_blob"
 require "backports"
 require "time"
 
@@ -19,7 +19,7 @@ get '/' do
   @evaluations = Hash.new { |h,k| h[k] = 0 }
 
   Dir[evaluated_path].each do |file|
-    language = LanguageSniffer.detect("#{file}").language
+    language = Linguist::FileBlob.new(file).language
     puts file if language.nil?
     language.nil? ? @languages['unknown'] += 1 : @languages[language.name] += 1
 

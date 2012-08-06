@@ -8,7 +8,5 @@ gem 'configru', '~> 0.5'
 gem 'nokogiri'
 gem 'backports'
 gem 'ansirc'
-
-# For the statistics web if
-gem 'sinatra'
-gem 'language_sniffer', :git => "git://github.com/CodeBlock/language_sniffer.git"
+gem 'github-linguist'
+gem 'sinatra' # Statistics web interface.
