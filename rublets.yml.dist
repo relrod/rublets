@@ -22,8 +22,10 @@ rublets_home: "~/.rublets/"
 # How to trigger the bot in a channel
 comchar: "!"
 
-# Github credentials (used for making the bot own its gists)
-github_credentials:
+# Pastebin credentials (used for making the bot own its pastes)
+# Currently uses refheap.com's API, so get a username from them.
+# Your API key is the "password" field here.
+pastebin_credentials:
   username: rublets
   password: Your_P4ssw0rd_G0eS.Here!
 
