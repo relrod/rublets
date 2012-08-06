@@ -3,9 +3,11 @@ require 'uri'
 require 'net/https'
 require 'base64'
 require 'ansirc'
+require 'linguist/file_blob'
+require 'rubyheap'
 
 class Sandbox
-  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :gist_after_limit, :github_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :alter_result, :size_limit, :sandbox_net_t
+  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :pastebin_after_limit, :pastebin_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :alter_result, :size_limit, :sandbox_net_t
 
   # Public: Creates a Sandbox instance.
   #
@@ -34,8 +36,8 @@ class Sandbox
     @includes             = options[:includes] || []
     @code                 = "#{options[:before]}#{options[:code]}#{options[:after]}"
     @output_limit         = options[:output_limit] || 2
-    @gist_after_limit     = options[:gist_after_limit] || true
-    @github_credentials   = options[:github_credentials] || {}
+    @pastebin_after_limit = options[:pastebin_after_limit] || true
+    @pastebin_credentials = options[:pastebin_credentials] || {}
     @binaries_must_exist  = options[:binaries_must_exist] || [@evaluate_with.first]
     @stdin                = options[:stdin] || nil
     @code_from_stdin      = options[:code_from_stdin] || false
@@ -126,14 +128,14 @@ class Sandbox
     
     lines, output = @result.split("\n"), []
     if lines.any? { |l| l.length > 255 }
-      output << "<output is long> #{gist(@github_credentials)}"
+      output << "<output is long> #{pastebin(@pastebin_credentials)}"
     else
       @output_limit += 1 if lines.size == @output_limit + 1
       lines[0...@output_limit].each do |line|
         output << ANSIRC.to_irc(line)
       end
-      if lines.count > @output_limit and @gist_after_limit
-        output << "<output truncated> #{gist(@github_credentials)}"
+      if lines.count > @output_limit and @pastebin_after_limit
+        output << pastebin(@pastebin_credentials)
       end
     end
     if $?.exitstatus.to_i == 124
@@ -149,45 +151,29 @@ class Sandbox
     FileUtils.rm_rf @home
   end
 
-  # Public: Gists (https://gist.github.com/) the result of a code evaluation.
+  # Public: Pastebins the result of a code evaluation.
   #
   # This is used when the output of an evaluation is too long for IRC. The
-  # full result is pastebinned using Gist.
+  # full result is pastebinned.
   #
   # credentials - An optional Hash containing two keys, :username, and :password
-  #               which, if present, are used to authenticate with Github, to
-  #               have the given account own the Gist.
+  #               which, if present, are used to authenticate with the pastebin,
+  #               to have the given account own the paste.
   #
-  # Returns a String containing link to the Gist, or an error message stating
+  # Returns a String containing link to the paste, or an error message stating
   #   why we couldn't get it.
-  def gist(credentials = {})
+  def pastebin(credentials = {})
     username = credentials[:username] || nil
     password = credentials[:password] || nil
 
-    gist = URI.parse('https://api.github.com/gists')
-    http = Net::HTTP.new(gist.host, gist.port)
-    http.use_ssl = true
-    
-    headers = {}
-    headers['Authorization'] = 'Basic ' + Base64.encode64("#{username}:#{password}").chop unless username.nil? or password.nil?
-    
-    response = http.post(gist.path, {
-        'public' => false,
-        #'description' => "#{nickname}'s ruby eval",
-        'files' => {
-          "input.#{@extension}" => {
-            'content' => File.open("#{@home}/#{@script_filename}").read
-          },
-          'output.txt' => {
-            'content' => @result
-          }
-        }
-      }.to_json, headers)
-    if response.response.code.to_i != 201
-      return "Unable to Gist output."
-    else
-      JSON(response.body)['html_url']
-    end
+    heap = Refheap::Paste.new(username, password)
+
+    input = File.open("#{@home}/#{@script_filename}").read
+    language = Linguist::FileBlob.new("#{@home}/#{@script_filename}").language.name
+    paste = "Input:\n#{input}\n\nOutput:\n#{@result}"
+    paste = heap.create(paste, :language => language, :private => true)
+
+    "Output truncated: #{paste['url']} (#{paste['lines']} lines)"
   end
 
   private

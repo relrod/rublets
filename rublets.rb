@@ -53,19 +53,19 @@ end
     if matches
       the_lang = Language.by_name(matches[1])
       if the_lang
-        future do
+
           sandbox = Sandbox.new(the_lang.merge({
-                :owner => sender.nick,
-                :code => matches[2],
-                :github_credentials => Configru.github_credentials,
-                :path => Configru.rublets_home,
-                :sandbox_net_t => (sandbox_net_t_users.any? { |regex| !sender.host.match(regex).nil? })
+                :owner                => sender.nick,
+                :code                 => matches[2],
+                :pastebin_credentials => Configru.pastebin_credentials,
+                :path                 => Configru.rublets_home,
+                :sandbox_net_t        => (sandbox_net_t_users.any? { |regex| !sender.host.match(regex).nil? })
               }))
           the_lang[:required_files].each { |file,dest| sandbox.copy file, dest } unless the_lang[:required_files].nil?
           result = sandbox.evaluate
           result.each { |line| respond line }
           sandbox.rm_home!
-        end
+
         next
       end
     end
@@ -99,14 +99,14 @@ end
       end
       future do
         sandbox = Sandbox.new(
-          :path               => Configru.rublets_home,
-          :evaluate_with      => ['php'],
-          :timeout            => 5,
-          :extension          => 'php',
-          :owner              => sender.nick,
-          :output_limit       => 2,
-          :code               => code,
-          :github_credentials => Configru.github_credentials
+          :path                 => Configru.rublets_home,
+          :evaluate_with        => ['php'],
+          :timeout              => 5,
+          :extension            => 'php',
+          :owner                => sender.nick,
+          :output_limit         => 2,
+          :code                 => code,
+          :pastebin_credentials => Configru.pastebin_credentials
         )
         result = sandbox.evaluate
         result.each { |line| respond line }
@@ -117,14 +117,14 @@ end
     when /^#{Configru.comchar}lolcode> (.*)/i
       code = $1
         sandbox = Sandbox.new(
-          :path          => Configru.rublets_home,
-          :evaluate_with => ['lol-pl'],
-          :timeout       => 5,
-          :extension     => 'lol',
-          :output_limit  => 2,
-          :github_credentials => Configru.github_credentials,
-          :code          => code,
-          :alter_code    => lambda { |code|
+          :path                 => Configru.rublets_home,
+          :evaluate_with        => ['lol-pl'],
+          :timeout              => 5,
+          :extension            => 'lol',
+          :output_limit         => 2,
+          :pastebin_credentials => Configru.pastebin_credentials,
+          :code                 => code,
+          :alter_code           => lambda { |code|
             code.gsub(";;", "\n")
           }
         )
@@ -175,15 +175,15 @@ end
         eval_code += "\nend"
 
         sandbox = Sandbox.new(
-          :path                => Configru.rublets_home,
-          :evaluate_with       => ['bash', 'run-ruby.sh', Configru.rvm_path, rubyversion],
-          :timeout             => 5,
-          :extension           => 'rb',
-          :owner               => sender.nick,
-          :output_limit        => 2,
-          :code                => eval_code,
-          :binaries_must_exist => ['ruby', 'bash'],
-          :github_credentials  => Configru.github_credentials
+          :path                 => Configru.rublets_home,
+          :evaluate_with        => ['bash', 'run-ruby.sh', Configru.rvm_path, rubyversion],
+          :timeout              => 5,
+          :extension            => 'rb',
+          :owner                => sender.nick,
+          :output_limit         => 2,
+          :code                 => eval_code,
+          :binaries_must_exist  => ['ruby', 'bash'],
+          :pastebin_credentials => Configru.pastebin_credentials
           )
 
         # This is a bit of a hack, but lets us set up the rvm environment and call the script.

@@ -10,3 +10,4 @@ gem 'backports'
 gem 'ansirc'
 gem 'github-linguist'
 gem 'sinatra' # Statistics web interface.
+gem 'rubyheap'
