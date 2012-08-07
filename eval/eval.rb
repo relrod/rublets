@@ -106,14 +106,17 @@ class Sandbox
       io.write File.read("#{@home}/#{@script_filename}") if @code_from_stdin
       io.write @stdin unless @stdin.nil?
       io.close_write
-      @result = io.read(@size_limit).split("\n")
-      @result = "An error occurred processing the code you specified, but no error was returned" if @result == nil
+      @result = io.read(@size_limit)
+      break unless @result
+      @result = @result.split("\n")
       @result.shift if @result[0].start_with? 'WARNING: Policy would be downgraded'
       @result = @result[@skip_preceding_lines..-(@skip_ending_lines + 1)].join("\n")
     }
 
+    exitcode = $?.exitstatus.to_i
+
     if @result.nil? or @result.empty?
-      @result = "No output." 
+      @result = "No output. (return code was #{exitcode})"
     end
 
     # Fix a Ruby 1.9-specific encoding bug in which causes incomplete IO chunks
@@ -138,7 +141,7 @@ class Sandbox
         output << pastebin(@pastebin_credentials)
       end
     end
-    if $?.exitstatus.to_i == 124
+    if exitcode == 124
       output << "Timeout of #{@timeout} seconds was hit."
     end
     output
