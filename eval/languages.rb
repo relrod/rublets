@@ -346,7 +346,7 @@ end"
   def self.by_name(lang_name)
     return nil if lang_name == nil
 
-    lang_name.downcase!
+    lang_name = lang_name.downcase
 
     return languages[lang_name] if languages.has_key?(lang_name)
 
