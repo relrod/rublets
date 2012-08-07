@@ -53,7 +53,7 @@ end
     if matches
       the_lang = Language.by_name(matches[1])
       if the_lang
-
+        future do
           sandbox = Sandbox.new(the_lang.merge({
                 :owner                => sender.nick,
                 :code                 => matches[2],
@@ -65,7 +65,7 @@ end
           result = sandbox.evaluate
           result.each { |line| respond line }
           sandbox.rm_home!
-
+        end
         next
       end
     end
