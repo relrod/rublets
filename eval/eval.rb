@@ -108,6 +108,7 @@ class Sandbox
       io.close_write
       @result = io.read(@size_limit)
       break unless @result
+      break if (@no_output = @result.gsub("\n", "") == "")
       @result = @result.split("\n")
       @result.shift if @result[0].start_with? 'WARNING: Policy would be downgraded'
       @result = @result[@skip_preceding_lines..-(@skip_ending_lines + 1)].join("\n")
@@ -115,7 +116,7 @@ class Sandbox
 
     exitcode = $?.exitstatus.to_i
 
-    if @result.nil? or @result.empty?
+    if @result.nil? || @result.empty? || @no_output
       @result = "No output. (return code was #{exitcode})"
     end
 
