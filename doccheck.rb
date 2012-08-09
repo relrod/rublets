@@ -22,8 +22,7 @@ Language.languages.each do |language, values|
   values[:aliases] = [] if values[:aliases].nil?
   next unless (documented_languages & ([language] + values[:aliases]).compact).empty?
 
-  ([language] + values[:aliases]).compact.each do |l|
-   # next if documented_languages.include? l
+  ([language] + values[:aliases]).compact.each do
     next unless needed
     undocumented << language
     needed = false
