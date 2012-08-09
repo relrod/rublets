@@ -17,12 +17,15 @@ documented_languages = readme.css('table a').collect { |link| sanitize_language(
 
 undocumented = []
 Language.languages.each do |language, values|
+  language = sanitize_language(language)
   needed = true
-  next unless (documented_languages & ([language] + [values[:aliases]]).compact).empty?
-  ([language] + [values[:aliases]]).compact.each do |l|
+  values[:aliases] = [] if values[:aliases].nil?
+  next unless (documented_languages & ([language] + values[:aliases]).compact).empty?
+
+  ([language] + values[:aliases]).compact.each do |l|
    # next if documented_languages.include? l
     next unless needed
-    undocumented << sanitize_language(language)
+    undocumented << language
     needed = false
   end
 end
