@@ -2,6 +2,8 @@ language: ruby
 script: "ruby doccheck.rb"
 rvm:
   - 1.9.3
+before_script:
+  - "sudo apt-get install libicu-dev libxml2-dev libxslt1-dev"
 notifications:
   irc:
     channels:
