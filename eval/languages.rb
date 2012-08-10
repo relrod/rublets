@@ -135,8 +135,12 @@ end"
       :extension            => 'gs',
     },
     'groovy' => {
-      :evaluate_with        => ['groovy'],
-      :extension            => 'groovy'
+      :evaluate_with        => ['groovysh'],
+      :binaries_must_exist  => ['groovysh', 'groovy'],
+      :extension            => 'groovy',
+      :skip_preceding_lines => 6,
+      :skip_ending_lines    => 1,
+      :code_from_stdin      => true,
     },
     'haskell' => {
       :evaluate_with        => ['ghci', '-v0'],
@@ -152,7 +156,7 @@ end"
       :extension            => 'j',
       :code_from_stdin      => true,
       :skip_ending_lines    => 1,
-      :alter_result         => lambda { |result| result.lstrip }
+      :alter_result         => lambda { |result| result.lstrip },
     },
     'java' => {
       :evaluate_with        => ['bash', 'run-java.sh'],
@@ -163,7 +167,7 @@ end"
       :alter_code           => lambda { |code|
         return code if code.include? 'class Rublets'
         return "public class Rublets { #{code} }"
-      }
+      },
     },
     'javascript' => {
       :aliases              => ['js'],
