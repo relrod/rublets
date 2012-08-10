@@ -19,7 +19,6 @@ class Language
         'rbx-head', 'do', 'rbx', '-X19',
         '-I/opt/rublets/programble-apricot/lib', '-rapricot'
       ],
-      :timeout              => 5,
       :alter_code           => lambda { |code|
         "begin
   puts \"=> \" + Apricot::Compiler.eval(#{code.inspect}).apricot_inspect
@@ -35,7 +34,6 @@ end"
     },
     'arroyo' => {
       :evaluate_with        => ['arroyo'],
-      :timeout              => 5,
       :extension            => 'arr',
       :before               => 'print (',
       :after                => ')',
@@ -43,24 +41,20 @@ end"
     'bash' => {
       :aliases              => ['$'],
       :evaluate_with        => ['bash'],
-      :timeout              => 5,
       :extension            => 'sh',
     },
     'befunge' => {
       :evaluate_with        => ['befrunge'],
-      :timeout              => 5,
       :extension            => 'bf',
     },
     'brainfuck' => {
       :evaluate_with        => ['bf.rb'],
-      :timeout              => 5,
       :aliases              => ['bf'],
       :extension            => 'b',
     },
     'c' => {
       :evaluate_with        => ['bash', 'run-c.sh'],
       :binaries_must_exist  => ['gcc', 'bash'],
-      :timeout              => 5,
       :extension            => 'c',
       :required_files       => {"#{@eval_path}/run-c.sh" => 'run-c.sh',
         "#{@eval_path}/rublets-c.h" => 'stdinc.h'},
@@ -70,27 +64,23 @@ end"
       :aliases              => ['csharp'],
       :evaluate_with        => ['bash', 'run-cs.sh'],
       :binaries_must_exist  => ['mcs', 'bash'],
-      :timeout              => 5,
       :extension            => 'cs',
       :required_files       => {"#{@eval_path}/run-cs.sh" => 'run-cs.sh'},
     },
     'c++' => {
       :evaluate_with        => ['bash', 'run-cpp.sh'],
       :binaries_must_exist  => ['g++', 'bash'],
-      :timeout              => 5,
       :extension            => 'cpp',
       :required_files       => {"#{@eval_path}/run-cpp.sh" => 'run-cpp.sh'},
       :before               => File.read("#{@eval_path}/rublets-cpp.h"),
     },
     'clay' => {
       :evaluate_with        => ['clay', '-run'],
-      :timeout              => 5,
       :extension            => 'clay',
     },
     'clojure' => {
       :aliases              => ['clj'],
       :evaluate_with        => ['clojure'],
-      :timeout              => 5,
       :code_from_stdin      => true,
       :alter_result         => lambda { |result|
         result.gsub(/^user=> /, '')
@@ -100,7 +90,6 @@ end"
     },
     'elixir' => {
       :evaluate_with        => ['elixir'],
-      :timeout              => 5,
       :extension            => 'exs',
       :alter_code           => lambda { |code|
         eval_code = code.inspect
@@ -109,7 +98,6 @@ end"
     },
     'erlang' => {
       :evaluate_with        => ['escript'],
-      :timeout              => 5,
       :extension            => 'erl',
       :before               => [
         '#!/usr/bin/env escript',
@@ -118,7 +106,6 @@ end"
     },
     'forth' => {
       :evaluate_with        => ['gforth'],
-      :timeout              => 5,
       :extension            => 'forth',
       :after                => ' bye',
     },
@@ -136,7 +123,6 @@ end"
     'go' => {
       :evaluate_with        => ['bash', 'run-go.sh'],
       :binaries_must_exist  => ['gccgo', 'bash'],
-      :timeout              => 5,
       :extension            => 'go',
       :required_files       => {"#{@eval_path}/run-go.sh" => 'run-go.sh'},
       :before               => [
@@ -146,7 +132,6 @@ end"
     },
     'golfscript' => {
       :evaluate_with        => ['golfscript'],
-      :timeout              => 5,
       :extension            => 'gs',
     },
     'groovy' => {
@@ -155,18 +140,15 @@ end"
     },
     'haskell' => {
       :evaluate_with        => ['ghci', '-v0'],
-      :timeout              => 5,
       :extension            => 'hs',
       :code_from_stdin      => true,
     },
     'io' => {
       :evaluate_with        => ['io'],
-      :timeout              => 5,
       :extension            => 'io',
     },
     'j' => {
       :evaluate_with        => ['j-language'],
-      :timeout              => 5,
       :extension            => 'j',
       :code_from_stdin      => true,
       :skip_ending_lines    => 1,
@@ -175,7 +157,6 @@ end"
     'java' => {
       :evaluate_with        => ['bash', 'run-java.sh'],
       :binaries_must_exist  => ['javac', 'java', 'bash'],
-      :timeout              => 5,
       :extension            => 'java',
       :required_files       => {"#{@eval_path}/run-java.sh" => 'run-java.sh'},
       :script_filename      => 'Rublets.java',
@@ -187,7 +168,6 @@ end"
     'javascript' => {
       :aliases              => ['js'],
       :evaluate_with        => ['js', '-i'],
-      :timeout              => 5,
       :extension            => 'js',
       :code_from_stdin      => true,
       :skip_preceding_lines => 1,
@@ -199,12 +179,10 @@ end"
         'sbcl',
         '--script'
       ],
-      :timeout              => 5,
       :extension            => 'cl',
     },
     'lua' => {
       :evaluate_with        => ['lua', '-i'],
-      :timeout              => 5,
       :extension            => 'lua',
       :skip_preceding_lines => 2,
       :skip_ending_lines    => 1,
@@ -215,7 +193,6 @@ end"
         'maxima',
         '--very-quiet', '--disable-readline'
       ],
-      :timeout              => 5,
       :extension            => 'maxima',
       :code_from_stdin      => true,
       :alter_code           => lambda { |code|
@@ -224,7 +201,6 @@ end"
     },
      'mruby' => {
       :evaluate_with        => ['mruby'],
-      :timeout              => 5,
       :extension            => 'rb',
       # mruby doesn't seem to be able to TOPLEVEL_BIND. -CodeBlock.
       #      :alter_code           => lambda { |code|
@@ -237,7 +213,6 @@ end"
       :aliases              => ['obj-c'],
       :evaluate_with        => ['bash', 'run-obj-c.sh'],
       :binaries_must_exist  => ['gcc', 'bash'],
-      :timeout              => 5,
       :extension            => 'm',
       :required_files       => {"#{@eval_path}/run-obj-c.sh" => 'run-obj-c.sh'},
       :before               => [
@@ -246,7 +221,6 @@ end"
     },
     'ocaml' => {
       :evaluate_with        => ['bash', 'run-ocaml.sh'],
-      :timeout              => 5,
       :extension            => 'ml',
       :required_files       => {"#{@eval_path}/run-ocaml.sh" => 'run-ocaml.sh'},
       :script_filename      => 'evaluation.ml',
@@ -254,7 +228,6 @@ end"
     'pascal' => {
       :evaluate_with        => ['bash', 'run-pascal.sh'],
       :binaries_must_exist  => ['fpc', 'bash'],
-      :timeout              => 5,
       :extension            => 'pas',
       :required_files       => {"#{@eval_path}/run-pascal.sh" => 'run-pascal.sh'},
       :before               => 'program RubletsEval(output);' + "\n",
@@ -262,13 +235,11 @@ end"
     'perl' => {
       :aliases              => ['perl5'],
       :evaluate_with        => ['perl'],
-      :timeout              => 5,
       :extension            => 'pl',
     },
     'perl6' => {
       :aliases              => ['rakudo'],
       :evaluate_with        => ['perl6'],
-      :timeout              => 6,
       :extension            => 'pl',
     },
     'perpetual' => {
@@ -276,14 +247,12 @@ end"
         'perpetual',
         '--no-prompt'
       ],
-      :timeout              => 5,
       :extension            => 'perp',
       :code_from_stdin      => true,
       :skip_preceding_lines => 1,
     },
     'php' => {
       :evaluate_with        => ['php'],
-      :timeout              => 5,
       :extension            => 'php',
       :alter_code           => lambda { |code|
         code = "<?php #{code}" unless code.start_with?("<?")
@@ -293,12 +262,10 @@ end"
     },
     'python' => {
       :evaluate_with        => ['python'],
-      :timeout              => 5,
       :extension            => 'py',
     },
     'python3' => {
       :evaluate_with        => ['python3'],
-      :timeout              => 5,
       :extension            => 'py',
       :output_limit         => 2,
     },
@@ -315,19 +282,16 @@ end"
     },
     'smalltalk' => {
       :evaluate_with        => ['gst'],
-      :timeout              => 5,
       :extension            => 'st',
     },
     'sqlite' => {
       :evaluate_with        => ['sqlite3', Time.now.to_f.to_s],
-      :timeout              => 5,
       :aliases              => ['sqlite3'],
       :extension            => 'sqlite',
       :code_from_stdin      => true,
     },
     'zsh' => {
       :evaluate_with        => ['zsh'],
-      :timeout              => 5,
       :extension            => 'sh',
     },
   }
