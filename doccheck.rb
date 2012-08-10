@@ -29,11 +29,22 @@ Language.languages.each do |language, values|
   end
 end
 
+exitcode = 0
+
 if undocumented.empty?
   puts "[PASS] All languages are documented!"
-  exit 0
 else
   puts "[FAIL] The following languages seem undocumented!"
   undocumented.each { |language| puts "  - #{language}" }
-  exit 1
+  exitcode = 1
 end
+
+language_keys = Language::languages.keys - Configru.special_languages
+if language_keys != language_keys.sort
+  puts "[FAIL] The hash of languages in eval/languages.rb should be sorted."
+  exitcode = 1
+else
+  puts "[PASS] The hash of languages in eval/languages.rb is sorted."
+end
+
+exit exitcode

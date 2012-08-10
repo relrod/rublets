@@ -113,6 +113,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
   <td>JVM-based</td>
   <td>
     <a href="http://clojure.org/">Clojure</a>
+    <a href="http://groovy.codehaus.org/">Groovy</a>
     <a href="http://openjdk.java.net/">Java</a>
     <a href="http://www.scala-lang.org">Scala</a>
   </td>
