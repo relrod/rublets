@@ -146,9 +146,12 @@ end"
     },
     'golfscript' => {
       :evaluate_with        => ['golfscript'],
-      :binaries_must_exist  => ['golfscript'],
       :timeout              => 5,
       :extension            => 'gs',
+    },
+    'groovy' => {
+      :evaluate_with        => ['groovy'],
+      :extension            => 'groovy'
     },
     'haskell' => {
       :evaluate_with        => ['ghci', '-v0'],
