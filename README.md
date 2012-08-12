@@ -112,6 +112,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
 <tr>
   <td>JVM-based</td>
   <td>
+    <a href="http://ceylon-lang.org/">Ceylon</a>
     <a href="http://clojure.org/">Clojure</a>
     <a href="http://groovy.codehaus.org/">Groovy</a>
     <a href="http://openjdk.java.net/">Java</a>

@@ -60,12 +60,6 @@ end"
         "#{@eval_path}/rublets-c.h" => 'stdinc.h'},
       :before               => "#include \"stdinc.h\"\n",
     },
-    'ceylon' => {
-      :evaluate_with        => ['bash', 'run-ceylon.sh'],
-      :binaries_must_exist  => ['bash', 'ceylonc', 'ceylon'],
-      :extension            => 'ceylon',
-      :required_files       => {"#{@eval_path}/run-ceylon.sh" => 'run-ceylon.sh'},
-    },
     'c#' => {
       :aliases              => ['csharp'],
       :evaluate_with        => ['bash', 'run-cs.sh'],
@@ -79,6 +73,12 @@ end"
       :extension            => 'cpp',
       :required_files       => {"#{@eval_path}/run-cpp.sh" => 'run-cpp.sh'},
       :before               => File.read("#{@eval_path}/rublets-cpp.h"),
+    },
+    'ceylon' => {
+      :evaluate_with        => ['bash', 'run-ceylon.sh'],
+      :binaries_must_exist  => ['bash', 'ceylonc', 'ceylon'],
+      :extension            => 'ceylon',
+      :required_files       => {"#{@eval_path}/run-ceylon.sh" => 'run-ceylon.sh'},
     },
     'clay' => {
       :evaluate_with        => ['clay', '-run'],
