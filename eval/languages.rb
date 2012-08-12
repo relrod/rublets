@@ -290,6 +290,11 @@ end"
       :skip_preceding_lines => 5,
       :skip_ending_lines    => 2,
     },
+    'scheme' => {
+      :aliases              => ['guile'],
+      :evaluate_with        => ['guile', '-s'],
+      :extension            => 'scm',
+    },
     'smalltalk' => {
       :evaluate_with        => ['gst'],
       :extension            => 'st',
