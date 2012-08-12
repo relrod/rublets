@@ -12,11 +12,13 @@ require 'on_irc'
 require 'future'
 require 'nokogiri'
 require 'pry'
+require 'linguist/repository'
 
 $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'eval/config'
 require 'eval/eval'
 require 'eval/languages'
+require 'statistics-web/extra_languages'
 
 sandbox_net_t_users = Configru.sandbox_net_t_users.map do |hostmask|
   Regexp.new(hostmask)
@@ -82,6 +84,14 @@ end
         end
       end
       respond versions.join(', ')
+    when /^#{Configru.comchar}quickstats$/
+      project = Linguist::Repository.from_directory("/home/ricky/.rublets/evaluated")
+      languages = {}
+      project.languages.each do |language, count|
+        languages[language.name] = ((count.to_f/project.size)*100).round(2)
+      end
+      top_languages = Hash[*languages.sort_by { |k, v| v }.reverse[0...8].flatten]
+      respond "#{sender.nick}: " + top_languages.map { |k,v| "#{k}: #{v}"}.join(', ')
     when /^#{Configru.comchar}rubies$/
       # Lists all available rubies.
       rubies = Dir[File.join(Configru.rvm_path, 'rubies') + '/*'].map { |a| File.basename(a) }
