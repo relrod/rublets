@@ -3,50 +3,65 @@
 
 require "linguist/language"
 
+# @programble's Apricot language
+Linguist::Language.create(
+  :name              => 'Apricot',
+  :primary_extension => '.apr',
+  :lexer             => 'Text only',
+)
+
 # @boredomist's Arroyo language
 Linguist::Language.create(
-  :name => 'Arroyo',
-  :extensions => ['.arr'],
+  :name              => 'Arroyo',
+  :primary_extension => '.arr',
+  :lexer             => 'Text only',
 )
 
 # Clay
 Linguist::Language.create(
-  :name => 'Clay',
-  :extensions => ['.clay'],
+  :name              => 'Clay',
+  :primary_extension => '.clay',
+  :lexer             => 'Text only',
 )
 
 # Forth
 Linguist::Language.create(
-  :name => 'Forth',
-  :extensions => ['.forth'],
+  :name              => 'Forth',
+  :primary_extension => '.forth',
+  :lexer             => 'Text only',
 )
 
 # Frink
 Linguist::Language.create(
-  :name => 'Frink',
-  :extensions => ['.frink'],
+  :name              => 'Frink',
+  :primary_extension => '.frink',
+  :lexer             => 'Text only',
 )
 
 # LOLCODE
 Linguist::Language.create(
-  :name => 'LOLCODE',
-  :extensions => ['.lol'],
+  :name              => 'LOLCODE',
+  :primary_extension => '.lol',
+  :lexer             => 'Text only',
 )
 
 # Maxima
 Linguist::Language.create(
-  :name => 'Maxima',
-  :extensions => ['.maxima'],
+  :name              => 'Maxima',
+  :primary_extension => '.maxima',
+  :lexer             => 'Text only',
 )
 
 # @programble's Perpetual language
 Linguist::Language.create(
-  :name => 'Perpetual',
-  :extensions => ['.perp'],
+  :name              => 'Perpetual',
+  :primary_extension => '.perp',
+  :lexer             => 'Text only',
 )
 
 # SQLite
 Linguist::Language.create(
-  :name => 'SQLite',
-  :extensions => ['.sqlite'],
+  :name              => 'SQLite',
+  :primary_extension => '.sqlite',
+  :lexer             => 'SQL',
 )
