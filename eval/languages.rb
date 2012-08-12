@@ -242,8 +242,8 @@ end"
       :extension            => 'pl',
     },
     'perl6' => {
-      :aliases              => ['rakudo'],
-      :evaluate_with        => ['perl6'],
+      :aliases              => ['nqp'],
+      :evaluate_with        => ['nqp'],
       :extension            => 'pl',
     },
     'perpetual' => {
