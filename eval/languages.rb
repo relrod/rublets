@@ -292,8 +292,12 @@ end"
     },
     'scheme' => {
       :aliases              => ['guile'],
-      :evaluate_with        => ['guile', '-s'],
+      :evaluate_with        => ['guile'],
       :extension            => 'scm',
+      :code_from_stdin      => true,
+      :alter_result         => lambda { |result|
+        result.gsub(/^guile> /, '')
+      },
     },
     'smalltalk' => {
       :evaluate_with        => ['gst'],
