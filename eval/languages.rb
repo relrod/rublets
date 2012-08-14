@@ -291,12 +291,12 @@ end"
       :skip_ending_lines    => 2,
     },
     'scheme' => {
-      :aliases              => ['guile'],
-      :evaluate_with        => ['guile'],
+      :aliases              => ['kawa'],
+      :evaluate_with        => ['kawa', '-s'],
       :extension            => 'scm',
       :code_from_stdin      => true,
       :alter_result         => lambda { |result|
-        result.gsub(/^guile> /, '')
+        result.gsub(/^#\|kawa:\d+\|# /, '')
       },
     },
     'smalltalk' => {
