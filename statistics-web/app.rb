@@ -4,6 +4,7 @@ require "sinatra"
 require "linguist/file_blob"
 require "backports"
 require "time"
+require "json"
 
 $: << File.dirname(__FILE__)
 require "extra_languages"
