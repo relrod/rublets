@@ -138,7 +138,7 @@ end"
     },
     'golfscript' => {
       :evaluate_with        => ['golfscript'],
-      :extension            => 'gs',
+      :extension            => 'golfscript',
     },
     'groovy' => {
       :evaluate_with        => ['groovysh'],
@@ -159,7 +159,7 @@ end"
     },
     'j' => {
       :evaluate_with        => ['j-language'],
-      :extension            => 'j',
+      :extension            => 'ijs',
       :code_from_stdin      => true,
       :skip_ending_lines    => 1,
       :alter_result         => lambda { |result| result.lstrip },
@@ -189,7 +189,7 @@ end"
         'sbcl',
         '--script'
       ],
-      :extension            => 'cl',
+      :extension            => 'lisp',
     },
     'lua' => {
       :evaluate_with        => ['lua', '-i'],
