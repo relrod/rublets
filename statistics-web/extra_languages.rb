@@ -38,6 +38,20 @@ Linguist::Language.create(
   :lexer             => 'Text only',
 )
 
+# Golfscript
+Linguist::Language.create(
+  :name              => 'Golfscript',
+  :primary_extension => '.golfscript',
+  :lexer             => 'Text only',
+)
+
+# J Language
+Linguist::Language.create(
+  :name              => 'J Language',
+  :primary_extension => '.ijs',
+  :lexer             => 'Text only',
+)
+
 # LOLCODE
 Linguist::Language.create(
   :name              => 'LOLCODE',
