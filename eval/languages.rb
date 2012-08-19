@@ -279,6 +279,11 @@ end"
       :extension            => 'py',
       :output_limit         => 2,
     },
+    'racket' => {
+      :evaluate_with        => ['xargs', '-0', 'racket', '-e'],
+      :code_from_stdin      => true,
+      :extension            => 'rkt',
+    },
     'scala' => {
       :evaluate_with        => [
         'scala',
