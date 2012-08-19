@@ -282,6 +282,7 @@ end"
     'racket' => {
       :aliases              => ['rkt'],
       :evaluate_with        => ['xargs', '-0', 'racket', '-e'],
+      :binaries_must_exist  => ['racket', 'xargs'],
       :code_from_stdin      => true,
       :extension            => 'rkt',
     },
