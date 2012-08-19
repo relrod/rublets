@@ -20,6 +20,12 @@ require 'eval/eval'
 require 'eval/languages'
 require 'statistics-web/extra_languages'
 
+Signal.trap("USR1") do
+  # Allow for reloading, on-the-fly, some of our core files.
+  load File.dirname(__FILE__) + "/eval/eval.rb"
+  load File.dirname(__FILE__) + "/eval/languages.rb"
+end
+
 sandbox_net_t_users = Configru.sandbox_net_t_users.map do |hostmask|
   Regexp.new(hostmask)
 end
