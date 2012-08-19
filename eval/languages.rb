@@ -280,6 +280,7 @@ end"
       :output_limit         => 2,
     },
     'racket' => {
+      :aliases              => ['rkt'],
       :evaluate_with        => ['xargs', '-0', 'racket', '-e'],
       :code_from_stdin      => true,
       :extension            => 'rkt',
