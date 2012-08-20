@@ -209,16 +209,6 @@ end"
         "display2d: false$ leftjust: true$ #{code}#{";" unless (code.end_with?(';') || code.end_with?('$'))}"
       },
     },
-     'mruby' => {
-      :evaluate_with        => ['mruby'],
-      :extension            => 'rb',
-      # mruby doesn't seem to be able to TOPLEVEL_BIND. -CodeBlock.
-      #      :alter_code           => lambda { |code|
-      #        code = "result = ::Kernel.eval(#{code.inspect}, TOPLEVEL_BINDING)"
-      #        code += "\n" + 'puts "=> " + result.inspect'
-      #        code
-      #      },
-    },
     'objective-c' => {
       :aliases              => ['obj-c'],
       :evaluate_with        => ['bash', 'run-obj-c.sh'],
