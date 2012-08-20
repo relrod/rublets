@@ -191,6 +191,13 @@ end"
       ],
       :extension            => 'lisp',
     },
+    'lolcode' => {
+      :evaluate_with        => ['lol-pl'],
+      :extension            => 'lol',
+      :alter_code           => lambda { |code|
+        code.gsub(';;', "\n")
+      },
+    },
     'lua' => {
       :evaluate_with        => ['lua', '-i'],
       :extension            => 'lua',
