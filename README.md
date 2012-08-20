@@ -50,7 +50,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
     <a href="http://clojure.org/">Clojure</a>
     <a href="https://github.com/programble/perpetual">Perpetual</a>
     <a href="http://racket-lang.org">Racket</a>
-    <a href="https://en.wikipedia.org/wiki/Scheme_%28programming_language%29">Scheme (via guile)</a>
+    <a href="https://en.wikipedia.org/wiki/Scheme_%28programming_language%29">Scheme (via Kawa)</a>
     <a href="http://sbcl.org">sbcl</a>
   </td>
 </tr>
