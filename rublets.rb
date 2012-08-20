@@ -106,29 +106,6 @@ end
     when /^#{Configru.comchar}lang(?:s|uages)$/
       respond "\x01ACTION supports: #{Language.list_all}\x01"
 
-    when /^#{Configru.comchar}<\?(php|php=|=|) (.*)/
-      respond "#{sender.nick}, this PHP syntax is deprecated.  Use !php> <?php /* Your code */ instead."
-      if not $1.nil? and $1.end_with? '='
-        code = "<?php echo #{$2}"
-      else
-        code = "<?php #{$2}"
-      end
-      future do
-        sandbox = Sandbox.new(
-          :path                 => Configru.rublets_home,
-          :evaluate_with        => ['php'],
-          :timeout              => 5,
-          :extension            => 'php',
-          :owner                => sender.nick,
-          :output_limit         => 2,
-          :code                 => code,
-          :pastebin_credentials => Configru.pastebin_credentials
-        )
-        result = sandbox.evaluate
-        result.each { |line| respond line }
-        sandbox.rm_home!
-      end
-
       # Special cased to warn about using ;; for \n
     when /^#{Configru.comchar}lolcode> (.*)/i
       code = $1
