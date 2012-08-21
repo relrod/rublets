@@ -27,8 +27,9 @@ rescue Exception => e
 end"
       },
       :version_lambda       => lambda {
-        Dir.chdir('/opt/rublets/programble-apricot')
-        `git log --format='%h - %cD' -1`
+        Dir.chdir('/opt/rublets/programble-apricot') do
+          `git log --format='%h - %cD' -1`
+        end
       },
       :extension            => 'rb',
     },
