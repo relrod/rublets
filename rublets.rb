@@ -21,9 +21,17 @@ require 'eval/languages'
 require 'statistics-web/extra_languages'
 
 Signal.trap("USR1") do
-  # Allow for reloading, on-the-fly, some of our core files.
-  load File.dirname(__FILE__) + "/eval/eval.rb"
-  load File.dirname(__FILE__) + "/eval/languages.rb"
+  begin
+    # Allow for reloading, on-the-fly, some of our core files.
+    load File.dirname(__FILE__) + "/eval/eval.rb"
+    load File.dirname(__FILE__) + "/eval/languages.rb"
+  rescue Exception => e
+    puts "-" * 80
+    puts "** Reload (USR1) Exception **"
+    puts "#{e} (#{e.class})"
+    puts e.backtrace
+    puts "-" * 80
+  end
 end
 
 sandbox_net_t_users = Configru.sandbox_net_t_users.map do |hostmask|
