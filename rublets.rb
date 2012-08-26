@@ -99,7 +99,7 @@ end
       end
       respond versions.join(', ')
     when /^#{Configru.comchar}quickstats$/
-      project = Linguist::Repository.from_directory("/home/ricky/.rublets/evaluated")
+      project = Linguist::Repository.from_directory("#{Configru.rublets_home}/evaluated/")
       languages = {}
       project.languages.each do |language, count|
         languages[language.name] = ((count.to_f/project.size)*100).round(2)
