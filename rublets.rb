@@ -105,7 +105,8 @@ end
         languages[language.name] = ((count.to_f/project.size)*100).round(2)
       end
       top_languages = Hash[*languages.sort_by { |k, v| v }.reverse[0...8].flatten]
-      respond "#{sender.nick}: " + top_languages.map { |k,v| "#{k}: #{v}%"}.join(', ')
+      total_evals = Dir["#{Configru.rublets_home}/evaluated/*"].count
+      respond "#{sender.nick}: #{total_evals} total evaluations. " + top_languages.map { |k,v| "#{k}: #{v}%"}.join(', ') + " ... "
     when /^#{Configru.comchar}rubies$/
       # Lists all available rubies.
       rubies = Dir[File.join(Configru.rvm_path, 'rubies') + '/*'].map { |a| File.basename(a) }
