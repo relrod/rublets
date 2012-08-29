@@ -31,7 +31,7 @@ class Sandbox
     @extension            = options[:extension] || "txt"
     @script_filename      = options[:script_filename] || "#{@time.to_f}.#{@extension}"
     @evaluate_with        = options[:evaluate_with]
-    @timeout              = options[:timeout].to_i || 5
+    @timeout              = (options[:timeout] || 5).to_i
     @owner                = options[:owner] || 'anonymous'
     @includes             = options[:includes] || []
     @code                 = "#{options[:before]}#{options[:code]}#{options[:after]}"
