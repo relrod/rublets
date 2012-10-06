@@ -92,7 +92,11 @@ end
       $1.gsub(' ', '').split(',').each do |given_language|
         language = Language.by_name(given_language)
         if language
-          versions << Language.version(language, Configru.version_command)
+          if version = Language.version(language, Configru.version_command)
+            versions << version
+          else
+            versions << "[Unable to detect version for #{given_language}]"
+          end
         else
           versions << "['#{given_language}' is not supported]"
         end
