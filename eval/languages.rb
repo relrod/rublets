@@ -77,7 +77,7 @@ end"
     },
     'ceylon' => {
       :evaluate_with        => ['bash', 'run-ceylon.sh'],
-      :binaries_must_exist  => ['bash', 'ceylonc', 'ceylon'],
+      :binaries_must_exist  => ['ceylonc', 'ceylon', 'bash'],
       :extension            => 'ceylon',
       :required_files       => {"#{@eval_path}/run-ceylon.sh" => 'run-ceylon.sh'},
     },
