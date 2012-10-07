@@ -8,6 +8,6 @@ gem 'configru', '~> 0.5'
 gem 'nokogiri'
 gem 'backports'
 gem 'ansirc'
-gem 'github-linguist'
+gem 'github-linguist', '~> 2.2'
 gem 'sinatra' # Statistics web interface.
 gem 'rubyheap'

@@ -54,7 +54,7 @@ DEPENDENCIES
   ansirc
   backports
   configru (~> 0.5)
-  github-linguist
+  github-linguist (~> 2.2)
   json
   nokogiri
   on_irc
