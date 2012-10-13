@@ -104,12 +104,14 @@ end"
       },
     },
     'erlang' => {
-      :evaluate_with        => ['escript'],
+      :evaluate_with        => ['erl'],
       :extension            => 'erl',
-      :before               => [
-        '#!/usr/bin/env escript',
-        '%%! -smp enable -mnesia debug verbose',
-      ].join("\n") + "\n",
+      :skip_preceding_lines => 1,
+      :skip_ending_lines    => 1,
+      :code_from_stdin      => true,
+      :alter_result         => lambda { |result|
+        result.gsub(/^\d+> /, '')
+      },
     },
     'forth' => {
       :evaluate_with        => ['gforth'],
