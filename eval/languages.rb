@@ -104,6 +104,7 @@ end"
       },
     },
     'erlang' => {
+      :aliases              => ['erl'],
       :evaluate_with        => ['erl'],
       :extension            => 'erl',
       :skip_preceding_lines => 1,
