@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'fileutils'
 require 'uri'
 require 'net/https'
@@ -118,13 +119,6 @@ class Sandbox
 
     if @result.nil? || @result.empty? || @no_output
       @result = "No output. (return code was #{exitcode})"
-    end
-
-    # Fix a Ruby 1.9-specific encoding bug in which causes incomplete IO chunks
-    # to be encoded as ASCII-8BIT. Thanks to the opscode/ohai folks, which this
-    # fix comes from. See http://git.io/mqTfLg for more info (their fix).
-    if "".respond_to?(:force_encoding) && defined?(Encoding)
-      @result = @result.force_encoding(Encoding.default_external)
     end
 
     # Do we need to do anything to the result before we show it?

@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Language
 
   @eval_path = File.dirname(__FILE__)
