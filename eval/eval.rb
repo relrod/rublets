@@ -171,7 +171,7 @@ class Sandbox
     paste = "Input (#{@script_filename}):\n#{input}\n\nOutput:\n#{@result}"
     paste = heap.create(paste, :language => language, :private => true)
 
-    "Output truncated: #{paste['url']} (#{paste['lines']} lines)"
+    "Output truncated: #{paste['url']} (#{@result.lines.count} lines of total output)"
   end
 
   private
