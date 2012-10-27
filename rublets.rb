@@ -67,7 +67,13 @@ end
   begin
     matches = params[1].match(/^#{Configru.comchar}(\S+)> ?(.*)/)
     if matches
-      the_lang = Language.by_name(matches[1])
+      if matches[1].include? ':'
+        language, addons = matches[1].split(':', 2)
+        addons = addons.split(',')
+      else
+        language = matches[1]
+      end
+      the_lang = Language.by_name(language)
       if the_lang
         future do
           sandbox = Sandbox.new(the_lang.merge({
@@ -75,6 +81,7 @@ end
                 :code                 => matches[2],
                 :pastebin_credentials => Configru.pastebin_credentials,
                 :path                 => Configru.rublets_home,
+                :addons               => addons,
                 :sandbox_net_t        => (sandbox_net_t_users.any? { |regex| !sender.host.match(regex).nil? })
               }))
           the_lang[:required_files].each { |file,dest| sandbox.copy file, dest } unless the_lang[:required_files].nil?
