@@ -8,7 +8,7 @@ require 'linguist/file_blob'
 require 'rubyheap'
 
 class Sandbox
-  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :pastebin_after_limit, :pastebin_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :alter_result, :size_limit, :sandbox_net_t, :addons, :notes
+  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :pastebin_after_limit, :pastebin_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :alter_result, :size_limit, :sandbox_net_t, :addons, :handle_addons, :notes
 
   # Public: Creates a Sandbox instance.
   #
@@ -49,6 +49,7 @@ class Sandbox
     @size_limit           = options[:size_limit] || 10240 # bytes
     @sandbox_net_t        = options[:sandbox_net_t] || false
     @addons               = options[:addons] || nil
+    @handle_addons        = options[:handle_addons] || nil
     @notes                = options[:notes] || nil
 
     # @alter_code is a method that gets called on @code immediately after a
@@ -95,6 +96,7 @@ class Sandbox
   #   occurred while trying to evaluate.
   def evaluate
     return ["One of (#{@binaries_must_exist.join(', ')}) was not found in $PATH. Try again later."] unless binaries_all_exist?
+    deal_with_addons
     insert_code_into_file
     copy_audit_script
     cmd_script_filename = @code_from_stdin ? [] : [@script_filename]
@@ -212,4 +214,14 @@ class Sandbox
     end
   end
 
+  # Internal: Put all addons in the beginning of the file, by evaluating
+  #           @handle_addons.
+  #
+  # Returns the new code string.
+  def deal_with_addons
+    return @code unless @addons
+    return @code unless @handle_addons
+    @code = @handle_addons.call(@addons) + @code
+    puts @code
+  end
 end

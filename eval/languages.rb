@@ -58,9 +58,10 @@ end"
       :evaluate_with        => ['bash', 'run-c.sh'],
       :binaries_must_exist  => ['gcc', 'bash'],
       :extension            => 'c',
-      :required_files       => {"#{@eval_path}/run-c.sh" => 'run-c.sh',
-        "#{@eval_path}/rublets-c.h" => 'stdinc.h'},
-      :before               => "#include \"stdinc.h\"\n",
+      :required_files       => {"#{@eval_path}/run-c.sh" => 'run-c.sh'},
+      :handle_addons        => lambda { |addons|
+        addons.map { |addon| "#include <#{addon}>\n" }.join
+      },
     },
     'c#' => {
       :aliases              => ['csharp'],
