@@ -171,6 +171,7 @@ end
           )
 
         # This is a bit of a hack, but lets us set up the rvm environment and call the script.
+        sandbox.initialize_directories
         sandbox.copy 'eval/run-ruby.sh', 'run-ruby.sh'
         result = sandbox.evaluate
         result.each { |line| respond line }
