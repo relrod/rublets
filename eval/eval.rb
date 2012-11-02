@@ -180,6 +180,19 @@ class Sandbox
     "Output truncated: #{paste['url']} (#{@result.lines.count} lines of total output)"
   end
 
+  # Public: Checks to make sure all needed binaries to perform an evaluation
+  #         (@binaries_must_exist) exist and are located in a directory that
+  #         is in $PATH.
+  #
+  # Returns false if a needed binary doesn't exist, and true if they all do.
+  def binaries_all_exist?
+    @binaries_must_exist.each do |binary|
+      next if File.exists? binary
+      return false unless ENV['PATH'].split(':').any? { |path| File.exists? File.join(path, '/', binary) }
+    end
+    true
+  end
+
   private
 
   # Internal: Copies evaluated code to someplace safe, for audit purposes.
@@ -191,19 +204,6 @@ class Sandbox
   # Returns nothing.
   def copy_audit_script
     FileUtils.cp("#{@home}/#{@script_filename}", "#{@path}/evaluated/#{@time.year}-#{@time.month}-#{@time.day}_#{@time.hour}-#{@time.min}-#{@time.sec}-#{@owner}-#{@time.to_f}.#{@extension}")
-  end
-
-  # Internal: Checks to make sure all needed binaries to perform an evaluation
-  #           (@binaries_must_exist) exist and are located in a directory that
-  #           is in $PATH.
-  #
-  # Returns false if a needed binary doesn't exist, and true if they all do.
-  def binaries_all_exist?
-    @binaries_must_exist.each do |binary|
-      next if File.exists? binary
-      return false unless ENV['PATH'].split(':').any? { |path| File.exists? File.join(path, '/', binary) }
-    end
-    true
   end
 
   # Internal: Takes the code that we are about to evaluate, and actually puts it
