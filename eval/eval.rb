@@ -52,7 +52,13 @@ class Sandbox
     # @alter_code is a method that gets called on @code immediately after a
     # Sandbox object is created.
     @code = @alter_code.call(@code) unless @alter_code.nil?
+  end
 
+  # Public: Set up the initial directory structure required for performing an
+  #         evaluation. This is not part of the constructor because we want to
+  #         allow for creating instances of Sandbox (e.g. to run tests) without
+  #         actually doing anything.
+  def initialize_directories
     FileUtils.mkdir_p @home
     FileUtils.mkdir_p "#{@path}/evaluated"
     FileUtils.mkdir_p "#{@home}/tmp"

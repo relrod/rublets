@@ -77,6 +77,7 @@ end
                 :path                 => Configru.rublets_home,
                 :sandbox_net_t        => (sandbox_net_t_users.any? { |regex| !sender.host.match(regex).nil? })
               }))
+          sandbox.initialize_directories
           the_lang[:required_files].each { |file,dest| sandbox.copy file, dest } unless the_lang[:required_files].nil?
           result = sandbox.evaluate
           result.each { |line| respond line }
