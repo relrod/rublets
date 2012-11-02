@@ -15,7 +15,6 @@ Configru.load do
     rvm_path '/usr/local/rvm'
     version_command 'rpm -qf'
     special_languages [
-      'lolcode',
       'ruby (see !rubies)',
     ]
   end

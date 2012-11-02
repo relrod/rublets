@@ -42,7 +42,6 @@ servers:
       - "#bots"
 
 special_languages:
-  - "lolcode"
   - "ruby (see !rubies)"
 
 # These cloaks have their evaluations run under sandbox_net_t instead of sandbox_x_t.
