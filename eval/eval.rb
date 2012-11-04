@@ -145,6 +145,8 @@ class Sandbox
     if exitcode == 124
       output << "Timeout of #{@timeout} seconds was hit."
     end
+
+    output.gsub!('$$', "$#{2.chr}#{2.chr}$")
     output
   end
 
