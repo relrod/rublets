@@ -136,6 +136,7 @@ class Sandbox
     else
       @output_limit += 1 if lines.size == @output_limit + 1
       lines[0...@output_limit].each do |line|
+        line.gsub!('$$', "$#{2.chr}#{2.chr}$")
         output << ANSIRC.to_irc(line)
       end
       if lines.count > @output_limit and @pastebin_after_limit
@@ -146,7 +147,6 @@ class Sandbox
       output << "Timeout of #{@timeout} seconds was hit."
     end
 
-    output.gsub!('$$', "$#{2.chr}#{2.chr}$")
     output
   end
 
