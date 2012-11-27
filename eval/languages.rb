@@ -272,6 +272,13 @@ end"
         code
       },
     },
+    'prolog' => {
+      :aliases              => ['gprolog'],
+      :evaluate_with        => ['gprolog'],
+      :code_from_stdin      => true,
+      :skip_preceding_lines => 3,
+      :extension            => 'pro',
+    },
     'python' => {
       :evaluate_with        => ['python'],
       :extension            => 'py',
