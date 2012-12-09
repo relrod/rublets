@@ -65,7 +65,7 @@ end
 
 @bot.on :privmsg do
   begin
-    matches = params[1].match(/^#{Configru.comchar}([\w\d]+)> ?(.*)/i)
+    matches = params[1].match(/^#{Configru.comchar}([\S]+)> ?(.*)/i)
     if matches.nil?
       matches = params[1].match(/\[\[([\w\d]+)(?::|) (.*)\]\]/i)
     end
