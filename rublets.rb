@@ -65,8 +65,11 @@ end
 
 @bot.on :privmsg do
   begin
-    matches = params[1].match(/^#{Configru.comchar}(\S+)> ?(.*)/)
-    if matches
+    matches = params[1].match(/^#{Configru.comchar}([\w\d]+)> ?(.*)/i)
+    if matches.nil?
+      matches = params[1].match(/\{\{([\w\d]+)(?::|) (.*)\}\}/i)
+    end
+    if matches && matches.size > 1
       the_lang = Language.by_name(matches[1])
       if the_lang
         future do
@@ -86,7 +89,7 @@ end
         next
       end
     end
-    
+
     case params[1]
     when /^#{Configru.comchar}version (.+)/
       versions = []
