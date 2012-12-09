@@ -94,6 +94,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
     <a href="http://lolcode.com/">LOLCODE</a>
     <a href="http://maxima.sourceforge.net/">Maxima</a>
     <a href="http://www.freepascal.org/">Pascal</a>
+    <a href="http://www.gprolog.org/">Prolog</a>
     <a href="http://smalltalk.gnu.org">Smalltalk</a>
     <a href="https://www.sqlite.org/">SQLite 3</a>
   </td>
