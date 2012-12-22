@@ -86,6 +86,12 @@ end"
       :evaluate_with        => ['clay', '-run'],
       :extension            => 'clay',
     },
+    'clisp' => {
+      :evaluate_with        => ['clisp', '-q'],
+      :extension            => 'lisp',
+      :code_from_stdin      => true,
+      :skip_preceding_lines => 1,
+    },
     'clojure' => {
       :aliases              => ['clj'],
       :evaluate_with        => ['clojure'],
