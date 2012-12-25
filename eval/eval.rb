@@ -129,7 +129,7 @@ class Sandbox
 
     # Do we need to do anything to the result before we show it?
     @result = @alter_result.call(@result) unless @alter_result.nil?
-    
+
     lines, output = @result.split("\n"), []
     if lines.any? { |l| l.length > 255 }
       output << "<output is long> #{pastebin(@pastebin_credentials)}"
@@ -168,17 +168,21 @@ class Sandbox
   # Returns a String containing link to the paste, or an error message stating
   #   why we couldn't get it.
   def pastebin(credentials = {})
-    username = credentials[:username] || nil
-    password = credentials[:password] || nil
+    begin
+      username = credentials[:username] || nil
+      password = credentials[:password] || nil
 
-    heap = Refheap::Paste.new(username, password)
+      heap = Refheap::Paste.new(username, password)
 
-    input = File.open("#{@home}/#{@script_filename}").read
-    language = Linguist::FileBlob.new("#{@home}/#{@script_filename}").language.name
-    paste = "Input (#{@script_filename}):\n#{input}\n\nOutput:\n#{@result}"
-    paste = heap.create(paste, :language => language, :private => true)
+      input = File.open("#{@home}/#{@script_filename}").read
+      language = Linguist::FileBlob.new("#{@home}/#{@script_filename}").language.name
+      paste = "Input (#{@script_filename}):\n#{input}\n\nOutput:\n#{@result}"
+      paste = heap.create(paste, :language => language, :private => true)
 
-    "Output truncated: #{paste['url']} (#{@result.lines.count} lines of total output)"
+      "Output truncated: #{paste['url']} (#{@result.lines.count} lines of total output)"
+    rescue Exception => e
+      "Couldn't connect to the pastebin server."
+    end
   end
 
   # Public: Checks to make sure all needed binaries to perform an evaluation
