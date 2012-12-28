@@ -168,20 +168,40 @@ class Sandbox
   # Returns a String containing link to the paste, or an error message stating
   #   why we couldn't get it.
   def pastebin(credentials = {})
+    username = credentials[:username] || nil
+    password = credentials[:password] || nil
+
     begin
-      username = credentials[:username] || nil
-      password = credentials[:password] || nil
+      gist = URI.parse('https://api.github.com/gists')
+      http = Net::HTTP.new(gist.host, gist.port)
+      http.use_ssl = true
 
-      heap = Refheap::Paste.new(username, password)
+      headers = {}
+      headers['Authorization'] = 'Basic ' + Base64.encode64("#{username}:#{password}").chop unless username.nil? or password.nil?
 
-      input = File.open("#{@home}/#{@script_filename}").read
-      language = Linguist::FileBlob.new("#{@home}/#{@script_filename}").language.name
-      paste = "Input (#{@script_filename}):\n#{input}\n\nOutput:\n#{@result}"
-      paste = heap.create(paste, :language => language, :private => true)
-
-      "Output truncated: #{paste['url']} (#{@result.lines.count} lines of total output)"
+      response = http.post(
+        gist.path,
+        {
+          'public' => false,
+          'description' => "#{@owner}'s ruby eval",
+          'files' => {
+            "input.#{@extension}" => {
+              'content' => File.open("#{@home}/#{@script_filename}").read
+            },
+            'output.txt' => {
+              'content' => @result
+            }
+          }
+        }.to_json,
+        headers)
+      if response.response.code.to_i != 201
+        return "Unable to Gist output."
+      else
+        "Output truncated: #{JSON(response.body)['html_url']}"
+      end
     rescue Exception => e
       "Couldn't connect to the pastebin server."
+      puts e
     end
   end
 
