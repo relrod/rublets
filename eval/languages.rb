@@ -191,8 +191,6 @@ end"
       :evaluate_with        => ['js', '-i'],
       :extension            => 'js',
       :code_from_stdin      => true,
-      :skip_preceding_lines => 1,
-      :skip_ending_lines    => 1,
     },
     'lisp' => {
       :aliases              => ['sbcl'],
