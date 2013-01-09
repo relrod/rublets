@@ -354,12 +354,21 @@ end"
 
     lang_name = lang_name.downcase
 
-    return languages[lang_name] if languages.has_key?(lang_name)
+    language = nil
+    language = languages[lang_name] if languages.has_key?(lang_name)
 
-    languages.each do |lang, params|
-      return languages[lang] if !params[:aliases].nil? and params[:aliases].include?(lang_name)
+    if language
+      language[:language_name] = lang_name.capitalize
+      return language
+    else
+      languages.each do |lang, params|
+        if !params[:aliases].nil? and params[:aliases].include?(lang_name)
+          language = languages[lang]
+          language[:language_name] = lang_name.capitalize
+          return language
+        end
+      end
     end
-    
     nil
   end
 

@@ -166,6 +166,7 @@ end
           :evaluate_with        => ['bash', 'run-ruby.sh', Configru.rvm_path, rubyversion],
           :timeout              => 5,
           :extension            => 'rb',
+          :language_name        => 'ruby',
           :owner                => sender.nick,
           :output_limit         => 2,
           :code                 => eval_code,

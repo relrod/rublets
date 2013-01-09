@@ -8,7 +8,7 @@ require 'linguist/file_blob'
 require 'rubyheap'
 
 class Sandbox
-  attr_accessor :time, :path, :home, :extension, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :pastebin_after_limit, :pastebin_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :alter_result, :size_limit, :sandbox_net_t
+  attr_accessor :time, :path, :home, :extension, :language_name, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :pastebin_after_limit, :pastebin_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :alter_result, :size_limit, :sandbox_net_t
 
   # Public: Creates a Sandbox instance.
   #
@@ -29,6 +29,7 @@ class Sandbox
     @time                 = Time.now
     @path                 = options[:path]
     @home                 = options[:home] || "#{@path}/sandbox_home-#{@time.to_f}"
+    @language_name        = options[:language_name] || nil
     @extension            = options[:extension] || "txt"
     @script_filename      = options[:script_filename] || "#{@time.to_f}.#{@extension}"
     @evaluate_with        = options[:evaluate_with]
@@ -183,7 +184,7 @@ class Sandbox
         gist.path,
         {
           'public' => false,
-          'description' => "#{@owner}'s ruby eval",
+          'description' => "#{@owner}'s #{@language_name} Evaluation",
           'files' => {
             "input.#{@extension}" => {
               'content' => File.open("#{@home}/#{@script_filename}").read
@@ -206,8 +207,8 @@ class Sandbox
   end
 
   # Public: Checks to make sure all needed binaries to perform an evaluation
-  #         (@binaries_must_exist) exist and are located in a directory that
-  #         is in $PATH.
+  # (@binaries_must_exist) exist and are located in a directory that
+  # is in $PATH.
   #
   # Returns false if a needed binary doesn't exist, and true if they all do.
   def binaries_all_exist?
