@@ -8,7 +8,33 @@ require 'linguist/file_blob'
 require 'rubyheap'
 
 class Sandbox
-  attr_accessor :time, :path, :home, :extension, :language_name, :script_filename, :evaluate_with, :timeout, :owner, :includes, :code, :output_limit, :pastebin_after_limit, :pastebin_credentials, :binaries_must_exist, :stdin, :code_from_stdin, :skip_preceding_lines, :alter_code, :alter_result, :size_limit, :sandbox_net_t
+  # This is ugly, but better than a huge line.
+  [
+    :alter_code,
+    :alter_result,
+    :binaries_must_exist,
+    :code,
+    :code_from_stdin,
+    :evaluate_with,
+    :extension,
+    :home,
+    :includes,
+    :language_name,
+    :output_limit,
+    :owner,
+    :pastebin_after_limit,
+    :pastebin_credentials,
+    :path,
+    :sandbox_net_t,
+    :script_filename,
+    :size_limit,
+    :skip_preceding_lines,
+    :stdin,
+    :time,
+    :timeout,
+  ].each do |symbol|
+    attr_accessor symbol
+  end
 
   # Public: Creates a Sandbox instance.
   #
@@ -18,29 +44,25 @@ class Sandbox
   # Returns the new instance of Sandbox, after making necessary directories to
   #   proceed with an evaluation.
   def initialize(options = {})
-    unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/sandbox' }
-      raise "The `sandbox` executable does not exist and is required."
-    end
-
-    unless ENV['PATH'].split(':').any? { |path| File.exists? path + '/timeout' }
-      raise "The `timeout` executable does not exist and is required. (Is coreutils installed?)"
-    end
-
     @time                 = Time.now
     @path                 = options[:path]
-    @home                 = options[:home] || "#{@path}/sandbox_home-#{@time.to_f}"
+    @home                 =
+      options[:home] || "#{@path}/sandbox_home-#{@time.to_f}"
     @language_name        = options[:language_name] || nil
     @extension            = options[:extension] || "txt"
-    @script_filename      = options[:script_filename] || "#{@time.to_f}.#{@extension}"
+    @script_filename      =
+      options[:script_filename] || "#{@time.to_f}.#{@extension}"
     @evaluate_with        = options[:evaluate_with]
     @timeout              = (options[:timeout] || 5).to_i
     @owner                = options[:owner] || 'anonymous'
     @includes             = options[:includes] || []
-    @code                 = "#{options[:before]}#{options[:code]}#{options[:after]}"
+    @code                 =
+      "#{options[:before]}#{options[:code]}#{options[:after]}"
     @output_limit         = options[:output_limit] || 2
     @pastebin_after_limit = options[:pastebin_after_limit] || true
     @pastebin_credentials = options[:pastebin_credentials] || {}
-    @binaries_must_exist  = options[:binaries_must_exist] || [@evaluate_with.first]
+    @binaries_must_exist  =
+      options[:binaries_must_exist] || [@evaluate_with.first]
     @stdin                = options[:stdin] || nil
     @code_from_stdin      = options[:code_from_stdin] || false
     @skip_preceding_lines = options[:skip_preceding_lines] || 0
@@ -53,6 +75,9 @@ class Sandbox
     # @alter_code is a method that gets called on @code immediately after a
     # Sandbox object is created.
     @code = @alter_code.call(@code) unless @alter_code.nil?
+
+    @binaries_must_exist << 'sandbox'
+    @binaries_must_exist << 'timeout'
   end
 
   # Public: Set up the initial directory structure required for performing an
@@ -99,7 +124,11 @@ class Sandbox
   # Returns a String containing the result of the evaluation, or any errors that
   #   occurred while trying to evaluate.
   def evaluate
-    return ["One of (#{@binaries_must_exist.join(', ')}) was not found in $PATH. Try again later."] unless binaries_all_exist?
+    nonexistent_binaries = missing_binaries
+    if nonexistent_binaries
+      needed_binaries = nonexistent_binaries.join(', ')
+      return ["[Rublets] Needed binaries were not found: #{needed_binaries}"]
+    end
     insert_code_into_file
     copy_audit_script
     cmd_script_filename = @code_from_stdin ? [] : [@script_filename]
@@ -117,9 +146,15 @@ class Sandbox
       @result = io.read(@size_limit)
       break unless @result
       break if (@no_output = @result.gsub("\n", "") == "")
+
       @result = @result.split("\n")
-      @result.shift if @result[0].start_with? 'WARNING: Policy would be downgraded'
-      @result = @result[@skip_preceding_lines..-(@skip_ending_lines + 1)].join("\n")
+
+      if @result[0].start_with? 'WARNING: Policy would be downgraded'
+        @result.shift
+      end
+
+      @result =
+        @result[@skip_preceding_lines..-(@skip_ending_lines + 1)].join("\n")
     }
 
     exitcode = $?.exitstatus.to_i
@@ -178,7 +213,10 @@ class Sandbox
       http.use_ssl = true
 
       headers = {}
-      headers['Authorization'] = 'Basic ' + Base64.encode64("#{username}:#{password}").chop unless username.nil? or password.nil?
+      if !username.nil? and !password.nil?
+        headers['Authorization'] = 'Basic ' +
+          Base64.encode64("#{username}:#{password}").chop
+      end
 
       response = http.post(
         gist.path,
@@ -207,16 +245,20 @@ class Sandbox
   end
 
   # Public: Checks to make sure all needed binaries to perform an evaluation
-  # (@binaries_must_exist) exist and are located in a directory that
-  # is in $PATH.
+  #         (@binaries_must_exist) exist and are located in a directory that
+  #         is in $PATH.
   #
   # Returns false if a needed binary doesn't exist, and true if they all do.
-  def binaries_all_exist?
+  def missing_binaries
+    binaries = []
     @binaries_must_exist.each do |binary|
       next if File.exists? binary
-      return false unless ENV['PATH'].split(':').any? { |path| File.exists? File.join(path, '/', binary) }
+      path_exists = ENV['PATH'].split(':').any? do |path|
+        File.exists? File.join(path, '/', binary)
+      end
+      binaries << binary unless path_exists
     end
-    true
+    binaries.empty? ? nil : binaries
   end
 
   private
@@ -229,7 +271,11 @@ class Sandbox
   #
   # Returns nothing.
   def copy_audit_script
-    FileUtils.cp("#{@home}/#{@script_filename}", "#{@path}/evaluated/#{@time.year}-#{@time.month}-#{@time.day}_#{@time.hour}-#{@time.min}-#{@time.sec}-#{@owner}-#{@time.to_f}.#{@extension}")
+    FileUtils.cp(
+      "#{@home}/#{@script_filename}",
+      "#{@path}/evaluated/#{@time.year}-#{@time.month}-#{@time.day}_"+
+      "#{@time.hour}-#{@time.min}-#{@time.sec}-#{@owner}-#{@time.to_f}."+
+      "#{@extension}")
   end
 
   # Internal: Takes the code that we are about to evaluate, and actually puts it
