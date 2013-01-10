@@ -94,12 +94,8 @@ end"
     },
     'clojure' => {
       :aliases              => ['clj'],
-      :evaluate_with        => ['clojure'],
+      :evaluate_with        => ['xargs', '-0', 'clojure', '-e'],
       :code_from_stdin      => true,
-      :alter_result         => lambda { |result|
-        result.gsub(/^user=> /, '')
-      },
-      :skip_preceding_lines => 1,
       :extension            => 'clj',
     },
     'elixir' => {
