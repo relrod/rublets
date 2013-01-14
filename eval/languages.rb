@@ -59,7 +59,8 @@ end"
       :binaries_must_exist  => ['gcc', 'bash'],
       :extension            => 'c',
       :required_files       => {"#{@eval_path}/run-c.sh" => 'run-c.sh',
-        "#{@eval_path}/rublets-c.h" => 'stdinc.h'},
+        "#{@eval_path}/rublets-c.h" => 'stdinc.h',
+      },
       :before               => "#include \"stdinc.h\"\n",
     },
     'c#' => {
@@ -318,6 +319,16 @@ end"
     'smalltalk' => {
       :evaluate_with        => ['gst'],
       :extension            => 'st',
+    },
+    'sml' => {
+      :evaluate_with        => ['bash', 'run-smlnj.sh'],
+      :extension            => 'sml',
+      :binaries_must_exist  => ['sml', 'bash'],
+      :skip_preceding_lines => 2,
+      :skip_ending_lines    => 1,
+      :required_files       => {
+        "#{@eval_path}/run-smlnj.sh" => 'run-smlnj.sh',
+      },
     },
     'sqlite' => {
       :evaluate_with        => ['sqlite3', Time.now.to_f.to_s],
