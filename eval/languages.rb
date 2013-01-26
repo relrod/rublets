@@ -298,7 +298,7 @@ end"
     },
     'scala' => {
       :evaluate_with        => [
-        'scala',
+        '/opt/scala/bin/scala',
         '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon', '-deprecation'
       ],
       :timeout              => 7,
