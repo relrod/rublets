@@ -73,6 +73,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
   <td>
     <a href="http://haskell.org">Haskell</a>
     <a href="http://caml.inria.fr/">OCaml</a>
+    <a href="http://smlnj.cs.uchicago.edu/">SML(/NJ)</a>
   </td>
 </tr>
 <tr>
@@ -94,6 +95,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
     <a href="http://www.jsoftware.com/">J</a>
     <a href="http://lolcode.com/">LOLCODE</a>
     <a href="http://maxima.sourceforge.net/">Maxima</a>
+    <a href="http://ooc-lang.org/">OOC</a>
     <a href="http://www.freepascal.org/">Pascal</a>
     <a href="http://www.gprolog.org/">Prolog</a>
     <a href="http://smalltalk.gnu.org">Smalltalk</a>
