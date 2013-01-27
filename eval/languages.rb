@@ -241,7 +241,7 @@ end"
     'ooc' => {
       :evaluate_with        => ['rock', '-r'],
       :extension            => 'ooc',
-    }
+    },
     'pascal' => {
       :evaluate_with        => ['bash', 'run-pascal.sh'],
       :binaries_must_exist  => ['fpc', 'bash'],
