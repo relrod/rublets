@@ -233,10 +233,10 @@ end"
       ].join("\n") + "\n",
     },
     'ocaml' => {
-      :evaluate_with        => ['bash', 'run-ocaml.sh'],
+      :evaluate_with        => ['ocaml', '-noprompt'],
       :extension            => 'ml',
-      :required_files       => {"#{@eval_path}/run-ocaml.sh" => 'run-ocaml.sh'},
-      :script_filename      => 'evaluation.ml',
+      :code_from_stdin      => true,
+      :skip_preceding_lines => 2,
     },
     'ooc' => {
       :evaluate_with        => ['rock', '-r'],
