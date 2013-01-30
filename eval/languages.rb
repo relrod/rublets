@@ -306,7 +306,7 @@ end"
         '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon', '-deprecation'
       ],
       :version_against      => '/opt/scala/bin/scala',
-      :timeout              => 7,
+      :timeout              => 10,
       :extension            => 'scala',
       :code_from_stdin      => true,
       :skip_preceding_lines => 5,
