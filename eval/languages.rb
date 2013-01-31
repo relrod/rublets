@@ -96,6 +96,7 @@ end"
     'clojure' => {
       :aliases              => ['clj'],
       :evaluate_with        => ['xargs', '-0', 'clojure', '-e'],
+      :binaries_must_exist  => ['clojure'],
       :code_from_stdin      => true,
       :extension            => 'clj',
     },
