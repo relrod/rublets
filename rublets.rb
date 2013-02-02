@@ -64,6 +64,7 @@ end
 end
 
 @bot.on :privmsg do
+  puts "#{Time.now} #{params[0]} <#{sender.nick}> #{params[1]}"
   begin
     matches = params[1].match(/^#{Configru.comchar}([\S]+)> ?(.*)/i)
     if matches.nil?
