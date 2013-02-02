@@ -240,6 +240,7 @@ end"
       :skip_preceding_lines => 2,
     },
     'ooc' => {
+      :timeout              => 7,
       :evaluate_with        => ['rock', '-r'],
       :extension            => 'ooc',
     },
