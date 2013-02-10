@@ -139,7 +139,9 @@ class Sandbox
       'timeout', @timeout.to_s, *@evaluate_with
     ]
     popen_args << @script_filename unless @code_from_stdin
-    IO.popen(popen_args + [{:err => [:child, :out]}], 'w+') { |io|
+
+    start_time = Time.now
+    IO.popen(popen_args + [{:err => [:child, :out]}], 'w+') do |io|
       io.write File.read("#{@home}/#{@script_filename}") if @code_from_stdin
       io.write @stdin unless @stdin.nil?
       io.close_write
@@ -155,7 +157,8 @@ class Sandbox
 
       @result =
         @result[@skip_preceding_lines..-(@skip_ending_lines + 1)].join("\n")
-    }
+    end
+    end_time = Time.now
 
     exitcode = $?.exitstatus.to_i
 
@@ -178,7 +181,7 @@ class Sandbox
         output << pastebin(@pastebin_credentials)
       end
     end
-    if exitcode == 124
+    if exitcode == 124 && (end_time - start_time >= @timeout)
       output << "Timeout of #{@timeout} seconds was hit."
     end
 
