@@ -143,7 +143,11 @@ end
             rubies = Dir[File.join(Configru.rvm_path, 'rubies') + '/*'].map { |a| File.basename(a) }
             rubies = rubies.delete_if { |ruby| ruby.scan(given_version).empty? }
             if rubies.count > 1
-              respond "#{sender.nick}: You matched multiple rubies. Be more specific. See !rubies for the full list." and next
+              if rubies.include? given_version
+                rubyversion = given_version
+              else
+                respond "#{sender.nick}: You matched multiple rubies. Be more specific. See !rubies for the full list." and next
+              end
             elsif rubies.count == 0
               next
             end
