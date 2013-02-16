@@ -190,13 +190,13 @@ end"
       :extension            => 'js',
       :code_from_stdin      => true,
     },
-    'lisp' => {
-      :aliases              => ['sbcl'],
-      :evaluate_with        => [
-        'sbcl',
-        '--script'
-      ],
+    'sbcl' => {
+      :aliases              => ['lisp'],
+      :evaluate_with        => ['sbcl', '--noinform'],
       :extension            => 'lisp',
+      :code_from_stdin      => true,
+      :skip_preceding_lines => 1,
+      :skip_ending_lines    => 2,
     },
     'lolcode' => {
       :evaluate_with        => ['lol-pl'],
