@@ -155,6 +155,10 @@ class Sandbox
         @result.shift
       end
 
+      if @result[-1] == 'Unable to switch to root to clear tmp dir'
+        @result.pop
+      end
+
       @result =
         @result[@skip_preceding_lines..-(@skip_ending_lines + 1)].join("\n")
     end
