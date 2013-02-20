@@ -24,13 +24,6 @@ Linguist::Language.create(
   :lexer             => 'Text only',
 )
 
-# Forth
-Linguist::Language.create(
-  :name              => 'Forth',
-  :primary_extension => '.forth',
-  :lexer             => 'Text only',
-)
-
 # Frink
 Linguist::Language.create(
   :name              => 'Frink',
