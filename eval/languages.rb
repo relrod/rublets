@@ -190,15 +190,7 @@ end"
       :extension            => 'js',
       :code_from_stdin      => true,
     },
-    'sbcl' => {
-      :aliases              => ['lisp'],
-      :evaluate_with        => ['sbcl', '--noinform'],
-      :extension            => 'lisp',
-      :code_from_stdin      => true,
-      :skip_preceding_lines => 1,
-      :skip_ending_lines    => 1,
-    },
-    'lolcode' => {
+   'lolcode' => {
       :evaluate_with        => ['lol-pl'],
       :extension            => 'lol',
       :alter_code           => lambda { |code|
@@ -301,6 +293,14 @@ end"
       :binaries_must_exist  => ['racket', 'xargs'],
       :code_from_stdin      => true,
       :extension            => 'rkt',
+    },
+    'sbcl' => {
+      :aliases              => ['lisp'],
+      :evaluate_with        => ['sbcl', '--noinform'],
+      :extension            => 'lisp',
+      :code_from_stdin      => true,
+      :skip_preceding_lines => 1,
+      :skip_ending_lines    => 1,
     },
     'scala' => {
       :evaluate_with        => [
