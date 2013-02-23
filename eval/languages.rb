@@ -304,10 +304,9 @@ end"
     },
     'scala' => {
       :evaluate_with        => [
-        '/opt/scala/bin/scala',
+        'scala',
         '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon', '-deprecation'
       ],
-      :version_against      => '/opt/scala/bin/scala',
       :timeout              => 10,
       :extension            => 'scala',
       :code_from_stdin      => true,
