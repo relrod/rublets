@@ -119,6 +119,22 @@ end"
         result.gsub(/^\d+> /, '')
       },
     },
+    'f#' => {
+      :aliases              => ['fsharp'],
+      :evaluate_with        => ['fsharpi', '--nologo'],
+      :code_from_stdin      => true,
+      :extension            => 'fs',
+      :alter_code           => lambda { |code|
+        code + ' #quit;;'
+      },
+      :alter_result         => lambda { |result|
+        require 'pp'
+        lines = result.split("\n")
+        lines[1].gsub!(/^> /, '')
+        lines.join("\n")
+      },
+      :skip_ending_lines    => 2,
+    },
     'forth' => {
       :evaluate_with        => ['gforth'],
       :extension            => 'forth',
