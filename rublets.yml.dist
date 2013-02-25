@@ -1,5 +1,5 @@
-# Triggered with "#{comchar}>>" (e.g.: !>> puts "hi"). Must exist in ./[directory containing rublets.rb]/rvm/
-default_ruby: 1.9.3-p125
+# Triggered with "#{comchar}>>" (e.g.: !>> puts "hi"). Must exist in RVM.
+default_ruby: "ruby-2.0.0-p0"
 
 # Where the RVM path is. Due to speed issues, we now require a global RVM install
 # that `sandbox` can access. By default, rvm globally installs to: /usr/local/rvm
