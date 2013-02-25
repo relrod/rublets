@@ -128,6 +128,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
   <td>.NET</td>
   <td>
     <a href="http://msdn.microsoft.com/en-us/vstudio/hh388566">C#</a>
+    <a href="http://fsharp.org/">F#</a>
   </td>
 </tr>
 </table>
