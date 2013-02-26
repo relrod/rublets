@@ -34,8 +34,12 @@ Signal.trap("USR1") do
   end
 end
 
-sandbox_net_t_users = Configru.sandbox_net_t_users.map do |hostmask|
-  Regexp.new(hostmask)
+if !Configru.sandbox_net_t_users.nil?
+  sandbox_net_t_users = Configru.sandbox_net_t_users.map do |hostmask|
+    Regexp.new(hostmask)
+  end
+else
+  sandbox_net_t_users = []
 end
 
 #bot = Thread.new do
