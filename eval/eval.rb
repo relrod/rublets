@@ -25,7 +25,6 @@ class Sandbox
     :pastebin_after_limit,
     :pastebin_credentials,
     :path,
-    :sandbox_net_t,
     :script_filename,
     :size_limit,
     :skip_preceding_lines,
@@ -70,7 +69,6 @@ class Sandbox
     @alter_code           = options[:alter_code] || nil
     @alter_result         = options[:alter_result] || nil
     @size_limit           = options[:size_limit] || 10240 # bytes
-    @sandbox_net_t        = options[:sandbox_net_t] || false
 
     # @alter_code is a method that gets called on @code immediately after a
     # Sandbox object is created.
@@ -132,7 +130,7 @@ class Sandbox
     insert_code_into_file
     copy_audit_script
     cmd_script_filename = @code_from_stdin ? [] : [@script_filename]
-    sandbox_type = @sandbox_net_t ? 'sandbox_net_t' : 'sandbox_x_t'
+    sandbox_type = 'sandbox_x_t'
     popen_args = [
       'timeout', @timeout.to_s,
       'sandbox', '-H', @home, '-T', "#{@home}/tmp/", '-t', "#{sandbox_type}",

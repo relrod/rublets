@@ -43,11 +43,3 @@ servers:
 
 special_languages:
   - "ruby (see !rubies)"
-
-# These cloaks have their evaluations run under sandbox_net_t instead of sandbox_x_t.
-# You should be careful with who you give this capability to, as they will be able to
-# download and evaluate anything. I recommend asking for justification before throwing
-# this access around.
-# These take strings that are internally converted to Regexp's.
-sandbox_net_t_users:
-  - "fedora/CodeBlock"
