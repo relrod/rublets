@@ -166,6 +166,10 @@ class Sandbox
       @result = "No output. (return code was #{exitcode})"
     end
 
+    if "".respond_to?(:force_encoding) && defined?(Encoding)
+      @result = @result.force_encoding(Encoding.default_external)
+    end
+
     # Do we need to do anything to the result before we show it?
     @result = @alter_result.call(@result) unless @alter_result.nil?
 
