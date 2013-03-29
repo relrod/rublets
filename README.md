@@ -15,12 +15,25 @@ When Rublets is asked to evaluate ruby, it does the following:
 3. Ask the sandbox to evaluate the code using `ruby`.
 4. Remove the sandbox-accessible code.
 
-Setting up rubies
------------------
+Setting up languages
+--------------------
 
 Rublets uses RVM so that it can evaluate multiple ruby versions/implementations. Setting up RVM for use with Rublets is a bit tricky.
 
-Set up RVM as your regular user with however many rubies you want, then from the rublets directory, run `./setup-rvm.sh`
+Set up RVM as your regular user with however many rubies you want, and ensure it is in $PATH.
+
+All other languages can be evaluated by making sure their interpreters are installed and in $PATH.
+
+The bot has only been tested on Fedora Rawhide, but in theory, should work elsewhere.
+
+Commands
+--------
+
+* `![language]> [code]` - (example: `!perl> print 1;`) - Evaluate code
+* `!version [language]` - (example: `!version php`) - Return the version of the package that provides PHP.
+* `!>> [ruby code]` - (example: `!>> puts "hello!"`) - Shortcut for Ruby evaluations
+* `!languages` or `!langs` - List all languages that Rublets knows about
+* `!rubies` - List all RVM rubies that Rublets can see
 
 What it can evaluate (if given selinux permissions, and if the interpreters/compilers are installed):
 -----------------------------------------------------------------------------------------------------
