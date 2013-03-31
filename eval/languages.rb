@@ -152,10 +152,8 @@ end"
       :skip_ending_lines    => 1,
     },
     'go' => {
-      :evaluate_with        => ['bash', 'run-go.sh'],
-      :binaries_must_exist  => ['gccgo', 'bash'],
+      :evaluate_with        => ['go', 'run'],
       :extension            => 'go',
-      :required_files       => {"#{@eval_path}/run-go.sh" => 'run-go.sh'},
       :before               => [
         'package main',
         'import "fmt"',
