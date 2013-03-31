@@ -356,6 +356,10 @@ end"
       :extension            => 'sqlite',
       :code_from_stdin      => true,
     },
+    'tcl' => {
+      :evaluate_with        => ['tclsh'],
+      :extension            => 'tcl',
+    },
     'zsh' => {
       :evaluate_with        => ['zsh'],
       :extension            => 'sh',
