@@ -125,6 +125,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
     <a href="http://www.python.org">Python</a>
     <a href="http://docs.python.org/release/3.2.3/whatsnew/index.html">Python 3</a>
     <a href="http://www.ruby-lang.org">Ruby</a>
+    <a href="http://tcl.sourceforge.net/">TCL</a>
   </td>
 </tr>
 <tr>
