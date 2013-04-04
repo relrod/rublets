@@ -57,6 +57,7 @@ end"
     'c' => {
       :evaluate_with        => ['bash', 'run-c.sh'],
       :binaries_must_exist  => ['gcc', 'bash'],
+      :version_against      => '/usr/bin/gcc',
       :extension            => 'c',
       :required_files       => {"#{@eval_path}/run-c.sh" => 'run-c.sh',
         "#{@eval_path}/rublets-c.h" => 'stdinc.h',
@@ -73,6 +74,7 @@ end"
     'c++' => {
       :evaluate_with        => ['bash', 'run-cpp.sh'],
       :binaries_must_exist  => ['g++', 'bash'],
+      :version_against      => '/usr/bin/gcc',
       :extension            => 'cpp',
       :required_files       => {"#{@eval_path}/run-cpp.sh" => 'run-cpp.sh'},
       :before               => File.read("#{@eval_path}/rublets-cpp.h"),
@@ -233,6 +235,7 @@ end"
       :aliases              => ['obj-c'],
       :evaluate_with        => ['bash', 'run-obj-c.sh'],
       :binaries_must_exist  => ['gcc', 'bash'],
+      :version_against      => '/usr/bin/gcc',
       :extension            => 'm',
       :required_files       => {"#{@eval_path}/run-obj-c.sh" => 'run-obj-c.sh'},
       :before               => [
