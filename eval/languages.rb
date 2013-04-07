@@ -101,6 +101,7 @@ end"
       :binaries_must_exist  => ['clojure'],
       :code_from_stdin      => true,
       :extension            => 'clj',
+      :timeout              => 10,
     },
     'elixir' => {
       :evaluate_with        => ['elixir'],
