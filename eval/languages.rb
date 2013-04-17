@@ -33,6 +33,7 @@ end"
         end
       },
       :extension            => 'rb',
+      :timeout              => 10,
     },
     'arroyo' => {
       :evaluate_with        => ['arroyo'],
