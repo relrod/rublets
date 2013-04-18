@@ -17,7 +17,7 @@ class Language
     'apricot' => {
       :aliases              => ['apr'],
       :evaluate_with        => ['/usr/local/rvm/bin/rvm',
-        'rbx-head', 'do', 'rbx', '-X19',
+        'rbx-head-rbx19', 'do', 'rbx', '-X19',
         '-I/opt/rublets/programble-apricot/lib', '-rapricot'
       ],
       :alter_code           => lambda { |code|
