@@ -10,5 +10,4 @@ gem 'backports'
 gem 'ansirc'
 gem 'github-linguist', '~> 2.2'
 gem 'sinatra' # Statistics web interface.
-gem 'httparty'
 gem 'evalso'

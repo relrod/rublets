@@ -90,7 +90,7 @@ end
     case params[1]
     when /^#{Configru.comchar}#{Configru.comchar}([\S]+)> ?(.*)/i
       begin
-        res = Evalso.run($1, $2)
+        res = Evalso.run(:language => $1, :code => $2)
         stdout = if res.stdout != "" then "#{2.chr}stdout:#{2.chr} #{res.stdout} " else " " end
         stderr = if res.stderr != "" then "#{2.chr}stderr:#{2.chr} #{res.stderr}" else "" end
         respond "[#{res.wall_time} ms] #{stdout}#{stderr}"
