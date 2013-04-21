@@ -13,6 +13,7 @@ require 'future'
 require 'nokogiri'
 require 'pry'
 require 'linguist/repository'
+require 'evalso'
 
 $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'eval/config'
@@ -87,6 +88,15 @@ end
     end
 
     case params[1]
+    when /^#{Configru.comchar}#{Configru.comchar}([\S]+)> ?(.*)/i
+      begin
+        res = Evalso.run($1, $2)
+        stdout = if res.stdout != "" then "#{2.chr}stdout:#{2.chr} #{res.stdout} " else " " end
+        stderr = if res.stderr != "" then "#{2.chr}stderr:#{2.chr} #{res.stderr}" else "" end
+        respond "[#{res.wall_time} ms] #{stdout}#{stderr}"
+      rescue
+        respond "An error occurred while communicating with eval.so"
+      end
     when /^#{Configru.comchar}version (.+)/
       versions = []
       $1.gsub(' ', '').split(',').each do |given_language|

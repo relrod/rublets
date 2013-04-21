@@ -5,7 +5,6 @@ require 'net/https'
 require 'base64'
 require 'ansirc'
 require 'linguist/file_blob'
-require 'rubyheap'
 
 class Sandbox
   # This is ugly, but better than a huge line.
