@@ -127,7 +127,7 @@ end
       respond "#{sender.nick}: #{rubies.join(', ')} (You can specify 'all' to evaluate against all rubies, but this might be slowish.)"
 
     when /^#{Configru.comchar}lang(?:s|uages)$/
-      respond "\x01ACTION supports: #{Language.list_all}\x01"
+      respond "#{1.chr}ACTION supports: #{Language.list_all}#{1.chr}"
 
     # Ruby eval.
     when /^#{Configru.comchar}(([\w\.\-]+)?>?|>)> (.*)/
