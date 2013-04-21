@@ -153,7 +153,7 @@ end
         eval_code = "begin\n"
         eval_code += "  result = ::Kernel.eval(#{code.inspect}, TOPLEVEL_BINDING)\n"
         if rubyversion == 'all'
-          eval_code += '  puts RUBY_VERSION + " #{\'(\' + RUBY_ENGINE + \')\' unless defined?(RUBY_ENGINE).nil?} => " + result.inspect' + "\n"
+          eval_code += '  puts RUBY_VERSION + " #{\'(\' + RUBY_ENGINE + \')\' if defined?(RUBY_ENGINE)} => " + result.inspect' + "\n"
         else
           eval_code += '  puts "=> " + result.inspect' + "\n"
         end
