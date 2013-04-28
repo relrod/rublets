@@ -65,7 +65,7 @@ end
   begin
     matches = params[1].match(/^#{Configru.comchar}([\S]+)> ?(.*)/i)
     if matches.nil?
-      matches = params[1].match(/\[\[([\w\d]+)(?::|) (.*)\]\]/i)
+      matches = params[1].match(/\[\[([\S]+)(?::|) (.*)\]\]/i)
     end
     if matches && matches.size > 1
       the_lang = Language.by_name(matches[1])
