@@ -129,7 +129,7 @@ class Sandbox
     insert_code_into_file
     copy_audit_script
     cmd_script_filename = @code_from_stdin ? [] : [@script_filename]
-    sandbox_type = 'sandbox_x_t'
+    sandbox_type = 'sandbox_t'
     popen_args = [
       'timeout', @timeout.to_s,
       'sandbox', '-H', @home, '-T', "#{@home}/tmp/", '-t', "#{sandbox_type}",
