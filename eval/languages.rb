@@ -123,12 +123,6 @@ end"
         result.gsub(/^\d+> /, '')
       },
     },
-    'factor' => {
-      :evaluate_with        => ['factor-vm', 'factorhack.factor'],
-      :code_from_stdin      => true,
-      :extension            => 'factor',
-      :required_files       => {"#{@eval_path}/factorhack.factor" => 'factorhack.factor'},
-    },
     'f#' => {
       :aliases              => ['fsharp'],
       :evaluate_with        => ['fsharpi', '--nologo'],
@@ -144,6 +138,12 @@ end"
         lines.join("\n")
       },
       :skip_ending_lines    => 2,
+    },
+    'factor' => {
+      :evaluate_with        => ['factor-vm', 'factorhack.factor'],
+      :code_from_stdin      => true,
+      :extension            => 'factor',
+      :required_files       => {"#{@eval_path}/factorhack.factor" => 'factorhack.factor'},
     },
     'forth' => {
       :evaluate_with        => ['gforth'],
@@ -382,7 +382,7 @@ end"
   class << self
     attr_accessor :languages
   end
-  
+
   # Public: Finds a Hash for a given languages that we can evaluate.
   #
   # lang_name - A String containing a language name that a Hash should be
@@ -477,7 +477,7 @@ end"
                language[:evaluate_with][0]
              end
     return nil unless binary
-    
+
     # Get the absolute path of the interpreter/compiler.
     if language[:version_against]
       path_to_binary = language[:version_against]
