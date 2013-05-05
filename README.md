@@ -78,6 +78,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
 <tr>
   <td>Stack-based</td>
   <td>
+    <a href="http://factorcode.org/">Factor</a>
     <a href="https://www.gnu.org/software/gforth/">Forth</a>
   </td>
 </tr>
