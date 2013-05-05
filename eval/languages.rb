@@ -123,6 +123,12 @@ end"
         result.gsub(/^\d+> /, '')
       },
     },
+    'factor' => {
+      :evaluate_with        => ['factor-vm', 'factorhack.factor'],
+      :code_from_stdin      => true,
+      :extension            => 'factor',
+      :required_files       => {"#{@eval_path}/factorhack.factor" => 'factorhack.factor'},
+    },
     'f#' => {
       :aliases              => ['fsharp'],
       :evaluate_with        => ['fsharpi', '--nologo'],
