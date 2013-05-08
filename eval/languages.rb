@@ -86,6 +86,12 @@ end"
       :extension            => 'ceylon',
       :required_files       => {"#{@eval_path}/run-ceylon.sh" => 'run-ceylon.sh'},
     },
+    'chicken' => {
+      :aliases              => ['scheme'],
+      :evaluate_with        => ['xargs', '-0', 'csi', '-p'],
+      :extension            => 'scm',
+      :binaries_must_exist  => ['csi'],
+    },
     'clay' => {
       :evaluate_with        => ['clay', '-run'],
       :extension            => 'clay',
@@ -214,6 +220,14 @@ end"
       :extension            => 'js',
       :code_from_stdin      => true,
     },
+    'kawa' => {
+      :evaluate_with        => ['kawa', '-s'],
+      :extension            => 'scm',
+      :code_from_stdin      => true,
+      :alter_result         => lambda { |result|
+        result.gsub(/^#\|kawa:\d+\|# /, '')
+      },
+    },
    'lolcode' => {
       :evaluate_with        => ['lol-pl'],
       :extension            => 'lol',
@@ -337,15 +351,6 @@ end"
       :code_from_stdin      => true,
       :skip_preceding_lines => 5,
       :skip_ending_lines    => 2,
-    },
-    'scheme' => {
-      :aliases              => ['kawa'],
-      :evaluate_with        => ['kawa', '-s'],
-      :extension            => 'scm',
-      :code_from_stdin      => true,
-      :alter_result         => lambda { |result|
-        result.gsub(/^#\|kawa:\d+\|# /, '')
-      },
     },
     'smalltalk' => {
       :evaluate_with        => ['gst'],
