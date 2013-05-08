@@ -91,6 +91,7 @@ end"
       :evaluate_with        => ['xargs', '-0', 'csi', '-p'],
       :extension            => 'scm',
       :binaries_must_exist  => ['csi'],
+      :code_from_stdin      => true,
     },
     'clay' => {
       :evaluate_with        => ['clay', '-run'],
