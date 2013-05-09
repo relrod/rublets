@@ -353,7 +353,7 @@ end"
       :extension            => 'scala',
       :code_from_stdin      => true,
       :skip_preceding_lines => 5,
-      :skip_ending_lines    => 2,
+      :skip_ending_lines    => 1,
     },
     'smalltalk' => {
       :evaluate_with        => ['gst'],
