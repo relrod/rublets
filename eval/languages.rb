@@ -70,6 +70,9 @@ end"
       :evaluate_with        => ['csharp'],
       :extension            => 'cs',
       :code_from_stdin      => true,
+      :alter_code           => lambda { |code|
+        code.end_with? ';' ? code : "#{code};"
+      },
     },
     'c++' => {
       :evaluate_with        => ['bash', 'run-cpp.sh'],
