@@ -66,7 +66,7 @@ end"
       :before               => "#include \"stdinc.h\"\n",
     },
     'c#' => {
-      :aliases              => ['csharp'],
+      :aliases              => ['csharp', 'cs'],
       :evaluate_with        => ['csharp'],
       :extension            => 'cs',
       :code_from_stdin      => true,
