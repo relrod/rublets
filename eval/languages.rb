@@ -67,10 +67,9 @@ end"
     },
     'c#' => {
       :aliases              => ['csharp'],
-      :evaluate_with        => ['bash', 'run-cs.sh'],
-      :binaries_must_exist  => ['mcs', 'bash'],
+      :evaluate_with        => ['csharp'],
       :extension            => 'cs',
-      :required_files       => {"#{@eval_path}/run-cs.sh" => 'run-cs.sh'},
+      :code_from_stdin      => true,
     },
     'c++' => {
       :evaluate_with        => ['bash', 'run-cpp.sh'],
