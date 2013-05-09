@@ -11,3 +11,4 @@ gem 'ansirc'
 gem 'github-linguist', '~> 2.2'
 gem 'sinatra' # Statistics web interface.
 gem 'evalso'
+gem 'httparty'

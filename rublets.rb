@@ -14,6 +14,7 @@ require 'nokogiri'
 require 'pry'
 require 'linguist/repository'
 require 'evalso'
+require 'httparty'
 
 $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'eval/config'
@@ -128,6 +129,11 @@ end
 
     when /^#{Configru.comchar}lang(?:s|uages)$/
       respond "#{1.chr}ACTION supports: #{Language.list_all}#{1.chr}"
+
+    when /^#{Configru.comchar}#{Configru.comchar}lang(?:s|uages)$/
+      languages_endpoint = HTTParty.get('http://eval.so/api/languages')
+      evalso_languages = JSON.parse(languages_endpoint.body)
+      respond "Eval.so supports: #{evalso_languages.values.sort}"
 
     # Ruby eval.
     when /^#{Configru.comchar}(([\w\.\-]+)?>?|>)> (.*)/
