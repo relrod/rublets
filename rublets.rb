@@ -133,7 +133,7 @@ end
       respond "#{1.chr}ACTION supports: #{Language.list_all}#{1.chr}"
 
     when /^#{Configru.comchar}#{Configru.comchar}lang(?:s|uages)$/
-      respond "Eval.so supports: #{Evalso.languages.map {|x,y| y.name}}"
+      respond "Eval.so supports: #{Evalso.languages.values.map(&:name).join(', ')}"
 
     # Ruby eval.
     when /^#{Configru.comchar}(([\w\.\-]+)?>?|>)> (.*)/
