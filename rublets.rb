@@ -133,9 +133,7 @@ end
       respond "#{1.chr}ACTION supports: #{Language.list_all}#{1.chr}"
 
     when /^#{Configru.comchar}#{Configru.comchar}lang(?:s|uages)$/
-      languages_endpoint = HTTParty.get('http://eval.so/api/languages')
-      evalso_languages = JSON.parse(languages_endpoint.body)
-      respond "Eval.so supports: #{evalso_languages.values.sort.join(', ')}"
+      respond "Eval.so supports: #{Evalso.languages.map {|x,y| y.name}}"
 
     # Ruby eval.
     when /^#{Configru.comchar}(([\w\.\-]+)?>?|>)> (.*)/
