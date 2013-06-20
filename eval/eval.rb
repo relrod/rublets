@@ -130,12 +130,15 @@ class Sandbox
     copy_audit_script
     cmd_script_filename = @code_from_stdin ? [] : [@script_filename]
     sandbox_type = 'sandbox_t'
+    env = {
+      'LD_PRELOAD' => 'forklimit.so.0',
+    }.map{ |a,b| "#{a}=#{b}" }.join(' ')
     popen_args = [
       'timeout', @timeout.to_s,
       'sandbox', '-H', @home, '-T', "#{@home}/tmp/", '-t', "#{sandbox_type}",
-      'timeout', @timeout.to_s, *@evaluate_with
+      'bash', '-c',
+      "#{env} #{@evaluate_with.join(' ')} #{@script_filename unless @code_from_stdin}"
     ]
-    popen_args << @script_filename unless @code_from_stdin
 
     start_time = Time.now
     IO.popen(popen_args + [{:err => [:child, :out]}], 'w+') do |io|
