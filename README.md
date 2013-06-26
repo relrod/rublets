@@ -26,13 +26,6 @@ All other languages can be evaluated by making sure their interpreters are insta
 
 The bot has only been tested on Fedora Rawhide, but in theory, should work elsewhere.
 
-Dependencies
-------------
-
-We depend on @programble's [forklimit](https://github.com/programble/forklimit) library. Have it in
-your LD path installed as forklimit.so.0. For CentOS and Fedora, this is available in the
-[eval.so yum repo](https://github.com/eval-so/infrastructure/wiki/Yum-Repo).
-
 Commands
 --------
 
