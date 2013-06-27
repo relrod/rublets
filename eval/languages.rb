@@ -297,15 +297,6 @@ end"
       :evaluate_with        => ['nqp'],
       :extension            => 'pl',
     },
-    'perpetual' => {
-      :evaluate_with        => [
-        'perpetual',
-        '--no-prompt'
-      ],
-      :extension            => 'perp',
-      :code_from_stdin      => true,
-      :skip_preceding_lines => 1,
-    },
     'php' => {
       :evaluate_with        => ['php'],
       :extension            => 'php',
