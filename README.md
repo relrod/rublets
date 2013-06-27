@@ -60,12 +60,13 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
   <td>Lisps</td>
   <td>
     <a href="https://github.com/programble/apricot">Apricot</a>
+    <a href="http://call-cc.org/">Chicken</a>
     <a href="http://clojure.org/">Clojure</a>
     <a href="http://www.clisp.org/">CLISP</a>
+    <a href="https://www.gnu.org/software/kawa/">Kawa</a>
     <a href="https://github.com/programble/perpetual">Perpetual</a>
     <a href="http://racket-lang.org">Racket</a>
     <a href="https://en.wikipedia.org/wiki/Scheme_%28programming_language%29">Kawa Scheme</a>
-    <a href="http://call-cc.org/">Chicken Scheme</a>
     <a href="http://sbcl.org">sbcl</a>
   </td>
 </tr>
