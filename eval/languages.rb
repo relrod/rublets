@@ -195,7 +195,7 @@ end"
       :extension            => 'hs',
       :code_from_stdin      => true,
       :required_files       => {"#{@eval_path}/ghci" => '.ghci'},
-      :required_files_perms => 640,
+      :required_files_perms => 0640,
     },
     'io' => {
       :evaluate_with        => ['io'],
