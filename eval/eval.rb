@@ -110,7 +110,7 @@ class Sandbox
   # Returns nothing.
   def copy(source, destination, chmod)
     FileUtils.cp_r source, "#{@home}/#{destination}"
-    FileUtils.chmod_R chmod "#{@home}/#{destination}"
+    FileUtils.chmod_R chmod, "#{@home}/#{destination}"
   end
 
   # Public: Performs an actual evaluation.
