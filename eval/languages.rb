@@ -194,6 +194,7 @@ end"
       :evaluate_with        => ['ghci', '-v0'],
       :extension            => 'hs',
       :code_from_stdin      => true,
+      :required_files       => {"#{@eval_path}/ghci" => '.ghci'},
     },
     'io' => {
       :evaluate_with        => ['io'],
