@@ -79,7 +79,8 @@ end
                 :path                 => Configru.rublets_home,
               }))
           sandbox.initialize_directories
-          the_lang[:required_files].each { |file,dest| sandbox.copy file, dest } unless the_lang[:required_files].nil?
+          chmod = the_lang[:required_files_perms] ? the_lang[:required_files_perms] : 660
+          the_lang[:required_files].each { |file,dest| sandbox.copy(file, dest, chmod) } unless the_lang[:required_files].nil?
           result = sandbox.evaluate
           result.each { |line| respond line }
           sandbox.rm_home!
@@ -192,7 +193,7 @@ end
 
         # This is a bit of a hack, but lets us set up the rvm environment and call the script.
         sandbox.initialize_directories
-        sandbox.copy 'eval/run-ruby.sh', 'run-ruby.sh'
+        sandbox.copy('eval/run-ruby.sh', 'run-ruby.sh', 660)
         result = sandbox.evaluate
         result.each { |line| respond line }
         sandbox.rm_home!
