@@ -83,6 +83,7 @@ class Sandbox
   #         actually doing anything.
   def initialize_directories
     FileUtils.mkdir_p @home
+    FileUtils.chmod_R 700, @home
     FileUtils.mkdir_p "#{@path}/evaluated"
     FileUtils.mkdir_p "#{@home}/tmp"
   end
