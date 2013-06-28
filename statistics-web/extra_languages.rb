@@ -59,13 +59,6 @@ Linguist::Language.create(
   :lexer             => 'Text only',
 )
 
-# @programble's Perpetual language
-Linguist::Language.create(
-  :name              => 'Perpetual',
-  :primary_extension => '.perp',
-  :lexer             => 'Text only',
-)
-
 # SQLite
 Linguist::Language.create(
   :name              => 'SQLite',
