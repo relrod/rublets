@@ -118,7 +118,7 @@ end"
       :extension            => 'exs',
       :alter_code           => lambda { |code|
         eval_code = code.inspect
-        "{r, _} = Code.eval(#{eval_code}, []); IO.puts inspect(r)"
+        "{r, _} = Code.eval_string(#{eval_code}, []); IO.puts inspect(r)"
       },
     },
     'erlang' => {
