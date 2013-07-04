@@ -146,6 +146,7 @@ end"
         lines[1].gsub!(/^> /, '')
         lines.join("\n")
       },
+      :skip_preceding_lines => 1,
       :skip_ending_lines    => 2,
     },
     'factor' => {
