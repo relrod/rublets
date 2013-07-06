@@ -141,11 +141,11 @@ end"
         code + ' #quit;;'
       },
       :alter_result         => lambda { |result|
-        require 'pp'
         lines = result.split("\n")
-        lines[1].gsub!(/^> /, '')
+        lines[0].gsub!(/^> /, '')
         lines.join("\n")
       },
+      :skip_preceding_lines => 1,
       :skip_ending_lines    => 2,
     },
     'factor' => {
