@@ -86,6 +86,7 @@ What it can evaluate (if given selinux permissions, and if the interpreters/comp
 <tr>
   <td>Functional</td>
   <td>
+    <a href="http://elm-lang.org">Elm</a>
     <a href="http://haskell.org">Haskell</a>
     <a href="http://caml.inria.fr/">OCaml</a>
     <a href="http://smlnj.cs.uchicago.edu/">SML(/NJ)</a>
