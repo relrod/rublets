@@ -121,6 +121,26 @@ end"
         "{r, _} = Code.eval_string(#{eval_code}, []); IO.puts inspect(r)"
       },
     },
+    'elm' => {
+      :evaluate_with        => [
+        'elm',
+        '-r',
+        'https://raw.github.com/CodeBlock/cdnjs/elm-runtime/ajax/libs/elm-runtime/0.8.0.3/elm-runtime.min.js'
+      ],
+      :extension            => 'elm',
+      :unsafe_perform_after => lambda { |exitcode, home|
+        return if exitcode != 0
+        begin
+          uri = URI.parse('http://www.htmlfish.me/')
+          http = Net::HTTP.new(uri.host, uri.port)
+
+          response = http.post(
+            uri.path,
+            URI.encode_www_form({'html' => File.open(Dir[home + '/*.html'][0]).read}))
+        end
+        return response.body
+      },
+    },
     'erlang' => {
       :aliases              => ['erl'],
       :evaluate_with        => ['erl'],

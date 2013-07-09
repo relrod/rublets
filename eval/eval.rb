@@ -30,6 +30,7 @@ class Sandbox
     :stdin,
     :time,
     :timeout,
+    :unsafe_perform_after
   ].each do |symbol|
     attr_accessor symbol
   end
@@ -68,10 +69,11 @@ class Sandbox
     @alter_code           = options[:alter_code] || nil
     @alter_result         = options[:alter_result] || nil
     @size_limit           = options[:size_limit] || 10240 # bytes
+    @unsafe_perform_after = options[:unsafe_perform_after] || nil
 
     # @alter_code is a method that gets called on @code immediately after a
     # Sandbox object is created.
-    @code = @alter_code.call(@code) unless @alter_code.nil?
+    @code = @alter_code.call(@code) if @alter_code
 
     @binaries_must_exist << 'sandbox'
     @binaries_must_exist << 'timeout'
@@ -189,6 +191,8 @@ class Sandbox
     if exitcode == 124 && (end_time - start_time >= @timeout)
       output << "Timeout of #{@timeout} seconds was hit."
     end
+
+    output <<  @unsafe_perform_after.call(exitcode, @home) if @unsafe_perform_after
 
     output
   end
