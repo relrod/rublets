@@ -125,7 +125,7 @@ end"
       :evaluate_with        => [
         'elm',
         '-r',
-        'https://raw.github.com/CodeBlock/cdnjs/elm-runtime/ajax/libs/elm-runtime/0.8.0.3/elm-runtime.min.js'
+        'https://elrod.me/elm-runtime.js'
       ],
       :extension            => 'elm',
       :unsafe_perform_after => lambda { |exitcode, home|
