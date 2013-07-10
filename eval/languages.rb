@@ -125,7 +125,7 @@ end"
       :evaluate_with        => [
         'elm',
         '-r',
-        'https://elrod.me/elm-runtime.js'
+        'http://elrod.me/elm-runtime.js'
       ],
       :extension            => 'elm',
       :unsafe_perform_after => lambda { |exitcode, home|
