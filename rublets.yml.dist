@@ -29,17 +29,12 @@ pastebin_credentials:
   username: rublets
   password: Your_P4ssw0rd_G0eS.Here!
 
-# Bot nickname
-nickname: rublets_dev
-
-# IRC Servers to connect to
+# 10Bit servers to connect to
 servers:
   tenthbit:
-    address: irc.tenthbit.net
-    channels:
-      - "#offtopic"
-      - "#programming"
-      - "#bots"
+    address: 10bit.danopia.net
+    username: rublets
+    password: Your_P4ssw0rd_G0eS.Here!
 
 special_languages:
   - "ruby (see !rubies)"

@@ -24,8 +24,6 @@ GEM
     multi_json (1.7.3)
     multi_xml (0.5.3)
     nokogiri (1.5.9)
-    on_irc (2.1.5)
-      eventmachine
     posix-spawn (0.3.6)
     promise (0.3.0)
     pry (0.9.12.2)
@@ -55,11 +53,11 @@ DEPENDENCIES
   backports
   configru (~> 0.5)
   evalso
+  eventmachine
   github-linguist (~> 2.2)
   httparty
   json
   nokogiri
-  on_irc
   promise
   pry
   rvm

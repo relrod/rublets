@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-gem 'on_irc'
+gem 'eventmachine'
 gem 'promise'
 gem 'rvm'
 gem 'pry'
