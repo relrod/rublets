@@ -107,7 +107,7 @@ class RubletsBot < TenbitClient
           chmod = the_lang[:required_files_perms] ? the_lang[:required_files_perms] : 0770
           the_lang[:required_files].each { |file,dest| sandbox.copy(file, dest, chmod) } unless the_lang[:required_files].nil?
           result = sandbox.evaluate
-          result.each { |line| msg room, line }
+          msg room, result
           sandbox.rm_home!
         end
         return
@@ -220,7 +220,7 @@ class RubletsBot < TenbitClient
         sandbox.initialize_directories
         sandbox.copy('eval/run-ruby.sh', 'run-ruby.sh', 0770)
         result = sandbox.evaluate
-        result.each { |line| msg room, line }
+        msg room, result
         sandbox.rm_home!
       end
     end # end case
