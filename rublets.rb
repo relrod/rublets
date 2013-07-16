@@ -89,9 +89,9 @@ class RubletsBot < TenbitClient
   def on_msg room, sender, message
     puts "#{Time.now} #{room} <#{sender}> #{message}"
     
-    matches = message.match(/^#{Configru.comchar}([\S]+)> ?(.*)/i)
+    matches = message.match(/^#{Configru.comchar}([\S]+)> ?(.*)/im)
     if matches.nil?
-      matches = message.match(/\[\[([\S]+)(?::|) (.*)\]\]/i)
+      matches = message.match(/\[\[([\S]+)(?::|) (.*)\]\]/im)
     end
     if matches && matches.size > 1
       the_lang = Language.by_name(matches[1])
@@ -115,7 +115,7 @@ class RubletsBot < TenbitClient
     end
 
     case message
-    when /^#{Configru.comchar}#{Configru.comchar}([\S]+)> ?(.*)/i
+    when /^#{Configru.comchar}#{Configru.comchar}([\S]+)> ?(.*)/im
       future do
         begin
           res = Evalso.run(:language => $1, :code => $2)
@@ -162,7 +162,7 @@ class RubletsBot < TenbitClient
       msg room, "Eval.so supports: #{Evalso.languages.values.map(&:name).sort.join(', ')}"
 
     # Ruby eval.
-    when /^#{Configru.comchar}(([\w\.\-]+)?>?|>)> (.*)/
+    when /^#{Configru.comchar}(([\w\.\-]+)?>?|>)> (.*)/m
       future do
         # Pull these out of the regex here, because the global captures get reset below.
         given_version = $2 # might be nil.
