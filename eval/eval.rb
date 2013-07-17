@@ -57,7 +57,7 @@ class Sandbox
     @includes             = options[:includes] || []
     @code                 =
       "#{options[:before]}#{options[:code]}#{options[:after]}"
-    @output_limit         = options[:output_limit] || 2
+    @output_limit         = options[:output_limit] || 10
     @pastebin_after_limit = options[:pastebin_after_limit] || true
     @pastebin_credentials = options[:pastebin_credentials] || {}
     @binaries_must_exist  =
