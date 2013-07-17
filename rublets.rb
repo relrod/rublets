@@ -210,7 +210,6 @@ class RubletsBot < TenbitClient
           :extension            => 'rb',
           :language_name        => 'ruby',
           :owner                => sender,
-          :output_limit         => 2,
           :code                 => eval_code,
           :binaries_must_exist  => ['ruby', 'bash'],
           :pastebin_credentials => Configru.pastebin_credentials
