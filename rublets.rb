@@ -49,36 +49,36 @@ class TenbitClient < EM::Connection
     start_tls
   end
 
-  def receive_data data
+  def receive_data(data)
     @buffer += data
-    while @buffer.include? "\n"
-      line, @buffer = @buffer.split "\n", 2
-      pkt = JSON.parse(line, symbolize_names: true) rescue nil
+    while @buffer.include?("\n")
+      line, @buffer = @buffer.split("\n", 2)
+      pkt = JSON.parse(line, {:symbolize_names => true}) rescue nil
       receive_pkt(pkt) if pkt
     end
   end
   
-  def send pkt
-    send_data pkt.to_json + "\n"
+  def send(pkt)
+    send_data(pkt.to_json + "\n")
   end
   
-  def msg room, message, ex={}
+  def msg(room, message, ex={})
     ex[:message] = message
-    send op: 'act', rm: room, ex: ex
+    send({:op => 'act', :rm => room, :ex => ex})
   end
   
-  def receive_pkt pkt
+  def receive_pkt(pkt)
     puts "<<< #{pkt}"
     
     case pkt[:op]
     when 'welcome'
-      send op: 'auth', ex: {method: 'password', username: @config.username, password: @config.password}
+      send({:op => 'auth', :ex => { :method => 'password', :username => @config.username, :password => @config.password}})
     when 'error'
       STDERR.puts "10bit protocol error: #{pkt[:ex][:message] rescue 'no message'}"
       close_connection
     when 'act'
       return unless pkt[:ex][:message]
-      on_msg pkt[:rm], pkt[:sr], pkt[:ex][:message]
+      on_msg(pkt[:rm], pkt[:sr], pkt[:ex][:message])
     else
       puts "Unknown opcode #{pkt[:op]}"
     end
@@ -86,7 +86,7 @@ class TenbitClient < EM::Connection
 end
 
 class RubletsBot < TenbitClient
-  def on_msg room, sender, message
+  def on_msg(room, sender, message)
     puts "#{Time.now} #{room} <#{sender}> #{message}"
     
     matches = message.match(/^#{Configru.comchar}([\S]+)> ?(.*)/im)
