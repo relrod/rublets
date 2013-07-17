@@ -107,7 +107,7 @@ class RubletsBot < TenbitClient
           chmod = the_lang[:required_files_perms] ? the_lang[:required_files_perms] : 0770
           the_lang[:required_files].each { |file,dest| sandbox.copy(file, dest, chmod) } unless the_lang[:required_files].nil?
           result = sandbox.evaluate
-          msg room, result.join("\n")
+          msg(room, result.join("\n"))
           sandbox.rm_home!
         end
         return
@@ -121,9 +121,9 @@ class RubletsBot < TenbitClient
           res = Evalso.run(:language => $1, :code => $2)
           stdout = if res.stdout != "" then "#{2.chr}stdout:#{2.chr} #{res.stdout} " else " " end
           stderr = if res.stderr != "" then "#{2.chr}stderr:#{2.chr} #{res.stderr}" else "" end
-          msg room, "[#{res.wall_time} ms] #{stdout}#{stderr}"
+          msg(room, "[#{res.wall_time} ms] #{stdout}#{stderr}")
         rescue
-          msg room, "An error occurred while communicating with eval.so"
+          msg(room, "An error occurred while communicating with eval.so")
         end
       end
     when /^#{Configru.comchar}version (.+)/
@@ -140,7 +140,7 @@ class RubletsBot < TenbitClient
           versions << "['#{given_language}' is not supported]"
         end
       end
-      msg room, versions.join(', ')
+      msg(room, versions.join(', '))
     when /^#{Configru.comchar}quickstats$/
       project = Linguist::Repository.from_directory("#{Configru.rublets_home}/evaluated/")
       languages = {}
@@ -149,17 +149,17 @@ class RubletsBot < TenbitClient
       end
       top_languages = Hash[*languages.sort_by { |k, v| v }.reverse[0...8].flatten]
       total_evals = Dir["#{Configru.rublets_home}/evaluated/*"].count
-      msg room, "#{sender}: #{total_evals} total evaluations. " + top_languages.map { |k,v| "#{k}: #{v}%"}.join(', ') + " ... "
+      msg(room, "#{sender}: #{total_evals} total evaluations. " + top_languages.map { |k,v| "#{k}: #{v}%"}.join(', ') + " ... ")
     when /^#{Configru.comchar}rubies$/
       # Lists all available rubies.
       rubies = Dir[File.join(Configru.rvm_path, 'rubies') + '/*'].map { |a| File.basename(a) }
-      msg room, "#{sender}: #{rubies.join(', ')} (You can specify 'all' to evaluate against all rubies, but this might be slowish.)"
+      msg(room, "#{sender}: #{rubies.join(', ')} (You can specify 'all' to evaluate against all rubies, but this might be slowish.)")
 
     when /^#{Configru.comchar}lang(?:s|uages)$/
-      msg room, "supports: #{Language.list_all}", isaction: true
+      msg(room, "supports: #{Language.list_all}", {:isaction => true})
 
     when /^#{Configru.comchar}#{Configru.comchar}lang(?:s|uages)$/
-      msg room, "Eval.so supports: #{Evalso.languages.values.map(&:name).sort.join(', ')}"
+      msg(room, "Eval.so supports: #{Evalso.languages.values.map(&:name).sort.join(', ')}")
 
     # Ruby eval.
     when /^#{Configru.comchar}(([\w\.\-]+)?>?|>)> (.*)/m
@@ -183,7 +183,7 @@ class RubletsBot < TenbitClient
               if rubies.include? given_version
                 rubyversion = given_version
               else
-                msg room, "#{sender}: You matched multiple rubies. Be more specific. See !rubies for the full list." and next
+                msg(room, "#{sender}: You matched multiple rubies. Be more specific. See !rubies for the full list.") and next
               end
             elsif rubies.count == 0
               next
@@ -220,12 +220,12 @@ class RubletsBot < TenbitClient
         sandbox.initialize_directories
         sandbox.copy('eval/run-ruby.sh', 'run-ruby.sh', 0770)
         result = sandbox.evaluate
-        msg room, resulte.join("\n")
+        msg(room, resulte.join("\n"))
         sandbox.rm_home!
       end
     end # end case
   rescue ThreadError
-    msg room, "Could not create thread."
+    msg(room, "Could not create thread.")
   end
 end
 
