@@ -220,7 +220,7 @@ class RubletsBot < TenbitClient
         sandbox.initialize_directories
         sandbox.copy('eval/run-ruby.sh', 'run-ruby.sh', 0770)
         result = sandbox.evaluate
-        msg(room, resulte.join("\n"))
+        msg(room, result.join("\n"))
         sandbox.rm_home!
       end
     end # end case
