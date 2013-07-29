@@ -349,6 +349,11 @@ end"
       :code_from_stdin      => true,
       :extension            => 'rkt',
     },
+    'rust' => {
+      :evaluate_with        => ['rusti'],
+      :code_from_stdin      => true,
+      :extension            => 'rs',
+    },
     'sbcl' => {
       :aliases              => ['lisp'],
       :evaluate_with        => ['sbcl', '--noinform'],
