@@ -217,6 +217,11 @@ end"
       :required_files       => {"#{@eval_path}/ghci" => '.ghci'},
       :required_files_perms => 0640,
     },
+    'idris' => {
+      :evaluate_with        => ['idris', '--quiet'],
+      :extension            => 'idr',
+      :code_from_stdin      => true,
+    },
     'io' => {
       :evaluate_with        => ['io'],
       :extension            => 'io',
