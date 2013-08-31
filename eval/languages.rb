@@ -283,6 +283,12 @@ end"
         "display2d: false$ leftjust: true$ #{code}#{";" unless (code.end_with?(';') || code.end_with?('$'))}"
       },
     },
+    'node' => {
+      :aliases              => ['nodejs'],
+      :evaluate_with        => ['node', '-p'],
+      :code_from_stdin      => true,
+      :extension            => 'js',
+    },
     'objective-c' => {
       :aliases              => ['obj-c'],
       :evaluate_with        => ['bash', 'run-obj-c.sh'],
