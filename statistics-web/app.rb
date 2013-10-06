@@ -34,18 +34,19 @@ get '/' do
   erb :index
 end
 
-statistics_dir = Dir.pwd
+statistics_dir = File.expand_path(File.dirname(__FILE__))
 Dir.chdir('/opt/rublets')
 
 [
-  'programble-apricot',
+  'apricot-lang/apricot',
 ].each do |name|
   if File.exists?(name)
     Dir.chdir(name)
     `git pull origin master`
   else
-    owner, repo = name.split('-')
-    `git clone git://github.com/#{owner}/#{repo}.git #{name}`
+    owner, repo = name.split('/', 2)
+    Dir.mkdir(owner)
+    `git clone git://github.com/#{name}.git #{repo}`
   end
 end
 
@@ -53,12 +54,12 @@ Dir.chdir(statistics_dir)
 
 post '/rublets/pull' do
   push = JSON.parse(params[:payload])
-  directory = "/opt/rublets/#{push['repository']['owner']['name']}-#{push['repository']['name']}"
+  directory = "/opt/rublets/#{push['repository']['owner']['name']}/#{push['repository']['name']}"
   if File.exists?(directory)
     Dir.chdir(directory)
     `git pull origin master`
     Dir.chdir(statistics_dir)
   else
-    puts 'Whoopsie! An error occurred: The directory #{directory} was not found.'
+    puts "Whoopsie! An error occurred: The directory #{directory} was not found."
   end
 end

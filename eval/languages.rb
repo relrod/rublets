@@ -18,7 +18,7 @@ class Language
       :aliases              => ['apr'],
       :evaluate_with        => ['/usr/local/rvm/bin/rvm',
         'rbx-head-rbx19', 'do', 'rbx', '-X19',
-        '-I/opt/rublets/programble-apricot/lib', '-rapricot'
+        '-I/opt/rublets/apricot-lang/apricot/lib', '-rapricot'
       ],
       :alter_code           => lambda { |code|
         "begin
@@ -28,7 +28,7 @@ rescue Exception => e
 end"
       },
       :version_lambda       => lambda {
-        Dir.chdir('/opt/rublets/programble-apricot') do
+        Dir.chdir('/opt/rublets/apricot-lang/apricot') do
           `git log --format='%h - %cD' -1`
         end
       },
