@@ -46,7 +46,7 @@ Dir.chdir('/opt/rublets')
   else
     owner, repo = name.split('/', 2)
     Dir.mkdir(owner)
-    `git clone git://github.com/#{name}.git #{repo}`
+    `git clone git://github.com/#{name}.git #{name}`
   end
 end
 
