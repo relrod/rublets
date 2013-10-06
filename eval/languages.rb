@@ -385,6 +385,10 @@ end"
       :skip_preceding_lines => 5,
       :skip_ending_lines    => 1,
     },
+    'sh' => {
+      :evaluate_with        => ['sh'],
+      :extension            => 'sh',
+    },
     'smalltalk' => {
       :evaluate_with        => ['gst'],
       :extension            => 'st',
