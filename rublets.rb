@@ -63,7 +63,8 @@ end
 
 @bot.on :privmsg do
   puts "#{Time.now} #{params[0]} <#{sender.nick}> #{params[1]}"
-  limit = Configru.servers[server.name.to_s].channel_options.find { |n| n['channel'] == params[0] }
+  limit = Configru.servers[server.name.to_s].channel_options
+  limit &&= limit.find { |n| n['channel'] == params[0] }
   limit &&= limit['limit']
   begin
     matches = params[1].match(/^#{Configru.comchar}([\S]+)> ?(.*)/i)
