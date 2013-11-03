@@ -38,13 +38,6 @@ Linguist::Language.create(
   :lexer             => 'Text only',
 )
 
-# J Language
-Linguist::Language.create(
-  :name              => 'J Language',
-  :primary_extension => '.ijs',
-  :lexer             => 'Text only',
-)
-
 # LOLCODE
 Linguist::Language.create(
   :name              => 'LOLCODE',
