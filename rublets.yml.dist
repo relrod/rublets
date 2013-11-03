@@ -34,12 +34,20 @@ nickname: rublets_dev
 
 # IRC Servers to connect to
 servers:
-  tenthbit:
-    address: irc.tenthbit.net
+  freenode:
+    address: irc.freenode.net
     channels:
       - "#offtopic"
       - "#programming"
       - "#bots"
+      - "#rublets"
+    # These are options specific to channels that Rublets is in. In order to
+    # have any effect, the channels must be listed above so Rublets joins them.
+    # This section just allows you to override some settings (namely, flood
+    # output limit before pasting) for some subset of those channels.
+    channel_options:
+      - channel: "#rublets"
+        limit: 6
 
 special_languages:
   - "ruby (see !rubies)"

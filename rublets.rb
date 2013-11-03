@@ -63,6 +63,8 @@ end
 
 @bot.on :privmsg do
   puts "#{Time.now} #{params[0]} <#{sender.nick}> #{params[1]}"
+  limit = Configru.servers[server.name.to_s].channel_options.select { |n| n['channel'] == params[0] }.first
+  limit &&= limit['limit']
   begin
     matches = params[1].match(/^#{Configru.comchar}([\S]+)> ?(.*)/i)
     if matches.nil?
@@ -77,6 +79,7 @@ end
                 :code                 => matches[2],
                 :pastebin_credentials => Configru.pastebin_credentials,
                 :path                 => Configru.rublets_home,
+                :output_limit         => limit
               }))
           sandbox.initialize_directories
           chmod = the_lang[:required_files_perms] ? the_lang[:required_files_perms] : 0770
@@ -187,8 +190,9 @@ end
           :owner                => sender.nick,
           :code                 => eval_code,
           :binaries_must_exist  => ['ruby', 'bash'],
-          :pastebin_credentials => Configru.pastebin_credentials
-          )
+          :pastebin_credentials => Configru.pastebin_credentials,
+          :output_limit         => limit,
+        )
 
         # This is a bit of a hack, but lets us set up the rvm environment and call the script.
         sandbox.initialize_directories
