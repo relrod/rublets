@@ -51,8 +51,8 @@ end
 
 Configru.servers.each_pair do |name, server_cfg|
   @bot[name].on '001' do
-    server_cfg.channels.each do |channel|
-      join channel
+    server_cfg.channels.each_slice(4).each do |channel_arr|
+      join channel_arr.join(',')
     end
   end
 end
