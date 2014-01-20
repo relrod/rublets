@@ -36,18 +36,20 @@ nickname: rublets_dev
 servers:
   freenode:
     address: irc.freenode.net
+    admins:
+    - "redhat/relrod"
     channels:
-      - "#offtopic"
-      - "#programming"
-      - "#bots"
-      - "#rublets"
+    - "#offtopic"
+    - "#programming"
+    - "#bots"
+    - "#rublets"
     # These are options specific to channels that Rublets is in. In order to
     # have any effect, the channels must be listed above so Rublets joins them.
     # This section just allows you to override some settings (namely, flood
     # output limit before pasting) for some subset of those channels.
     channel_options:
-      - channel: "#rublets"
-        limit: 6
+    - channel: "#rublets"
+      limit: 6
 
 special_languages:
   - "ruby (see !rubies)"

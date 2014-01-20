@@ -140,6 +140,20 @@ end
     when /^#{Configru.comchar}#{Configru.comchar}lang(?:s|uages)$/
       respond "Eval.so supports: #{Evalso.languages.values.map(&:name).sort.join(', ')}"
 
+    when /^#{Configru.comchar}join (.+)$/
+      if Configru.servers[server.name.to_s].admins.include? sender.host
+        join $1
+      else
+        respond "#{sender.nick}: You need to be an administrator to have the bot join and part channels."
+      end
+
+    when /^#{Configru.comchar}part (.+)$/
+      if Configru.servers[server.name.to_s].admins.include? sender.host
+        part $1
+      else
+        respond "#{sender.nick}: You need to be an administrator to have the bot join and part channels."
+      end
+
     # Ruby eval.
     when /^#{Configru.comchar}(([\w\.\-]+)?>?|>)> (.*)/
       future do
