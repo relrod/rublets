@@ -80,7 +80,9 @@ end
                 :code                 => matches[2],
                 :pastebin_credentials => Configru.pastebin_credentials,
                 :path                 => Configru.rublets_home,
-                :output_limit         => limit
+                :output_limit         => limit,
+                :channel              => params[0],
+                :server               => server.name.to_s,
               }))
           sandbox.initialize_directories
           chmod = the_lang[:required_files_perms] ? the_lang[:required_files_perms] : 0770
@@ -207,6 +209,8 @@ end
           :binaries_must_exist  => ['ruby', 'bash'],
           :pastebin_credentials => Configru.pastebin_credentials,
           :output_limit         => limit,
+          :channel              => params[0],
+          :server               => server.name.to_s,
         )
 
         # This is a bit of a hack, but lets us set up the rvm environment and call the script.

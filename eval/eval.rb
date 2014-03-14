@@ -12,6 +12,7 @@ class Sandbox
     :alter_code,
     :alter_result,
     :binaries_must_exist,
+    :channel,
     :code,
     :code_from_stdin,
     :evaluate_with,
@@ -25,6 +26,7 @@ class Sandbox
     :pastebin_credentials,
     :path,
     :script_filename,
+    :server,
     :size_limit,
     :skip_preceding_lines,
     :stdin,
@@ -70,6 +72,8 @@ class Sandbox
     @alter_result         = options[:alter_result] || nil
     @size_limit           = options[:size_limit] || 10240 # bytes
     @unsafe_perform_after = options[:unsafe_perform_after] || nil
+    @server               = options[:server] || ''
+    @channel              = options[:channel] || ''
 
     # @alter_code is a method that gets called on @code immediately after a
     # Sandbox object is created.
@@ -286,8 +290,8 @@ class Sandbox
     FileUtils.cp(
       "#{@home}/#{@script_filename}",
       "#{@path}/evaluated/#{@time.year}-#{@time.month}-#{@time.day}_"+
-      "#{@time.hour}-#{@time.min}-#{@time.sec}-#{@owner}-#{@time.to_f}."+
-      "#{@extension}")
+      "#{@time.hour}-#{@time.min}-#{@time.sec}-#{@owner}-#{@time.to_f}_"+
+      "#{@server}_#{@channel}.#{@extension}")
   end
 
   # Internal: Takes the code that we are about to evaluate, and actually puts it
