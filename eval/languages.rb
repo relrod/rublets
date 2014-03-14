@@ -347,11 +347,13 @@ end"
     'python' => {
       :evaluate_with        => ['python'],
       :extension            => 'py',
+      :before               => "import random\n",
     },
     'python3' => {
       :evaluate_with        => ['python3'],
       :extension            => 'py',
       :output_limit         => 2,
+      :before               => "import random\n",
     },
     'racket' => {
       :aliases              => ['rkt'],
