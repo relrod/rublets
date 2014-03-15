@@ -50,6 +50,11 @@ servers:
     channel_options:
     - channel: "#rublets"
       limit: 6
+    # This allows the bot to only be accessed in-channel (as opposed to allowing
+    # PM's). However, we want to allow some exceptions to this rule. Any
+    # hostmask listed here can access the bot via PM.
+    pm_hosts:
+    - "redhat/relrod"
 
 special_languages:
   - "ruby (see !rubies)"
