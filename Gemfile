@@ -11,5 +11,5 @@ gem 'ansirc'
 gem 'github-linguist', '~> 2.2'
 gem 'sinatra' # Statistics web interface.
 gem 'evalso'
-gem 'httparty'
-gem 'rubyheap'
+gem 'httparty', '~> 0.11.0'
+gem 'rubyheap', '>= 0.1.3'
