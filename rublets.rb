@@ -25,6 +25,7 @@ require 'statistics-web/extra_languages'
 Signal.trap("USR1") do
   begin
     # Allow for reloading, on-the-fly, some of our core files.
+    load File.dirname(__FILE__) + "/eval/config.rb"
     load File.dirname(__FILE__) + "/eval/eval.rb"
     load File.dirname(__FILE__) + "/eval/languages.rb"
   rescue Exception => e
