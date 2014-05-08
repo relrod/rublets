@@ -234,7 +234,7 @@ end"
       :alter_result         => lambda { |result| result.lstrip },
     },
     'java' => {
-      :evaluate_with        => ['bash', 'run-java.sh'],
+      :evaluate_with        => ['bash', 'run-java.sh', 'default'],
       :binaries_must_exist  => ['javac', 'java', 'bash'],
       :extension            => 'java',
       :required_files       => {"#{@eval_path}/run-java.sh" => 'run-java.sh'},
@@ -244,7 +244,18 @@ end"
         return "public class Rublets { #{code} }"
       },
     },
-    'javascript' => {
+     'java18' => {
+      :evaluate_with        => ['bash', 'run-java.sh', '1.8'],
+      :binaries_must_exist  => ['/usr/lib/jvm/java-1.8.0/bin/javac', '/usr/lib/jvm/java-1.8.0/bin/java', 'bash'],
+      :extension            => 'java',
+      :required_files       => {"#{@eval_path}/run-java.sh" => 'run-java.sh'},
+      :script_filename      => 'Rublets.java',
+      :alter_code           => lambda { |code|
+        return code if code.include? 'class Rublets'
+        return "public class Rublets { #{code} }"
+      },
+    },
+   'javascript' => {
       :aliases              => ['js'],
       :evaluate_with        => ['js', '-i'],
       :extension            => 'js',
