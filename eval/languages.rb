@@ -235,6 +235,7 @@ end"
     },
     'java' => {
       :evaluate_with        => ['bash', 'run-java.sh', 'default'],
+      :version_against      => '/usr/lib/jvm/java-1.7.0/bin/javac',
       :binaries_must_exist  => ['javac', 'java', 'bash'],
       :extension            => 'java',
       :required_files       => {"#{@eval_path}/run-java.sh" => 'run-java.sh'},
@@ -245,7 +246,9 @@ end"
       },
     },
      'java18' => {
+      :aliases              => ['java8'],
       :evaluate_with        => ['bash', 'run-java.sh', '1.8'],
+      :version_against      => '/usr/lib/jvm/java-1.8.0/bin/javac',
       :binaries_must_exist  => ['/usr/lib/jvm/java-1.8.0/bin/javac', '/usr/lib/jvm/java-1.8.0/bin/java', 'bash'],
       :extension            => 'java',
       :required_files       => {"#{@eval_path}/run-java.sh" => 'run-java.sh'},
