@@ -376,6 +376,24 @@ end"
       :code_from_stdin      => true,
       :extension            => 'rkt',
     },
+    'ruby' => {
+      :aliases              => ['rb'],
+      :evaluate_with        => 'ruby',
+      :extension            => 'rb',
+      :alter_code           => lambda { |code|
+        eval_code = "begin\n"
+        eval_code += "  result = ::Kernel.eval(#{code.inspect}, TOPLEVEL_BINDING)\n"
+        if rubyversion == 'all'
+          eval_code += '  puts RUBY_VERSION + " #{\'(\' + RUBY_ENGINE + \')\' if defined?(RUBY_ENGINE)} => " + result.inspect' + "\n"
+        else
+          eval_code += '  puts "=> " + result.inspect' + "\n"
+        end
+        eval_code += "rescue Exception => e\n"
+        eval_code += '  puts "#{e.class}: #{e.message}"'
+        eval_code += "\nend"
+        eval_code
+      },
+    },
     'rust' => {
       :evaluate_with        => ['rusti'],
       :code_from_stdin      => true,

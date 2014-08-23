@@ -136,11 +136,6 @@ end
     #  top_languages = Hash[*languages.sort_by { |k, v| v }.reverse[0...8].flatten]
     #  total_evals = Dir["#{Configru.rublets_home}/evaluated/*"].count
     #  respond "#{sender.nick}: #{total_evals} total evaluations. " + top_languages.map { |k,v| "#{k}: #{v}%"}.join(', ') + " ... "
-    when /^#{Configru.comchar}rubies$/
-      # Lists all available rubies.
-      rubies = Dir[File.join(Configru.rvm_path, 'rubies') + '/*'].map { |a| File.basename(a) }
-      respond "#{sender.nick}: #{rubies.join(', ')} (You can specify 'all' to evaluate against all rubies, but this might be slowish.)"
-
     when /^#{Configru.comchar}lang(?:s|uages)$/
       respond "#{1.chr}ACTION supports: #{Language.list_all}#{1.chr}"
 
@@ -159,71 +154,6 @@ end
         part $1
       else
         respond "#{sender.nick}: You need to be an administrator to have the bot join and part channels."
-      end
-
-    # Ruby eval.
-    when /^#{Configru.comchar}(([\w\.\-]+)?>?|>)> (.*)/
-      future do
-        # Pull these out of the regex here, because the global captures get reset below.
-        given_version = $2 # might be nil.
-        code = $3
-
-        rubyversion = Configru.default_ruby
-
-        # If a version is given (so not default), scan ./rubies/* to see if it matches.
-        # If there is one (and only one) match, move along and set rubyversion to that.
-        # If there's more than one, or no match, warn the user and ignore the eval.
-        unless given_version.nil?
-          if given_version == 'all'
-            rubyversion = 'all'
-          else
-            rubies = Dir[File.join(Configru.rvm_path, 'rubies') + '/*'].map { |a| File.basename(a) }
-            rubies = rubies.delete_if { |ruby| ruby.scan(given_version).empty? }
-            if rubies.count > 1
-              if rubies.include? given_version
-                rubyversion = given_version
-              else
-                respond "#{sender.nick}: You matched multiple rubies. Be more specific. See !rubies for the full list." and next
-              end
-            elsif rubies.count == 0
-              next
-            end
-            rubyversion = rubies[0]
-          end
-        end
-
-        eval_code = "begin\n"
-        eval_code += "  result = ::Kernel.eval(#{code.inspect}, TOPLEVEL_BINDING)\n"
-        if rubyversion == 'all'
-          eval_code += '  puts RUBY_VERSION + " #{\'(\' + RUBY_ENGINE + \')\' if defined?(RUBY_ENGINE)} => " + result.inspect' + "\n"
-        else
-          eval_code += '  puts "=> " + result.inspect' + "\n"
-        end
-        eval_code += "rescue Exception => e\n"
-        eval_code += '  puts "#{e.class}: #{e.message}"'
-        eval_code += "\nend"
-
-        sandbox = Sandbox.new(
-          :path                 => Configru.rublets_home,
-          :evaluate_with        => ['bash', 'run-ruby.sh', Configru.rvm_path, rubyversion],
-          :timeout              => 5,
-          :extension            => 'rb',
-          :language_name        => 'ruby',
-          :owner                => sender.nick,
-          :code                 => eval_code,
-          :binaries_must_exist  => ['ruby', 'bash'],
-          :pastebin_credentials => Configru.pastebin_credentials,
-          :output_limit         => limit,
-          :channel              => params[0],
-          :server               => server.name.to_s,
-        )
-
-        # This is a bit of a hack, but lets us set up the rvm environment and call the script.
-        sandbox.initialize_directories
-        sandbox.copy('eval/run-ruby.sh', 'run-ruby.sh', 0770)
-        result = sandbox.evaluate
-        result.each { |line| respond line }
-        sandbox.rm_home!
       end
     end # end case
   rescue ThreadError

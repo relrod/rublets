@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 gem 'on_irc'
 gem 'promise'
-gem 'rvm'
 gem 'pry'
 gem 'json'
 gem 'configru', '~> 0.5'
