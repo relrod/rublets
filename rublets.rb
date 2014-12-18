@@ -65,7 +65,8 @@ end
 @bot.on :privmsg do
   puts "#{Time.now} #{params[0]} <#{sender.nick}> #{params[1]}"
   if params[0] == Configru.nickname &&
-      !Configru.servers[server.name.to_s].pm_hosts.include?(sender.host)
+     !Configru.servers[server.name.to_s].pm_hosts.nil? &&
+     !Configru.servers[server.name.to_s].pm_hosts.include?(sender.host)
     next
   end
   limit = Configru.servers[server.name.to_s].channel_options
