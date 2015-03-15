@@ -409,7 +409,7 @@ end"
     },
     'scala' => {
       :evaluate_with        => [
-        '/opt/scala/bin/scala',
+        'scala',
         '-J-server', '-J-XX:+TieredCompilation', '-nocompdaemon', '-deprecation'
       ],
       :version_against      => '/opt/scala/bin/scala',
