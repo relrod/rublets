@@ -116,6 +116,7 @@ end"
     'coq' => {
       :evaluate_with        => ['coqc'],
       :extension            => 'v',
+      :script_filename      => 'rublets.v',
       :output_limit         => 4,
     },
     'elixir' => {
