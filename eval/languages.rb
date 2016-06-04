@@ -116,6 +116,7 @@ end"
     'coq' => {
       :evaluate_with        => ['coqc'],
       :extension            => 'v',
+      :output_limit         => 4,
     },
     'elixir' => {
       :evaluate_with        => ['elixir'],
@@ -370,7 +371,6 @@ end"
     'python3' => {
       :evaluate_with        => ['python3'],
       :extension            => 'py',
-      :output_limit         => 2,
       :before               => "import random\n",
     },
     'racket' => {
