@@ -113,6 +113,10 @@ end"
       :extension            => 'clj',
       :timeout              => 10,
     },
+    'coq' => {
+      :evaluate_with        => ['coqc'],
+      :extension            => 'v',
+    },
     'elixir' => {
       :evaluate_with        => ['elixir'],
       :extension            => 'exs',
