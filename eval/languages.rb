@@ -114,12 +114,17 @@ end"
       :timeout              => 10,
     },
     'coq' => {
-      :evaluate_with        => ['coqc', '-color', 'yes', '-w', 'none'],
+      :evaluate_with        => ['coqc', '-color', 'yes'],
       :extension            => 'v',
       :script_filename      => 'rublets.v',
       :output_limit         => 4,
       :alter_result         => lambda { |result|
-        result.gsub(/\e\[(\d\d);\d\d;\d\d;\d\d;\d\d;\d\dm/, "\e[\\1m")
+        v = result.gsub(/\e\[(\d\d);\d\d;\d\d;\d\d;\d\d;\d\dm/, "\e[\\1m")
+        vsplit = v.split("\n")
+        v.each do |line|
+          line.gsub!(/<W> Grammar extension: /, '')
+        end
+        v.join("\n")
       },
     },
     'elixir' => {
