@@ -118,6 +118,9 @@ end"
       :extension            => 'v',
       :script_filename      => 'rublets.v',
       :output_limit         => 4,
+      :alter_result         => lambda { |result|
+        result.gsub(/\e\[(\d\d);\d\d;\d\d;\d\d;\d\d;\d\dm/, "\e[\\1m")
+      },
     },
     'elixir' => {
       :evaluate_with        => ['elixir'],
