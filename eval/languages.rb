@@ -114,7 +114,7 @@ end"
       :timeout              => 10,
     },
     'coq' => {
-      :evaluate_with        => ['coqc', '-color', 'yes'],
+      :evaluate_with        => ['coqc', '-color', 'yes', '-w', 'none'],
       :extension            => 'v',
       :script_filename      => 'rublets.v',
       :output_limit         => 4,
