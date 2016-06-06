@@ -81,12 +81,13 @@ end
       the_lang = Language.by_name(matches[1])
       if the_lang
         future do
+          line_limit = the_lang[:output_limit] || limit
           sandbox = Sandbox.new(the_lang.merge({
                 :owner                => sender.nick,
                 :code                 => matches[2],
                 :pastebin_credentials => Configru.pastebin_credentials,
                 :path                 => Configru.rublets_home,
-                :output_limit         => limit,
+                :output_limit         => line_limit,
                 :channel              => params[0],
                 :server               => server.name.to_s,
               }))
