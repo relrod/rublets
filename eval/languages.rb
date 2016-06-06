@@ -120,11 +120,9 @@ end"
       :output_limit         => 4,
       :alter_result         => lambda { |result|
         v = result.gsub(/\e\[(\d\d);\d\d;\d\d;\d\d;\d\d;\d\dm/, "\e[\\1m")
-        vsplit = v.split("\n")
-        v.each do |line|
-          line.gsub!(/<W> Grammar extension: /, '')
-        end
-        v.join("\n")
+        v.split("\n")
+          .select { |line| !line.start_with? '<W> Grammar extension: ' }
+          .join("\n")
       },
     },
     'elixir' => {
