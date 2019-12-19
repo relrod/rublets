@@ -35,10 +35,11 @@ GEM
     pygments.rb (0.4.2)
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.1.0)
-    rack (1.5.2)
+    rack (1.6.12)
     rack-protection (1.5.0)
       rack
-    rvm (1.11.3.7)
+    rubyheap (0.1.3)
+      httparty (~> 0.11.0)
     sinatra (1.4.2)
       rack (~> 1.5, >= 1.5.2)
       rack-protection (~> 1.4)
@@ -56,11 +57,11 @@ DEPENDENCIES
   configru (~> 0.5)
   evalso
   github-linguist (~> 2.2)
-  httparty
+  httparty (~> 0.11.0)
   json
   nokogiri
   on_irc
   promise
   pry
-  rvm
+  rubyheap (>= 0.1.3)
   sinatra
